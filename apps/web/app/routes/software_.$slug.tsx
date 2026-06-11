@@ -309,7 +309,12 @@ function DownloadsSection({ downloads }: { downloads: DownloadItem[] }) {
 // ── Page ───────────────────────────────────────────────────────────
 
 function ProductDetailPage() {
-  const { product, downloadItems, supportArticles } = Route.useLoaderData();
+  const data = Route.useLoaderData();
+  const product = data.product;
+  // Default to [] — stale router caches (e.g. after HMR loader changes) may
+  // hold loader data from before these fields existed.
+  const downloadItems   = data.downloadItems ?? [];
+  const supportArticles = data.supportArticles ?? [];
 
   const siteUrl  = typeof window !== "undefined" ? window.location.origin : "";
   const pageUrl  = `${siteUrl}/software/${product.slug}`;

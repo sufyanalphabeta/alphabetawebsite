@@ -2,7 +2,24 @@ import { createRootRoute, Link, Outlet } from "@tanstack/react-router";
 
 export const Route = createRootRoute({
   component: RootLayout,
+  errorComponent: RootError,
 });
+
+function RootError({ error }: { error: Error }) {
+  return (
+    <main dir="rtl" style={{ maxWidth: 700, margin: "0 auto", padding: "5rem 1.5rem", textAlign: "center" }}>
+      <h1 style={{ color: "#0f3460" }}>حدث خطأ غير متوقع</h1>
+      <p style={{ color: "#888", fontSize: "0.9rem", direction: "ltr" }}>{error.message}</p>
+      <button
+        type="button"
+        onClick={() => window.location.reload()}
+        style={{ marginTop: "1rem", background: "#e94560", color: "#fff", border: "none", padding: "0.6rem 1.5rem", borderRadius: "0.5rem", cursor: "pointer", fontFamily: "inherit" }}
+      >
+        إعادة تحميل الصفحة
+      </button>
+    </main>
+  );
+}
 
 function RootLayout() {
   return (

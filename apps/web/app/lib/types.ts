@@ -276,6 +276,80 @@ export interface SuccessStory {
   publishedAt: string | null;
 }
 
+// ── Sprint 5: support & downloads center ──
+
+export interface FaqCategory {
+  id: number;
+  name_ar: string;
+  name_en: string | null;
+  slug: string;
+  sort_order: number;
+}
+
+export interface FaqItem {
+  id: number;
+  question_ar: string;
+  question_en: string | null;
+  answer_ar: string | null;
+  answer_en: string | null;
+  category: FaqCategory | null;
+  software_product: SoftwareProduct | null;
+  is_featured: boolean;
+  sort_order: number;
+  publishedAt: string | null;
+}
+
+export interface DownloadCategory {
+  id: number;
+  name_ar: string;
+  name_en: string | null;
+  slug: string;
+  sort_order: number;
+}
+
+export interface DownloadCenterItem {
+  id: number;
+  title_ar: string;
+  title_en: string | null;
+  slug: string;
+  description_ar: string | null;
+  description_en: string | null;
+  file: StrapiFile | null;
+  category: DownloadCategory | null;
+  software_product: SoftwareProduct | null;
+  language: "ar" | "en" | "both";
+  version: string | null;
+  release_date: string | null;
+  sort_order: number;
+  publishedAt: string | null;
+}
+
+export interface SupportCategory {
+  id: number;
+  name_ar: string;
+  name_en: string | null;
+  slug: string;
+  description_ar: string | null;
+  description_en: string | null;
+  icon_name: string | null;
+  sort_order: number;
+}
+
+export interface SupportArticle {
+  id: number;
+  title_ar: string;
+  title_en: string | null;
+  slug: string;
+  excerpt_ar: string | null;
+  excerpt_en: string | null;
+  body_ar: BlocksNode[] | null;
+  body_en: BlocksNode[] | null;
+  category: SupportCategory | null;
+  software_product: SoftwareProduct | null;
+  sort_order: number;
+  publishedAt: string | null;
+}
+
 export interface SoftwareProductDetail extends SoftwareProduct {
   tagline_ar: string | null;
   tagline_en: string | null;

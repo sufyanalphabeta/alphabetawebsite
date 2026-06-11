@@ -3,6 +3,10 @@
 import _client from './client/content-types/client/schema.json';
 import _companyProfile from './company-profile/content-types/company-profile/schema.json';
 import _contactSubmission from './contact-submission/content-types/contact-submission/schema.json';
+import _downloadCategory from './download-category/content-types/download-category/schema.json';
+import _downloadItem from './download-item/content-types/download-item/schema.json';
+import _faqCategory from './faq-category/content-types/faq-category/schema.json';
+import _faqItem from './faq-item/content-types/faq-item/schema.json';
 import _industry from './industry/content-types/industry/schema.json';
 import _navigationFooter from './navigation-footer/content-types/navigation-footer/schema.json';
 import _navigationHeader from './navigation-header/content-types/navigation-header/schema.json';
@@ -20,6 +24,8 @@ import _service from './service/content-types/service/schema.json';
 import _siteSetting from './site-setting/content-types/site-setting/schema.json';
 import _softwareProduct from './software-product/content-types/software-product/schema.json';
 import _successMetric from './success-metric/content-types/success-metric/schema.json';
+import _supportArticle from './support-article/content-types/support-article/schema.json';
+import _supportCategory from './support-category/content-types/support-category/schema.json';
 import _successStory from './success-story/content-types/success-story/schema.json';
 import _testimonial from './testimonial/content-types/testimonial/schema.json';
 
@@ -27,6 +33,10 @@ export {
   _client,
   _companyProfile,
   _contactSubmission,
+  _downloadCategory,
+  _downloadItem,
+  _faqCategory,
+  _faqItem,
   _industry,
   _navigationFooter,
   _navigationHeader,
@@ -45,5 +55,7 @@ export {
   _softwareProduct,
   _successMetric,
   _successStory,
+  _supportArticle,
+  _supportCategory,
   _testimonial,
 };

@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "faq_items",
+  "info": {
+    "singularName": "faq-item",
+    "pluralName": "faq-items",
+    "displayName": "FAQ Item",
+    "description": "Global FAQ entries, optionally linked to a product"
+  },
+  "options": { "draftAndPublish": true },
+  "pluginOptions": {},
+  "attributes": {
+    "question_ar": { "type": "string", "required": true },
+    "question_en": { "type": "string" },
+    "answer_ar": { "type": "text" },
+    "answer_en": { "type": "text" },
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::faq-category.faq-category",
+      "inversedBy": "faqs"
+    },
+    "software_product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::software-product.software-product"
+    },
+    "is_featured": { "type": "boolean", "default": false },
+    "sort_order": { "type": "integer", "default": 0 }
+  }
+}

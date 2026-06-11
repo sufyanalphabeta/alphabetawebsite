@@ -2,12 +2,15 @@ import { useState } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { getCollection, mediaUrl } from "~/lib/strapi";
 import { useSeo } from "~/lib/seo";
+import { formatFileSize, formatDate, LANGUAGE_LABEL, fileExtBadge } from "~/lib/format";
 import type {
   BlocksNode,
   BlocksTextNode,
+  DownloadCenterItem,
   DownloadItem,
   ProductFeature,
   SoftwareProductDetail,
+  SupportArticle,
   VideoItem,
 } from "~/lib/types";
 
@@ -40,7 +43,24 @@ export const Route = createFileRoute("/software_/$slug")({
     });
     const product = res.data[0];
     if (!product) throw notFound();
-    return { product };
+
+    const [downloadItems, supportArticles] = await Promise.all([
+      getCollection<DownloadCenterItem>("download-items", {
+        "sort[0]": "sort_order:asc",
+        "populate[file]": "true",
+        "populate[category]": "true",
+        "filters[software_product][slug][$eq]": params.slug,
+        "filters[publishedAt][$notNull]": "true",
+      }).then((r) => r.data).catch(() => [] as DownloadCenterItem[]),
+      getCollection<SupportArticle>("support-articles", {
+        "sort[0]": "sort_order:asc",
+        "populate[category]": "true",
+        "filters[software_product][slug][$eq]": params.slug,
+        "filters[publishedAt][$notNull]": "true",
+      }).then((r) => r.data).catch(() => [] as SupportArticle[]),
+    ]);
+
+    return { product, downloadItems, supportArticles };
   },
   notFoundComponent: () => (
     <main style={{ maxWidth: 700, margin: "0 auto", padding: "5rem 1.5rem", textAlign: "center" }}>
@@ -289,7 +309,7 @@ function DownloadsSection({ downloads }: { downloads: DownloadItem[] }) {
 // ── Page ───────────────────────────────────────────────────────────
 
 function ProductDetailPage() {
-  const { product } = Route.useLoaderData();
+  const { product, downloadItems, supportArticles } = Route.useLoaderData();
 
   const siteUrl  = typeof window !== "undefined" ? window.location.origin : "";
   const pageUrl  = `${siteUrl}/software/${product.slug}`;
@@ -433,6 +453,67 @@ function ProductDetailPage() {
       <GallerySection product={product} />
       <VideosSection videos={product.videos ?? []} />
       <DownloadsSection downloads={product.downloads ?? []} />
+
+      {/* Downloads center items for this product */}
+      {downloadItems.length > 0 && (
+        <section style={{ ...SECTION, marginTop: "3.5rem" }}>
+          <SectionTitle ar="ملفات وأدلة هذا النظام" en="Related Downloads" />
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+            {downloadItems.map((item) => (
+              <div key={item.id} style={{ background: "#fff", border: "1px solid #eef0f4", borderRadius: "0.75rem", padding: "1rem 1.25rem", display: "flex", gap: "0.9rem", alignItems: "center", flexWrap: "wrap" }}>
+                <div style={{ width: 44, height: 44, borderRadius: "0.5rem", background: "#0f3460", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.65rem", fontWeight: 800, flexShrink: 0 }}>
+                  {fileExtBadge(item.file?.ext)}
+                </div>
+                <div style={{ flex: 1, minWidth: 200 }}>
+                  <p style={{ margin: 0, fontWeight: 700, fontSize: "0.92rem", color: "#0f3460" }}>{item.title_ar}</p>
+                  <p style={{ margin: "0.2rem 0 0", fontSize: "0.72rem", color: "#888" }}>
+                    {[
+                      item.category?.name_ar,
+                      LANGUAGE_LABEL[item.language],
+                      item.version ? `الإصدار ${item.version}` : null,
+                      formatDate(item.release_date),
+                      item.file ? formatFileSize(item.file.size) : null,
+                    ].filter(Boolean).join(" • ")}
+                  </p>
+                </div>
+                {item.file && (
+                  <a href={mediaUrl(item.file.url) ?? "#"} download style={{ background: "#e94560", color: "#fff", padding: "0.45rem 1.1rem", borderRadius: "0.5rem", textDecoration: "none", fontSize: "0.82rem", fontWeight: 600 }}>
+                    ⬇ تحميل
+                  </a>
+                )}
+              </div>
+            ))}
+          </div>
+          <Link to="/downloads" style={{ display: "inline-block", marginTop: "1rem", fontSize: "0.85rem", color: "#e94560", textDecoration: "none" }}>
+            تصفح مركز التحميلات كاملاً ←
+          </Link>
+        </section>
+      )}
+
+      {/* Documentation & manuals from the support center */}
+      {supportArticles.length > 0 && (
+        <section style={{ ...SECTION, marginTop: "3.5rem" }}>
+          <SectionTitle ar="أدلة ووثائق مرتبطة" en="Documentation" />
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "1rem" }}>
+            {supportArticles.map((article) => (
+              <Link
+                key={article.id}
+                to={article.category ? "/support/category/$slug" : "/support"}
+                params={article.category ? { slug: article.category.slug } : undefined}
+                style={{ background: "#fff", border: "1px solid #eef0f4", borderRadius: "0.75rem", padding: "1.1rem 1.25rem", textDecoration: "none", display: "block" }}
+              >
+                <p style={{ margin: 0, fontWeight: 700, fontSize: "0.92rem", color: "#0f3460" }}>📘 {article.title_ar}</p>
+                {article.category && (
+                  <p style={{ margin: "0.3rem 0 0", fontSize: "0.72rem", color: "#999" }}>{article.category.name_ar}</p>
+                )}
+                {article.excerpt_ar && (
+                  <p style={{ margin: "0.5rem 0 0", fontSize: "0.82rem", color: "#666", lineHeight: 1.7 }}>{article.excerpt_ar}</p>
+                )}
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* FAQs */}
       {faqs.length > 0 && (

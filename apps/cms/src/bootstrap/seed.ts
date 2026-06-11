@@ -13,6 +13,7 @@ export async function bootstrapSeed(strapi: Core.Strapi) {
     await seedSoftwareProducts(strapi);
     await seedSprint3Products(strapi);
     await seedSprint4TrustLayer(strapi);
+    await seedSprint5SupportDownloads(strapi);
     strapi.log.info("[bootstrap:seed] ✓ Seed ready");
   } catch (err) {
     strapi.log.warn(`[bootstrap:seed] ⚠ ${String(err)}`);
@@ -216,25 +217,64 @@ function placeholderSvg(label: string, bg: string) {
 </svg>`;
 }
 
-async function uploadSvg(
+async function uploadAsset(
   strapi: Core.Strapi,
   dir: string,
   fileName: string,
-  svg: string,
+  content: string | Buffer,
+  mimetype: string,
   ref: { ref?: string; refId: number; field: string },
 ) {
   const filepath = path.join(dir, fileName);
-  await writeFile(filepath, svg, "utf8");
+  await writeFile(filepath, content);
   const { size } = await stat(filepath);
   await strapi.plugin("upload").service("upload").upload({
     data: {
       ref:   ref.ref ?? "api::software-product.software-product",
       refId: ref.refId,
       field: ref.field,
-      fileInfo: { name: fileName, alternativeText: fileName.replace(/\.svg$/, "") },
+      fileInfo: { name: fileName, alternativeText: fileName.replace(/\.[a-z]+$/, "") },
     },
-    files: { filepath, originalFilename: fileName, mimetype: "image/svg+xml", size },
+    files: { filepath, originalFilename: fileName, mimetype, size },
   });
+}
+
+function uploadSvg(
+  strapi: Core.Strapi,
+  dir: string,
+  fileName: string,
+  svg: string,
+  ref: { ref?: string; refId: number; field: string },
+) {
+  return uploadAsset(strapi, dir, fileName, svg, "image/svg+xml", ref);
+}
+
+/** Minimal one-page valid PDF with a visible title line. */
+function placeholderPdf(title: string) {
+  const safe = title.replace(/[()\\]/g, "");
+  const objects = [
+    "<</Type/Catalog/Pages 2 0 R>>",
+    "<</Type/Pages/Kids[3 0 R]/Count 1>>",
+    "<</Type/Page/Parent 2 0 R/MediaBox[0 0 612 792]/Contents 4 0 R/Resources<</Font<</F1 5 0 R>>>>>>",
+    `<</Length ${44 + safe.length}>>stream\nBT /F1 18 Tf 72 720 Td (${safe}) Tj ET\nendstream`,
+    "<</Type/Font/Subtype/Type1/BaseFont/Helvetica>>",
+  ];
+  let pdf = "%PDF-1.4\n";
+  const offsets: number[] = [];
+  objects.forEach((obj, i) => {
+    offsets.push(pdf.length);
+    pdf += `${i + 1} 0 obj\n${obj}\nendobj\n`;
+  });
+  const xrefStart = pdf.length;
+  pdf += `xref\n0 ${objects.length + 1}\n0000000000 65535 f \n`;
+  for (const off of offsets) pdf += `${String(off).padStart(10, "0")} 00000 n \n`;
+  pdf += `trailer\n<</Size ${objects.length + 1}/Root 1 0 R>>\nstartxref\n${xrefStart}\n%%EOF`;
+  return Buffer.from(pdf, "latin1");
+}
+
+/** Minimal valid empty ZIP archive (end-of-central-directory record only). */
+function emptyZip() {
+  return Buffer.from([0x50, 0x4b, 0x05, 0x06, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 }
 
 function logoSvg(initials: string, bg: string) {
@@ -758,4 +798,136 @@ async function seedSprint4TrustLayer(strapi: Core.Strapi) {
   }
 
   strapi.log.info("[bootstrap:seed] Created Sprint 4 trust layer (clients, partners, testimonials, stories)");
+}
+
+// ────────────────────────────── Sprint 5 ──────────────────────────────
+
+async function seedSprint5SupportDownloads(strapi: Core.Strapi) {
+  const faqCatQ = strapi.db.query("api::faq-category.faq-category");
+  const sentinel = await faqCatQ.findOne({ where: { slug: "general" } });
+  if (sentinel) return;
+
+  const now = () => new Date().toISOString();
+  const productQ     = strapi.db.query("api::software-product.software-product");
+  const faqItemQ     = strapi.db.query("api::faq-item.faq-item");
+  const dlCatQ       = strapi.db.query("api::download-category.download-category");
+  const dlItemQ      = strapi.db.query("api::download-item.download-item");
+  const supCatQ      = strapi.db.query("api::support-category.support-category");
+  const articleQ     = strapi.db.query("api::support-article.support-article");
+
+  const productId = async (slug: string) =>
+    ((await productQ.findOne({ where: { slug } })) as { id: number } | null)?.id ?? null;
+
+  const insuranceId = await productId("insurance-management-system");
+  const medicalId   = await productId("medical-management-system");
+  const erpId       = await productId("erp-system");
+
+  // ── FAQ categories + items ──
+  const faqCats = [
+    { name_ar: "أسئلة عامة",        name_en: "General",             slug: "general",   sort_order: 1 },
+    { name_ar: "الترخيص والأسعار",  name_en: "Licensing & Pricing", slug: "licensing", sort_order: 2 },
+    { name_ar: "الدعم الفني",       name_en: "Technical Support",   slug: "technical", sort_order: 3 },
+  ];
+  const faqCatIds: Record<string, number> = {};
+  for (const c of faqCats) {
+    const created = await faqCatQ.create({ data: c }) as { id: number };
+    faqCatIds[c.slug] = created.id;
+  }
+
+  const faqItems = [
+    { question_ar: "ما هي ألفا بيتا وما الذي تقدمه؟", question_en: "What is AlphaBeta and what does it offer?", answer_ar: "ألفا بيتا شركة ليبية متخصصة في تطوير الأنظمة البرمجية للمؤسسات: التأمين، الطبي، ERP، وغيرها، مع خدمات التنفيذ والدعم والتدريب.", answer_en: "AlphaBeta is a Libyan software company building enterprise systems — insurance, medical, ERP — with implementation, support, and training services.", cat: "general", product: null, is_featured: true, sort_order: 1 },
+    { question_ar: "هل تتوفر الأنظمة باللغتين العربية والإنجليزية؟", question_en: "Are the systems available in Arabic and English?", answer_ar: "نعم، جميع أنظمتنا مصممة بمبدأ العربية أولاً مع دعم كامل للإنجليزية وقابلية إضافة لغات أخرى.", answer_en: "Yes, all systems are Arabic-first with full English support and the ability to add more languages.", cat: "general", product: null, is_featured: true, sort_order: 2 },
+    { question_ar: "كيف يتم تسعير الأنظمة؟", question_en: "How are the systems priced?", answer_ar: "التسعير حسب عدد المستخدمين والوحدات المطلوبة ونمط النشر (سحابي أو محلي). اطلب عرض سعر مخصصاً من صفحة طلب عرض السعر.", answer_en: "Pricing depends on users, modules, and deployment model (cloud or on-premise). Request a custom quote from the quote page.", cat: "licensing", product: null, is_featured: false, sort_order: 1 },
+    { question_ar: "هل الترخيص سنوي أم دائم؟", question_en: "Is licensing annual or perpetual?", answer_ar: "نوفر النموذجين: اشتراك سنوي يشمل التحديثات والدعم، أو ترخيص دائم مع عقد صيانة اختياري.", answer_en: "Both models are available: an annual subscription including updates and support, or a perpetual license with an optional maintenance contract.", cat: "licensing", product: null, is_featured: false, sort_order: 2 },
+    { question_ar: "ما هي قنوات الدعم الفني المتاحة؟", question_en: "What support channels are available?", answer_ar: "الدعم متاح عبر الهاتف والبريد الإلكتروني ونظام التذاكر، مع اتفاقيات مستوى خدمة للعملاء المؤسسيين.", answer_en: "Support is available via phone, email, and a ticketing system, with SLAs for enterprise customers.", cat: "technical", product: null, is_featured: true, sort_order: 1 },
+    { question_ar: "هل يمكن ترقية نظام إدارة التأمين دون توقف الخدمة؟", question_en: "Can the Insurance Management System be upgraded without downtime?", answer_ar: "نعم، تتم الترقيات على مراحل خارج أوقات الذروة وبدون انقطاع للفروع العاملة.", answer_en: "Yes, upgrades are rolled out in phases outside peak hours with no interruption to active branches.", cat: "technical", product: insuranceId, is_featured: false, sort_order: 2 },
+    { question_ar: "هل يدعم النظام الطبي أجهزة متعددة في العيادة الواحدة؟", question_en: "Does the medical system support multiple devices per clinic?", answer_ar: "نعم، النظام يعمل عبر المتصفح ويدعم عدداً غير محدود من الأجهزة حسب الترخيص.", answer_en: "Yes, the system is browser-based and supports unlimited devices per the license.", cat: "technical", product: medicalId, is_featured: false, sort_order: 3 },
+  ];
+  for (const f of faqItems) {
+    await faqItemQ.create({
+      data: {
+        question_ar: f.question_ar, question_en: f.question_en,
+        answer_ar: f.answer_ar, answer_en: f.answer_en,
+        category: faqCatIds[f.cat], software_product: f.product,
+        is_featured: f.is_featured, sort_order: f.sort_order,
+        publishedAt: now(),
+      },
+    });
+  }
+
+  // ── Download categories ──
+  const dlCats = [
+    { name_ar: "بروشورات",       name_en: "Brochures",     slug: "brochures",     sort_order: 1 },
+    { name_ar: "أدلة المستخدم",  name_en: "User Manuals",  slug: "user-manuals",  sort_order: 2 },
+    { name_ar: "عروض تقديمية",   name_en: "Presentations", slug: "presentations", sort_order: 3 },
+    { name_ar: "أدوات وقوالب",   name_en: "Tools & Templates", slug: "tools",     sort_order: 4 },
+  ];
+  const dlCatIds: Record<string, number> = {};
+  for (const c of dlCats) {
+    const created = await dlCatQ.create({ data: c }) as { id: number };
+    dlCatIds[c.slug] = created.id;
+  }
+
+  // ── Download items with real files ──
+  const tmpDir = await mkdtemp(path.join(tmpdir(), "ab-seed5-"));
+  try {
+    const dlItems = [
+      { title_ar: "بروشور نظام إدارة التأمين", title_en: "Insurance System Brochure", slug: "insurance-system-brochure", description_ar: "نظرة عامة على مزايا ووحدات نظام إدارة التأمين", cat: "brochures", product: insuranceId, language: "both", version: "2.1", release_date: "2026-04-15", sort_order: 1, file: { name: "insurance-brochure-v2.1.pdf", content: placeholderPdf("Insurance Management System - Brochure v2.1"), mime: "application/pdf" } },
+      { title_ar: "دليل مستخدم نظام التأمين", title_en: "Insurance System User Manual", slug: "insurance-user-manual", description_ar: "دليل شامل لاستخدام وحدات المطالبات والوثائق والتقارير", cat: "user-manuals", product: insuranceId, language: "ar", version: "2.1", release_date: "2026-04-20", sort_order: 2, file: { name: "insurance-user-manual-v2.1.pdf", content: placeholderPdf("Insurance System - User Manual v2.1 (Arabic)"), mime: "application/pdf" } },
+      { title_ar: "بروشور النظام الطبي", title_en: "Medical System Brochure", slug: "medical-system-brochure", description_ar: "تعريف بوحدات النظام الطبي للمستشفيات والعيادات", cat: "brochures", product: medicalId, language: "both", version: "1.8", release_date: "2026-03-10", sort_order: 3, file: { name: "medical-brochure-v1.8.pdf", content: placeholderPdf("Medical Management System - Brochure v1.8"), mime: "application/pdf" } },
+      { title_ar: "دليل مستخدم النظام الطبي", title_en: "Medical System User Manual", slug: "medical-user-manual", description_ar: "دليل الاستقبال والملفات الطبية والمختبر والفوترة", cat: "user-manuals", product: medicalId, language: "en", version: "1.8", release_date: "2026-03-12", sort_order: 4, file: { name: "medical-user-manual-v1.8.pdf", content: placeholderPdf("Medical System - User Manual v1.8 (English)"), mime: "application/pdf" } },
+      { title_ar: "عرض تقديمي لنظام ERP", title_en: "ERP System Presentation", slug: "erp-system-presentation", description_ar: "عرض تعريفي بقدرات نظام تخطيط موارد المؤسسات", cat: "presentations", product: erpId, language: "ar", version: "3.0", release_date: "2026-05-01", sort_order: 5, file: { name: "erp-presentation-v3.0.pdf", content: placeholderPdf("ERP System - Presentation v3.0"), mime: "application/pdf" } },
+      { title_ar: "قوالب استيراد بيانات ERP", title_en: "ERP Data Import Templates", slug: "erp-import-templates", description_ar: "حزمة قوالب جاهزة لاستيراد الأرصدة والأصناف والعملاء", cat: "tools", product: erpId, language: "both", version: "3.0", release_date: "2026-05-05", sort_order: 6, file: { name: "erp-import-templates-v3.0.zip", content: emptyZip(), mime: "application/zip" } },
+    ];
+    for (const d of dlItems) {
+      const created = await dlItemQ.create({
+        data: {
+          title_ar: d.title_ar, title_en: d.title_en, slug: d.slug,
+          description_ar: d.description_ar,
+          category: dlCatIds[d.cat], software_product: d.product,
+          language: d.language, version: d.version, release_date: d.release_date,
+          sort_order: d.sort_order, publishedAt: now(),
+        },
+      }) as { id: number };
+      await uploadAsset(strapi, tmpDir, d.file.name, d.file.content, d.file.mime, {
+        ref: "api::download-item.download-item", refId: created.id, field: "file",
+      });
+    }
+  } finally {
+    await rm(tmpDir, { recursive: true, force: true }).catch(() => {});
+  }
+
+  // ── Support categories + articles ──
+  const supCats = [
+    { name_ar: "أدلة التثبيت",       name_en: "Installation Guides", slug: "installation-guides", description_ar: "خطوات تجهيز وتشغيل الأنظمة", icon_name: "settings", sort_order: 1 },
+    { name_ar: "أدلة الاستخدام",     name_en: "User Manuals",        slug: "user-manuals",        description_ar: "شروحات الاستخدام اليومي للأنظمة", icon_name: "book-open", sort_order: 2 },
+    { name_ar: "حل المشكلات",        name_en: "Troubleshooting",     slug: "troubleshooting",     description_ar: "حلول للمشكلات الشائعة", icon_name: "wrench", sort_order: 3 },
+  ];
+  const supCatIds: Record<string, number> = {};
+  for (const c of supCats) {
+    const created = await supCatQ.create({ data: c }) as { id: number };
+    supCatIds[c.slug] = created.id;
+  }
+
+  const articles = [
+    { title_ar: "متطلبات تشغيل نظام إدارة التأمين", title_en: "Insurance System Requirements", slug: "insurance-system-requirements", excerpt_ar: "المتطلبات الفنية للخوادم والشبكة قبل التثبيت", cat: "installation-guides", product: insuranceId, sort_order: 1, body: "يتطلب النظام خادم تطبيقات بمعالج 8 أنوية وذاكرة 16 جيجابايت كحد أدنى، وقاعدة بيانات PostgreSQL 14 أو أحدث، واتصال شبكي مستقر بين الفروع. للنشر السحابي تتولى ألفا بيتا التجهيز الكامل." },
+    { title_ar: "خطوات التثبيت الأولي للنظام الطبي", title_en: "Medical System Initial Setup", slug: "medical-system-initial-setup", excerpt_ar: "من إعداد قاعدة البيانات حتى تسجيل أول مستخدم", cat: "installation-guides", product: medicalId, sort_order: 2, body: "بعد تجهيز الخادم يتم تثبيت حزمة النظام، ثم تهيئة قاعدة البيانات عبر معالج الإعداد، وإدخال بيانات المنشأة، وإنشاء حساب مدير النظام، ثم تفعيل الوحدات المطلوبة من لوحة الإدارة." },
+    { title_ar: "دليل تسجيل مطالبة تأمين جديدة", title_en: "Registering a New Insurance Claim", slug: "registering-new-insurance-claim", excerpt_ar: "خطوات تسجيل المطالبة من الاستلام حتى الإحالة", cat: "user-manuals", product: insuranceId, sort_order: 1, body: "من وحدة المطالبات اختر «مطالبة جديدة»، ثم ابحث عن الوثيقة برقمها أو باسم المؤمَّن له، وأدخل تفاصيل المطالبة والمستندات المرفقة، وأرسلها لمسار الموافقات. يمكن تتبع الحالة لحظياً من شاشة المتابعة." },
+    { title_ar: "دليل حجز المواعيد في النظام الطبي", title_en: "Booking Appointments in the Medical System", slug: "booking-appointments-medical", excerpt_ar: "إدارة جداول الأطباء وحجوزات المرضى", cat: "user-manuals", product: medicalId, sort_order: 2, body: "من شاشة المواعيد اختر الطبيب والتاريخ لعرض الفترات المتاحة، ثم اختر المريض أو سجّل مريضاً جديداً، وأكّد الحجز. يرسل النظام تذكيراً تلقائياً قبل الموعد ويمكن إعادة الجدولة بالسحب والإفلات." },
+    { title_ar: "حل مشكلة بطء التقارير في ERP", title_en: "Fixing Slow Reports in ERP", slug: "fixing-slow-reports-erp", excerpt_ar: "أسباب شائعة لبطء التقارير وكيفية معالجتها", cat: "troubleshooting", product: erpId, sort_order: 1, body: "غالباً يعود البطء إلى نطاق زمني واسع جداً أو فهارس تحتاج إعادة بناء. جرّب تضييق الفترة، وتشغيل صيانة قاعدة البيانات المجدولة، وأرشفة السنوات المقفلة. إن استمرت المشكلة تواصل مع الدعم مع إرفاق رقم التقرير." },
+    { title_ar: "استعادة كلمة مرور مستخدم", title_en: "Resetting a User Password", slug: "resetting-user-password", excerpt_ar: "خطوات إعادة تعيين كلمات المرور لجميع الأنظمة", cat: "troubleshooting", product: null, sort_order: 2, body: "يستطيع مدير النظام إعادة تعيين كلمة مرور أي مستخدم من شاشة إدارة المستخدمين، وسيُطلب من المستخدم تعيين كلمة جديدة عند أول دخول. لأسباب أمنية لا تُخزَّن كلمات المرور بشكل قابل للاسترجاع." },
+  ];
+  for (const a of articles) {
+    await articleQ.create({
+      data: {
+        title_ar: a.title_ar, title_en: a.title_en, slug: a.slug,
+        excerpt_ar: a.excerpt_ar,
+        body_ar: blocks(a.body),
+        category: supCatIds[a.cat], software_product: a.product,
+        sort_order: a.sort_order, publishedAt: now(),
+      },
+    });
+  }
+
+  strapi.log.info("[bootstrap:seed] Created Sprint 5 support & downloads center");
 }

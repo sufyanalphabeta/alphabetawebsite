@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "support_articles",
+  "info": {
+    "singularName": "support-article",
+    "pluralName": "support-articles",
+    "displayName": "Support Article",
+    "description": "Support center articles, guides, and documentation"
+  },
+  "options": { "draftAndPublish": true },
+  "pluginOptions": {},
+  "attributes": {
+    "title_ar": { "type": "string", "required": true },
+    "title_en": { "type": "string" },
+    "slug": { "type": "uid", "targetField": "title_en", "required": true },
+    "excerpt_ar": { "type": "text" },
+    "excerpt_en": { "type": "text" },
+    "body_ar": { "type": "blocks" },
+    "body_en": { "type": "blocks" },
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::support-category.support-category",
+      "inversedBy": "articles"
+    },
+    "software_product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::software-product.software-product"
+    },
+    "sort_order": { "type": "integer", "default": 0 }
+  }
+}

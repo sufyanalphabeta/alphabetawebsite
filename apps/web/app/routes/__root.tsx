@@ -31,6 +31,8 @@ function RootLayout() {
         <Link to="/partners"   activeProps={{ style: { fontWeight: "bold" } }}>شركاؤنا</Link>
         <Link to="/success-stories" activeProps={{ style: { fontWeight: "bold" } }}>قصص النجاح</Link>
         <Link to="/testimonials"    activeProps={{ style: { fontWeight: "bold" } }}>آراء العملاء</Link>
+        <Link to="/support"    activeProps={{ style: { fontWeight: "bold" } }}>الدعم</Link>
+        <Link to="/downloads"  activeProps={{ style: { fontWeight: "bold" } }}>التحميلات</Link>
         <Link to="/contact"    activeProps={{ style: { fontWeight: "bold" } }}>تواصل معنا</Link>
       </nav>
       <Outlet />

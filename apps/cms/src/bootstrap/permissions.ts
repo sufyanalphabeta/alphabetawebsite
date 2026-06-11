@@ -41,6 +41,19 @@ const PUBLIC_READS = [
   "api::success-story.success-story.findOne",
   "api::success-metric.success-metric.find",
   "api::success-metric.success-metric.findOne",
+  // Sprint 5
+  "api::faq-category.faq-category.find",
+  "api::faq-category.faq-category.findOne",
+  "api::faq-item.faq-item.find",
+  "api::faq-item.faq-item.findOne",
+  "api::download-category.download-category.find",
+  "api::download-category.download-category.findOne",
+  "api::download-item.download-item.find",
+  "api::download-item.download-item.findOne",
+  "api::support-category.support-category.find",
+  "api::support-category.support-category.findOne",
+  "api::support-article.support-article.find",
+  "api::support-article.support-article.findOne",
 ];
 
 export async function bootstrapPermissions(strapi: Core.Strapi) {

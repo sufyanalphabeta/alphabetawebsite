@@ -1,0 +1,44 @@
+{
+  "kind": "collectionType",
+  "collectionName": "download_items",
+  "info": {
+    "singularName": "download-item",
+    "pluralName": "download-items",
+    "displayName": "Download Item",
+    "description": "Downloadable files (PDF, DOCX, PPTX, ZIP, images) with metadata"
+  },
+  "options": { "draftAndPublish": true },
+  "pluginOptions": {},
+  "attributes": {
+    "title_ar": { "type": "string", "required": true },
+    "title_en": { "type": "string" },
+    "slug": { "type": "uid", "targetField": "title_en", "required": true },
+    "description_ar": { "type": "text" },
+    "description_en": { "type": "text" },
+    "file": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["files", "images"]
+    },
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::download-category.download-category",
+      "inversedBy": "items"
+    },
+    "software_product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::software-product.software-product"
+    },
+    "language": {
+      "type": "enumeration",
+      "enum": ["ar", "en", "both"],
+      "default": "both"
+    },
+    "version": { "type": "string" },
+    "release_date": { "type": "date" },
+    "sort_order": { "type": "integer", "default": 0 }
+  }
+}

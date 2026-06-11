@@ -2,6 +2,8 @@
 // This is required for Strapi v5 to find component schemas at runtime.
 import _contactFormBlock from './sections/contact-form-block.json';
 import _ctaBlock from './sections/cta-block.json';
+import _downloadItem from './shared/download-item.json';
+import _videoItem from './shared/video-item.json';
 import _featuresGrid from './sections/features-grid.json';
 import _partnersLogos from './sections/partners-logos.json';
 import _statsBlock from './sections/stats-block.json';
@@ -20,6 +22,8 @@ import _testimonialItem from './shared/testimonial-item.json';
 export {
   _contactFormBlock,
   _ctaBlock,
+  _downloadItem,
+  _videoItem,
   _featuresGrid,
   _partnersLogos,
   _statsBlock,

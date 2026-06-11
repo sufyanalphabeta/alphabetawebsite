@@ -24,6 +24,10 @@ const PUBLIC_READS = [
   "api::product-feature.product-feature.findOne",
   "api::product-module.product-module.find",
   "api::product-module.product-module.findOne",
+  // Sprint 3
+  "api::product-faq.product-faq.find",
+  "api::product-faq.product-faq.findOne",
+  "api::contact-submission.contact-submission.create",
 ];
 
 export async function bootstrapPermissions(strapi: Core.Strapi) {

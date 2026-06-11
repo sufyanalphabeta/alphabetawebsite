@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_shared_video_items",
+  "info": { "displayName": "Video Item", "icon": "play" },
+  "options": {},
+  "attributes": {
+    "title_ar": { "type": "string" },
+    "title_en": { "type": "string" },
+    "provider": {
+      "type": "enumeration",
+      "enum": ["youtube", "vimeo", "internal"],
+      "default": "youtube"
+    },
+    "url": { "type": "string" },
+    "video_file": { "type": "media", "multiple": false, "allowedTypes": ["videos"] },
+    "thumbnail": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "sort_order": { "type": "integer", "default": 0 }
+  }
+}

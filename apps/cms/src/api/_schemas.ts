@@ -9,6 +9,7 @@ import _newsletterSubscriber from './newsletter-subscriber/content-types/newslet
 import _office from './office/content-types/office/schema.json';
 import _page from './page/content-types/page/schema.json';
 import _productCategory from './product-category/content-types/product-category/schema.json';
+import _productFaq from './product-faq/content-types/product-faq/schema.json';
 import _productFeature from './product-feature/content-types/product-feature/schema.json';
 import _productModule from './product-module/content-types/product-module/schema.json';
 import _seoDefault from './seo-default/content-types/seo-default/schema.json';
@@ -26,6 +27,7 @@ export {
   _office,
   _page,
   _productCategory,
+  _productFaq,
   _productFeature,
   _productModule,
   _seoDefault,

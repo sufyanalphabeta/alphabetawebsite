@@ -38,3 +38,29 @@ export function getSingle<T>(
 ): Promise<StrapiSingleResponse<T>> {
   return fetchStrapi<StrapiSingleResponse<T>>(endpoint, params);
 }
+
+export async function createEntry<T>(
+  endpoint: string,
+  data: Record<string, unknown>,
+): Promise<T> {
+  const url = new URL(`/api/${endpoint}`, BASE_URL);
+  const res = await fetch(url.toString(), {
+    method:  "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(API_TOKEN ? { Authorization: `Bearer ${API_TOKEN}` } : {}),
+    },
+    body: JSON.stringify({ data }),
+  });
+  if (!res.ok) {
+    throw new Error(`Strapi ${res.status}: ${url.pathname}`);
+  }
+  return res.json() as Promise<T>;
+}
+
+/** Resolve a Strapi media URL (local provider returns relative /uploads/… paths). */
+export function mediaUrl(url: string | null | undefined): string | null {
+  if (!url) return null;
+  if (url.startsWith("http://") || url.startsWith("https://")) return url;
+  return new URL(url, BASE_URL).toString();
+}

@@ -9,5 +9,6 @@ dist/
 .cache/
 .strapi/
 build/
+apps/cms/public/uploads/
 routeTree.gen.ts
 .claude/

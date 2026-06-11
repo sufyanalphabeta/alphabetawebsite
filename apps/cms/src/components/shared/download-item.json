@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_shared_download_items",
+  "info": { "displayName": "Download Item", "icon": "download" },
+  "options": {},
+  "attributes": {
+    "title_ar": { "type": "string", "required": true },
+    "title_en": { "type": "string" },
+    "kind": {
+      "type": "enumeration",
+      "enum": ["brochure", "datasheet", "presentation", "user_guide", "other"],
+      "default": "brochure"
+    },
+    "file": { "type": "media", "multiple": false, "allowedTypes": ["files", "images"] },
+    "external_url": { "type": "string" },
+    "sort_order": { "type": "integer", "default": 0 }
+  }
+}

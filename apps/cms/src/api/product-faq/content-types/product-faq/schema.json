@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "product_faqs",
+  "info": {
+    "singularName": "product-faq",
+    "pluralName": "product-faqs",
+    "displayName": "Product FAQ",
+    "description": "Frequently asked questions per software product"
+  },
+  "options": { "draftAndPublish": false },
+  "pluginOptions": {},
+  "attributes": {
+    "question_ar": { "type": "string", "required": true },
+    "question_en": { "type": "string" },
+    "answer_ar": { "type": "text" },
+    "answer_en": { "type": "text" },
+    "sort_order": { "type": "integer", "default": 0 },
+    "product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::software-product.software-product",
+      "inversedBy": "faqs"
+    }
+  }
+}

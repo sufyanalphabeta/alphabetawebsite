@@ -1085,6 +1085,7 @@ export interface ApiSoftwareProductSoftwareProduct
     logo: Schema.Attribute.Media<'images'>;
     long_description_ar: Schema.Attribute.Blocks;
     long_description_en: Schema.Attribute.Blocks;
+    main_image: Schema.Attribute.Media<'images'>;
     modules: Schema.Attribute.Relation<
       'oneToMany',
       'api::product-module.product-module'
@@ -1097,6 +1098,8 @@ export interface ApiSoftwareProductSoftwareProduct
     short_description_en: Schema.Attribute.Text;
     slug: Schema.Attribute.UID<'name_en'> & Schema.Attribute.Required;
     sort_order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    tagline_ar: Schema.Attribute.String;
+    tagline_en: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

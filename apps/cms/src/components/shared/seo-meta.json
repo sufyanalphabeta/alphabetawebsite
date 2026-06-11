@@ -7,6 +7,7 @@
     "meta_description_ar":{"type":"text"},"meta_description_en":{"type":"text"},
     "og_title_ar":{"type":"string"},"og_title_en":{"type":"string"},
     "og_image":{"type":"media","multiple":false,"allowedTypes":["images"]},
-    "canonical_url":{"type":"string"},"no_index":{"type":"boolean","default":false}
+    "canonical_url":{"type":"string"},"no_index":{"type":"boolean","default":false},
+    "twitter_card":{"type":"enumeration","enum":["summary","summary_large_image"],"default":"summary_large_image"}
   }
 }

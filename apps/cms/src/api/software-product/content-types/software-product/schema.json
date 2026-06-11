@@ -17,7 +17,15 @@
     "short_description_en": { "type": "text" },
     "long_description_ar": { "type": "blocks" },
     "long_description_en": { "type": "blocks" },
+    "tagline_ar": { "type": "string" },
+    "tagline_en": { "type": "string" },
     "logo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "main_image": {
       "type": "media",
       "multiple": false,
       "required": false,
@@ -54,6 +62,32 @@
       "relation": "oneToMany",
       "target": "api::product-module.product-module",
       "mappedBy": "product"
+    },
+    "faqs": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product-faq.product-faq",
+      "mappedBy": "product"
+    },
+    "related_products": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::software-product.software-product"
+    },
+    "videos": {
+      "type": "component",
+      "component": "shared.video-item",
+      "repeatable": true
+    },
+    "downloads": {
+      "type": "component",
+      "component": "shared.download-item",
+      "repeatable": true
+    },
+    "seo": {
+      "type": "component",
+      "component": "shared.seo-meta",
+      "repeatable": false
     }
   }
 }

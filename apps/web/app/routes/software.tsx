@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { getCollection } from "~/lib/strapi";
 import type { SoftwareProduct } from "~/lib/types";
 
@@ -100,6 +100,15 @@ function ProductCard({ product }: { product: SoftwareProduct }) {
             </span>
           </div>
         )}
+        <div style={{ marginTop: "1rem" }}>
+          <Link
+            to="/software/$slug"
+            params={{ slug: product.slug }}
+            style={{ fontSize: "0.85rem", color: "#e94560", textDecoration: "none", fontWeight: 600 }}
+          >
+            عرض التفاصيل ←
+          </Link>
+        </div>
       </div>
     </article>
   );

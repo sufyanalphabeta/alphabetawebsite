@@ -104,3 +104,103 @@ export interface SoftwareProduct {
   category: ProductCategory | null;
   publishedAt: string | null;
 }
+
+// ── Sprint 3: rich text blocks (Strapi "blocks" field) ──
+
+export interface BlocksTextNode { type: "text"; text: string; bold?: boolean; italic?: boolean }
+export interface BlocksNode {
+  type: string;
+  children?: Array<BlocksNode | BlocksTextNode>;
+  [key: string]: unknown;
+}
+
+export interface ProductFeature {
+  id: number;
+  title_ar: string;
+  title_en: string | null;
+  description_ar: string | null;
+  description_en: string | null;
+  icon_name: string | null;
+  feature_type: "feature" | "capability" | "advantage" | null;
+  sort_order: number;
+}
+
+export interface ProductModule {
+  id: number;
+  name_ar: string;
+  name_en: string | null;
+  description_ar: string | null;
+  description_en: string | null;
+  is_core: boolean;
+  sort_order: number;
+}
+
+export interface ProductFaq {
+  id: number;
+  question_ar: string;
+  question_en: string | null;
+  answer_ar: string | null;
+  answer_en: string | null;
+  sort_order: number;
+}
+
+export interface VideoItem {
+  id: number;
+  title_ar: string | null;
+  title_en: string | null;
+  provider: "youtube" | "vimeo" | "internal";
+  url: string | null;
+  video_file: StrapiFile | null;
+  thumbnail: StrapiImage | null;
+  sort_order: number;
+}
+
+export interface DownloadItem {
+  id: number;
+  title_ar: string;
+  title_en: string | null;
+  kind: "brochure" | "datasheet" | "presentation" | "user_guide" | "other";
+  file: StrapiFile | null;
+  external_url: string | null;
+  sort_order: number;
+}
+
+export interface StrapiFile {
+  id: number;
+  url: string;
+  name: string;
+  ext: string | null;
+  size: number;
+  mime: string;
+}
+
+export interface SeoMeta {
+  id: number;
+  meta_title_ar: string | null;
+  meta_title_en: string | null;
+  meta_description_ar: string | null;
+  meta_description_en: string | null;
+  og_title_ar: string | null;
+  og_title_en: string | null;
+  og_image: StrapiImage | null;
+  canonical_url: string | null;
+  no_index: boolean;
+  twitter_card: "summary" | "summary_large_image" | null;
+}
+
+export interface SoftwareProductDetail extends SoftwareProduct {
+  tagline_ar: string | null;
+  tagline_en: string | null;
+  long_description_ar: BlocksNode[] | null;
+  long_description_en: BlocksNode[] | null;
+  main_image: StrapiImage | null;
+  screenshots: StrapiImage[] | null;
+  industries: Industry[] | null;
+  features: ProductFeature[] | null;
+  modules: ProductModule[] | null;
+  faqs: ProductFaq[] | null;
+  videos: VideoItem[] | null;
+  downloads: DownloadItem[] | null;
+  related_products: SoftwareProduct[] | null;
+  seo: SeoMeta | null;
+}

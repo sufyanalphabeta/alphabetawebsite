@@ -1,0 +1,21 @@
+{
+  "kind":"singleType","collectionName":"site_settings",
+  "info":{"singularName":"site-setting","pluralName":"site-settings","displayName":"Site Settings"},
+  "options":{"draftAndPublish":false},"pluginOptions":{},
+  "attributes":{
+    "site_name_ar":{"type":"string","required":true},
+    "site_name_en":{"type":"string","required":true},
+    "tagline_ar":{"type":"text"},"tagline_en":{"type":"text"},
+    "logo":{"type":"media","multiple":false,"allowedTypes":["images"]},
+    "logo_light":{"type":"media","multiple":false,"allowedTypes":["images"]},
+    "favicon":{"type":"media","multiple":false,"allowedTypes":["images"]},
+    "primary_email":{"type":"email"},"support_email":{"type":"email"},
+    "phone_primary":{"type":"string"},"phone_secondary":{"type":"string"},
+    "whatsapp_number":{"type":"string"},
+    "address_ar":{"type":"text"},"address_en":{"type":"text"},
+    "google_maps_url":{"type":"string"},
+    "default_locale":{"type":"enumeration","enum":["ar","en"],"default":"ar"},
+    "maintenance_mode":{"type":"boolean","default":false},
+    "social_links":{"type":"component","repeatable":true,"component":"shared.social-link"}
+  }
+}

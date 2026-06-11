@@ -1,0 +1,12 @@
+{
+  "kind":"singleType","collectionName":"navigation_footers",
+  "info":{"singularName":"navigation-footer","pluralName":"navigation-footers","displayName":"Navigation Footer"},
+  "options":{"draftAndPublish":false},"pluginOptions":{},
+  "attributes":{
+    "columns":{"type":"component","repeatable":true,"component":"shared.footer-column","max":5},
+    "bottom_links":{"type":"component","repeatable":true,"component":"shared.simple-link"},
+    "copyright_ar":{"type":"string"},"copyright_en":{"type":"string"},
+    "newsletter_enabled":{"type":"boolean","default":true},
+    "newsletter_title_ar":{"type":"string"},"newsletter_title_en":{"type":"string"}
+  }
+}

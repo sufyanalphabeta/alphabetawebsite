@@ -1,0 +1,9 @@
+{
+  "collectionName":"components_sections_stats_blocks",
+  "info":{"displayName":"Stats Block"},
+  "options":{},
+  "attributes":{
+    "heading_ar":{"type":"string"},"heading_en":{"type":"string"},
+    "stats":{"type":"component","repeatable":true,"component":"shared.stat-item","max":6}
+  }
+}

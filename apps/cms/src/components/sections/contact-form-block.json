@@ -1,0 +1,9 @@
+{
+  "collectionName":"components_sections_contact_form_blocks",
+  "info":{"displayName":"Contact Form Block"},
+  "options":{},
+  "attributes":{
+    "heading_ar":{"type":"string"},"heading_en":{"type":"string"},
+    "show_map":{"type":"boolean","default":true}
+  }
+}

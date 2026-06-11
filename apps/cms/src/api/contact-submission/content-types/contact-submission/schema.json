@@ -1,0 +1,15 @@
+{
+  "kind":"collectionType","collectionName":"contact_submissions",
+  "info":{"singularName":"contact-submission","pluralName":"contact-submissions","displayName":"Contact Submissions"},
+  "options":{"draftAndPublish":false},"pluginOptions":{},
+  "attributes":{
+    "full_name":{"type":"string","required":true},
+    "email":{"type":"email","required":true},
+    "phone":{"type":"string"},"company":{"type":"string"},"subject":{"type":"string"},
+    "message":{"type":"text","required":true},
+    "source_url":{"type":"string"},"locale":{"type":"string"},
+    "utm_source":{"type":"string"},"utm_medium":{"type":"string"},"utm_campaign":{"type":"string"},
+    "status":{"type":"enumeration","enum":["new","read","replied","archived"],"default":"new"},
+    "internal_notes":{"type":"text","private":true},"ip_address":{"type":"string","private":true}
+  }
+}

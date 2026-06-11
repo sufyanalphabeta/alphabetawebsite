@@ -1,0 +1,15 @@
+{
+  "collectionName":"components_shared_hero_blocks",
+  "info":{"displayName":"Hero Block","icon":"star"},
+  "options":{},
+  "attributes":{
+    "heading_ar":{"type":"string"},"heading_en":{"type":"string"},
+    "subheading_ar":{"type":"text"},"subheading_en":{"type":"text"},
+    "image":{"type":"media","multiple":false,"allowedTypes":["images"]},
+    "video_url":{"type":"string"},
+    "cta_primary_label_ar":{"type":"string"},"cta_primary_label_en":{"type":"string"},
+    "cta_primary_url":{"type":"string"},
+    "cta_secondary_label_ar":{"type":"string"},"cta_secondary_label_en":{"type":"string"},
+    "cta_secondary_url":{"type":"string"}
+  }
+}

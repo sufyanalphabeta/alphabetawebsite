@@ -1,0 +1,11 @@
+{
+  "collectionName":"components_shared_testimonial_items",
+  "info":{"displayName":"Testimonial Item"},
+  "options":{},
+  "attributes":{
+    "quote_ar":{"type":"text"},"quote_en":{"type":"text"},
+    "author_name":{"type":"string"},"author_title":{"type":"string"},"author_company":{"type":"string"},
+    "author_photo":{"type":"media","multiple":false,"allowedTypes":["images"]},
+    "rating":{"type":"integer","min":1,"max":5}
+  }
+}

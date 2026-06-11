@@ -1,0 +1,9 @@
+{
+  "collectionName":"components_sections_testimonials_blocks",
+  "info":{"displayName":"Testimonials Block"},
+  "options":{},
+  "attributes":{
+    "heading_ar":{"type":"string"},"heading_en":{"type":"string"},
+    "items":{"type":"component","repeatable":true,"component":"shared.testimonial-item","max":6}
+  }
+}

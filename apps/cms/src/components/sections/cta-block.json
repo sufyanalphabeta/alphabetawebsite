@@ -1,0 +1,12 @@
+{
+  "collectionName":"components_sections_cta_blocks",
+  "info":{"displayName":"CTA Block"},
+  "options":{},
+  "attributes":{
+    "heading_ar":{"type":"string"},"heading_en":{"type":"string"},
+    "subheading_ar":{"type":"text"},"subheading_en":{"type":"text"},
+    "button_label_ar":{"type":"string"},"button_label_en":{"type":"string"},"button_url":{"type":"string"},
+    "secondary_label_ar":{"type":"string"},"secondary_label_en":{"type":"string"},"secondary_url":{"type":"string"},
+    "background":{"type":"enumeration","enum":["light","dark","accent"],"default":"accent"}
+  }
+}

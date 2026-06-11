@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "product_categories",
+  "info": {
+    "singularName": "product-category",
+    "pluralName": "product-categories",
+    "displayName": "Product Category",
+    "description": "Software product categories"
+  },
+  "options": { "draftAndPublish": false },
+  "pluginOptions": {},
+  "attributes": {
+    "name_ar": { "type": "string", "required": true },
+    "name_en": { "type": "string" },
+    "slug": { "type": "uid", "targetField": "name_en", "required": true },
+    "description_ar": { "type": "text" },
+    "description_en": { "type": "text" },
+    "icon_name": { "type": "string" },
+    "sort_order": { "type": "integer", "default": 0 },
+    "products": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::software-product.software-product",
+      "mappedBy": "category"
+    }
+  }
+}

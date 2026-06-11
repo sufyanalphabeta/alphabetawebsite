@@ -1,0 +1,11 @@
+{
+  "kind":"singleType","collectionName":"navigation_headers",
+  "info":{"singularName":"navigation-header","pluralName":"navigation-headers","displayName":"Navigation Header"},
+  "options":{"draftAndPublish":false},"pluginOptions":{},
+  "attributes":{
+    "logo_override":{"type":"media","multiple":false,"allowedTypes":["images"]},
+    "cta_label_ar":{"type":"string"},"cta_label_en":{"type":"string"},
+    "cta_url":{"type":"string"},
+    "nav_items":{"type":"component","repeatable":true,"component":"shared.nav-item","max":12}
+  }
+}

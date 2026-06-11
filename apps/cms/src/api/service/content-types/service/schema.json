@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "services",
+  "info": {
+    "singularName": "service",
+    "pluralName": "services",
+    "displayName": "Service",
+    "description": "Company services offered"
+  },
+  "options": { "draftAndPublish": true },
+  "pluginOptions": {},
+  "attributes": {
+    "name_ar": { "type": "string", "required": true },
+    "name_en": { "type": "string" },
+    "slug": { "type": "uid", "targetField": "name_en", "required": true },
+    "description_ar": { "type": "text" },
+    "description_en": { "type": "text" },
+    "long_description_ar": { "type": "blocks" },
+    "long_description_en": { "type": "blocks" },
+    "icon_name": { "type": "string" },
+    "icon_image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images", "files"]
+    },
+    "sort_order": { "type": "integer", "default": 0 },
+    "is_featured": { "type": "boolean", "default": false }
+  }
+}

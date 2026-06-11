@@ -1,0 +1,14 @@
+{
+  "kind":"singleType","collectionName":"seo_defaults",
+  "info":{"singularName":"seo-default","pluralName":"seo-defaults","displayName":"SEO Defaults"},
+  "options":{"draftAndPublish":false},"pluginOptions":{},
+  "attributes":{
+    "title_template":{"type":"string","default":"%s | الفا بيتا"},
+    "default_title_ar":{"type":"string"},"default_title_en":{"type":"string"},
+    "default_description_ar":{"type":"text"},"default_description_en":{"type":"text"},
+    "og_image":{"type":"media","multiple":false,"allowedTypes":["images"]},
+    "twitter_handle":{"type":"string"},
+    "canonical_base_url":{"type":"string","default":"https://alphabeta.ly"},
+    "robots":{"type":"enumeration","enum":["index","noindex"],"default":"index"}
+  }
+}

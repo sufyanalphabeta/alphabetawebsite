@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "product_features",
+  "info": {
+    "singularName": "product-feature",
+    "pluralName": "product-features",
+    "displayName": "Product Feature",
+    "description": "Features of a software product"
+  },
+  "options": { "draftAndPublish": false },
+  "pluginOptions": {},
+  "attributes": {
+    "title_ar": { "type": "string", "required": true },
+    "title_en": { "type": "string" },
+    "description_ar": { "type": "text" },
+    "description_en": { "type": "text" },
+    "icon_name": { "type": "string" },
+    "sort_order": { "type": "integer", "default": 0 },
+    "product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::software-product.software-product",
+      "inversedBy": "features"
+    }
+  }
+}

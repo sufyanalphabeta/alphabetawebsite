@@ -1,0 +1,32 @@
+{
+  "kind": "singleType",
+  "collectionName": "company_profiles",
+  "info": {
+    "singularName": "company-profile",
+    "pluralName": "company-profiles",
+    "displayName": "Company Profile",
+    "description": "About Us, Vision, Mission, and Company Overview"
+  },
+  "options": { "draftAndPublish": true },
+  "pluginOptions": {},
+  "attributes": {
+    "about_ar": { "type": "blocks" },
+    "about_en": { "type": "blocks" },
+    "vision_ar": { "type": "text" },
+    "vision_en": { "type": "text" },
+    "mission_ar": { "type": "text" },
+    "mission_en": { "type": "text" },
+    "values_ar": { "type": "blocks" },
+    "values_en": { "type": "blocks" },
+    "founded_year": { "type": "integer" },
+    "employee_count": { "type": "integer" },
+    "headquarters_ar": { "type": "string" },
+    "headquarters_en": { "type": "string" },
+    "hero_image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

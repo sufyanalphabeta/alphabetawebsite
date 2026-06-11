@@ -1,0 +1,11 @@
+{
+  "collectionName":"components_shared_feature_items",
+  "info":{"displayName":"Feature Item"},
+  "options":{},
+  "attributes":{
+    "title_ar":{"type":"string"},"title_en":{"type":"string"},
+    "body_ar":{"type":"text"},"body_en":{"type":"text"},
+    "icon":{"type":"string"},
+    "image":{"type":"media","multiple":false,"allowedTypes":["images"]}
+  }
+}

@@ -1,0 +1,13 @@
+diff --git a/dist/esm/vinxi-file-router.js b/dist/esm/vinxi-file-router.js
+index 68e9df1c08480190b3acbb5b558ed73699ff9870..b59a3cdbeaf20e4b19d527d3da42cfd1e4861127 100644
+--- a/dist/esm/vinxi-file-router.js
++++ b/dist/esm/vinxi-file-router.js
+@@ -1,5 +1,7 @@
+ import { BaseFileSystemRouter as VinxiBaseFileSystemRouter, analyzeModule as vinxiFsRouterAnalyzeModule, cleanPath as vinxiFsRouterCleanPath, } from 'vinxi/fs-router';
+-import { CONSTANTS as GENERATOR_CONSTANTS, startAPIRouteSegmentsFromTSRFilePath, } from '@tanstack/router-generator';
++import { startAPIRouteSegmentsFromTSRFilePath, } from '@tanstack/router-generator';
++// CONSTANTS was removed from @tanstack/router-generator; inline the only value used here
++const GENERATOR_CONSTANTS = { APIRouteExportVariable: 'APIRoute' };
+ export function tanstackStartVinxiFileRouter(opts) {
+     const apiBaseSegment = opts.apiBase.split('/').filter(Boolean).join('/');
+     const isAPIPath = new RegExp(`/${apiBaseSegment}/`);

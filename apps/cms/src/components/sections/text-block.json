@@ -1,0 +1,10 @@
+{
+  "collectionName":"components_sections_text_blocks",
+  "info":{"displayName":"Text Block"},
+  "options":{},
+  "attributes":{
+    "heading_ar":{"type":"string"},"heading_en":{"type":"string"},
+    "body_ar":{"type":"richtext"},"body_en":{"type":"richtext"},
+    "align":{"type":"enumeration","enum":["start","center","end"],"default":"start"}
+  }
+}

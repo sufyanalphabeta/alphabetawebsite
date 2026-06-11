@@ -1,0 +1,8 @@
+{
+  "collectionName":"components_shared_stat_items",
+  "info":{"displayName":"Stat Item"},
+  "options":{},
+  "attributes":{
+    "value":{"type":"string"},"label_ar":{"type":"string"},"label_en":{"type":"string"},"icon":{"type":"string"}
+  }
+}

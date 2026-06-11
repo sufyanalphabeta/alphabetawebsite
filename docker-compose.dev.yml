@@ -1,0 +1,23 @@
+version: "3.9"
+networks:
+  alphabeta: { driver: bridge }
+volumes:
+  postgres_dev_data:
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    ports: ["5433:5432"]
+    environment:
+      POSTGRES_DB:       alphabeta_dev
+      POSTGRES_USER:     alphabeta_user
+      POSTGRES_PASSWORD: dev_password_local
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    networks: [alphabeta]
+    healthcheck:
+      test: ["CMD-SHELL","pg_isready -U alphabeta_user -d alphabeta_dev"]
+      interval: 5s
+      timeout:  3s
+      retries:  5

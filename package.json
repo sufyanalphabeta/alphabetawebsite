@@ -1,0 +1,11 @@
+{
+  "name": "alphabeta-monorepo",
+  "private": true,
+  "scripts": {
+    "dev":       "pnpm --parallel -r dev",
+    "build":     "pnpm --filter @alphabeta/cms build && pnpm --filter @alphabeta/web build",
+    "lint":      "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck"
+  },
+  "engines": { "node": ">=20", "pnpm": ">=9" }
+}

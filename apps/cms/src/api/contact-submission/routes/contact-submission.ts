@@ -1,0 +1,8 @@
+export default {
+  routes: [
+    { method:"POST", path:"/contact-submissions",     handler:"contact-submission.create", config:{ auth:false } },
+    { method:"GET",  path:"/contact-submissions",     handler:"contact-submission.find",   config:{ policies:[] } },
+    { method:"GET",  path:"/contact-submissions/:id", handler:"contact-submission.findOne",config:{ policies:[] } },
+    { method:"PUT",  path:"/contact-submissions/:id", handler:"contact-submission.update", config:{ policies:[] } },
+  ],
+};

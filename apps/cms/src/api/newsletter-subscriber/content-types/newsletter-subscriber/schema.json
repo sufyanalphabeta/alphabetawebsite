@@ -1,0 +1,12 @@
+{
+  "kind":"collectionType","collectionName":"newsletter_subscribers",
+  "info":{"singularName":"newsletter-subscriber","pluralName":"newsletter-subscribers","displayName":"Newsletter Subscribers"},
+  "options":{"draftAndPublish":false},"pluginOptions":{},
+  "attributes":{
+    "email":{"type":"email","required":true,"unique":true},
+    "locale":{"type":"string","default":"ar"},"source":{"type":"string"},
+    "confirmed":{"type":"boolean","default":false},
+    "confirmation_token":{"type":"string","private":true},
+    "subscribed_at":{"type":"datetime"},"unsubscribed_at":{"type":"datetime"}
+  }
+}

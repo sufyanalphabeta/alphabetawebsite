@@ -1,0 +1,12 @@
+{
+  "collectionName":"components_shared_seo_metas",
+  "info":{"displayName":"SEO Meta","icon":"search"},
+  "options":{},
+  "attributes":{
+    "meta_title_ar":{"type":"string"},"meta_title_en":{"type":"string"},
+    "meta_description_ar":{"type":"text"},"meta_description_en":{"type":"text"},
+    "og_title_ar":{"type":"string"},"og_title_en":{"type":"string"},
+    "og_image":{"type":"media","multiple":false,"allowedTypes":["images"]},
+    "canonical_url":{"type":"string"},"no_index":{"type":"boolean","default":false}
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "collectionName":"components_shared_social_links",
+  "info":{"displayName":"Social Link","icon":"share"},
+  "options":{},
+  "attributes":{
+    "platform":{"type":"enumeration","enum":["facebook","twitter","linkedin","instagram","youtube","whatsapp","telegram","tiktok"]},
+    "url":{"type":"string"},"label":{"type":"string"}
+  }
+}

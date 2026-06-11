@@ -1,0 +1,14 @@
+{
+  "kind":"collectionType","collectionName":"offices",
+  "info":{"singularName":"office","pluralName":"offices","displayName":"Offices"},
+  "options":{"draftAndPublish":false},"pluginOptions":{},
+  "attributes":{
+    "name_ar":{"type":"string","required":true},"name_en":{"type":"string"},
+    "address_ar":{"type":"text"},"address_en":{"type":"text"},
+    "city_ar":{"type":"string"},"city_en":{"type":"string"},
+    "country_ar":{"type":"string","default":"ليبيا"},"country_en":{"type":"string","default":"Libya"},
+    "phone":{"type":"string"},"email":{"type":"email"},"whatsapp":{"type":"string"},
+    "lat":{"type":"decimal"},"lng":{"type":"decimal"},
+    "is_headquarters":{"type":"boolean","default":false},"order":{"type":"integer","default":0}
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "industries",
+  "info": {
+    "singularName": "industry",
+    "pluralName": "industries",
+    "displayName": "Industry",
+    "description": "Industries served"
+  },
+  "options": { "draftAndPublish": true },
+  "pluginOptions": {},
+  "attributes": {
+    "name_ar": { "type": "string", "required": true },
+    "name_en": { "type": "string" },
+    "slug": { "type": "uid", "targetField": "name_en", "required": true },
+    "description_ar": { "type": "text" },
+    "description_en": { "type": "text" },
+    "icon_image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "sort_order": { "type": "integer", "default": 0 },
+    "software_products": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::software-product.software-product",
+      "inversedBy": "industries"
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "collectionName":"components_sections_partners_logos",
+  "info":{"displayName":"Partners Logos"},
+  "options":{},
+  "attributes":{
+    "heading_ar":{"type":"string"},"heading_en":{"type":"string"},
+    "logos":{"type":"media","multiple":true,"allowedTypes":["images"]}
+  }
+}

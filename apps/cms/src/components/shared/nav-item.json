@@ -1,0 +1,12 @@
+{
+  "collectionName":"components_shared_nav_items",
+  "info":{"displayName":"Nav Item","icon":"link"},
+  "options":{},
+  "attributes":{
+    "label_ar":{"type":"string"},"label_en":{"type":"string"},
+    "url":{"type":"string"},"open_new_tab":{"type":"boolean","default":false},
+    "icon":{"type":"string"},
+    "children":{"type":"component","repeatable":true,"component":"shared.simple-link","max":12},
+    "is_cta":{"type":"boolean","default":false}
+  }
+}

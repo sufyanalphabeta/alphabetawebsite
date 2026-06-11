@@ -1,0 +1,9 @@
+{
+  "collectionName":"components_shared_simple_links",
+  "info":{"displayName":"Simple Link","icon":"link"},
+  "options":{},
+  "attributes":{
+    "label_ar":{"type":"string"},"label_en":{"type":"string"},
+    "url":{"type":"string"},"open_new_tab":{"type":"boolean","default":false}
+  }
+}

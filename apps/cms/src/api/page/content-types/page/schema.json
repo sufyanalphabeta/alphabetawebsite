@@ -1,0 +1,14 @@
+{
+  "kind":"collectionType","collectionName":"pages",
+  "info":{"singularName":"page","pluralName":"pages","displayName":"Pages"},
+  "options":{"draftAndPublish":true},
+  "pluginOptions":{"i18n":{"localized":true}},
+  "attributes":{
+    "title":{"type":"string","required":true,"pluginOptions":{"i18n":{"localized":true}}},
+    "slug":{"type":"uid","targetField":"title","pluginOptions":{"i18n":{"localized":false}}},
+    "page_type":{"type":"enumeration","enum":["home","about","contact","generic","landing"],"default":"generic","pluginOptions":{"i18n":{"localized":false}}},
+    "hero":{"type":"component","repeatable":false,"component":"shared.hero-block","pluginOptions":{"i18n":{"localized":true}}},
+    "content_zones":{"type":"dynamiczone","components":["sections.text-block","sections.cta-block","sections.stats-block","sections.features-grid","sections.testimonials-block","sections.partners-logos","sections.contact-form-block"],"pluginOptions":{"i18n":{"localized":true}}},
+    "seo_meta":{"type":"component","repeatable":false,"component":"shared.seo-meta","pluginOptions":{"i18n":{"localized":true}}}
+  }
+}

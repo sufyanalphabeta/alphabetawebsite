@@ -1,0 +1,59 @@
+{
+  "kind": "collectionType",
+  "collectionName": "software_products",
+  "info": {
+    "singularName": "software-product",
+    "pluralName": "software-products",
+    "displayName": "Software Product",
+    "description": "Software products in the hub"
+  },
+  "options": { "draftAndPublish": true },
+  "pluginOptions": {},
+  "attributes": {
+    "name_ar": { "type": "string", "required": true },
+    "name_en": { "type": "string" },
+    "slug": { "type": "uid", "targetField": "name_en", "required": true },
+    "short_description_ar": { "type": "text" },
+    "short_description_en": { "type": "text" },
+    "long_description_ar": { "type": "blocks" },
+    "long_description_en": { "type": "blocks" },
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "screenshots": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "is_featured": { "type": "boolean", "default": false },
+    "sort_order": { "type": "integer", "default": 0 },
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product-category.product-category",
+      "inversedBy": "products"
+    },
+    "industries": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::industry.industry",
+      "mappedBy": "software_products"
+    },
+    "features": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product-feature.product-feature",
+      "mappedBy": "product"
+    },
+    "modules": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product-module.product-module",
+      "mappedBy": "product"
+    }
+  }
+}

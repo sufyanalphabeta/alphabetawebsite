@@ -27,6 +27,10 @@ function RootLayout() {
         <Link to="/services"   activeProps={{ style: { fontWeight: "bold" } }}>خدماتنا</Link>
         <Link to="/industries" activeProps={{ style: { fontWeight: "bold" } }}>القطاعات</Link>
         <Link to="/software"   activeProps={{ style: { fontWeight: "bold" } }}>البرمجيات</Link>
+        <Link to="/clients"    activeProps={{ style: { fontWeight: "bold" } }}>عملاؤنا</Link>
+        <Link to="/partners"   activeProps={{ style: { fontWeight: "bold" } }}>شركاؤنا</Link>
+        <Link to="/success-stories" activeProps={{ style: { fontWeight: "bold" } }}>قصص النجاح</Link>
+        <Link to="/testimonials"    activeProps={{ style: { fontWeight: "bold" } }}>آراء العملاء</Link>
         <Link to="/contact"    activeProps={{ style: { fontWeight: "bold" } }}>تواصل معنا</Link>
       </nav>
       <Outlet />

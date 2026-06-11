@@ -12,6 +12,7 @@ export async function bootstrapSeed(strapi: Core.Strapi) {
     await seedServices(strapi);
     await seedSoftwareProducts(strapi);
     await seedSprint3Products(strapi);
+    await seedSprint4TrustLayer(strapi);
     strapi.log.info("[bootstrap:seed] ✓ Seed ready");
   } catch (err) {
     strapi.log.warn(`[bootstrap:seed] ⚠ ${String(err)}`);
@@ -220,20 +221,24 @@ async function uploadSvg(
   dir: string,
   fileName: string,
   svg: string,
-  ref: { refId: number; field: string },
+  ref: { ref?: string; refId: number; field: string },
 ) {
   const filepath = path.join(dir, fileName);
   await writeFile(filepath, svg, "utf8");
   const { size } = await stat(filepath);
   await strapi.plugin("upload").service("upload").upload({
     data: {
-      ref:   "api::software-product.software-product",
+      ref:   ref.ref ?? "api::software-product.software-product",
       refId: ref.refId,
       field: ref.field,
       fileInfo: { name: fileName, alternativeText: fileName.replace(/\.svg$/, "") },
     },
     files: { filepath, originalFilename: fileName, mimetype: "image/svg+xml", size },
   });
+}
+
+function logoSvg(initials: string, bg: string) {
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256"><rect width="256" height="256" rx="48" fill="${bg}"/><text x="128" y="148" text-anchor="middle" font-family="Arial" font-size="64" fill="#fff">${initials}</text></svg>`;
 }
 
 interface Sprint3Feature {
@@ -483,4 +488,274 @@ async function seedSprint3Products(strapi: Core.Strapi) {
   }
 
   strapi.log.info(`[bootstrap:seed] Created ${products.length} Sprint 3 software products`);
+}
+
+// ────────────────────────────── Sprint 4 ──────────────────────────────
+
+async function seedSprint4TrustLayer(strapi: Core.Strapi) {
+  const clientQ = strapi.db.query("api::client.client");
+  const sentinel = await clientQ.findOne({ where: { slug: "libya-insurance-company" } });
+  if (sentinel) return;
+
+  const now = () => new Date().toISOString();
+  const industryQ    = strapi.db.query("api::industry.industry");
+  const productQ     = strapi.db.query("api::software-product.software-product");
+  const partnerTypeQ = strapi.db.query("api::partner-type.partner-type");
+  const partnerQ     = strapi.db.query("api::partner.partner");
+  const testimonialQ = strapi.db.query("api::testimonial.testimonial");
+  const storyQ       = strapi.db.query("api::success-story.success-story");
+  const metricQ      = strapi.db.query("api::success-metric.success-metric");
+
+  const bySlug = async (q: typeof industryQ, slug: string) =>
+    (await q.findOne({ where: { slug } })) as { id: number } | null;
+
+  const tmpDir = await mkdtemp(path.join(tmpdir(), "ab-seed4-"));
+
+  try {
+    // ── Partner types ──
+    const partnerTypes = [
+      { name_ar: "شريك تقني",    name_en: "Technology Partner",  slug: "technology-partner",  sort_order: 1 },
+      { name_ar: "شريك استراتيجي", name_en: "Strategic Partner",  slug: "strategic-partner",   sort_order: 2 },
+      { name_ar: "شريك استضافة",  name_en: "Hosting Partner",     slug: "hosting-partner",     sort_order: 3 },
+      { name_ar: "شريك تكامل",    name_en: "Integration Partner", slug: "integration-partner", sort_order: 4 },
+    ];
+    for (const pt of partnerTypes) {
+      if (!(await bySlug(partnerTypeQ, pt.slug))) await partnerTypeQ.create({ data: pt });
+    }
+
+    // ── Clients (demo) ──
+    const clients = [
+      {
+        name_ar: "شركة ليبيا للتأمين", name_en: "Libya Insurance Company",
+        slug: "libya-insurance-company",
+        country_ar: "ليبيا", country_en: "Libya",
+        description_ar: "إحدى أكبر شركات التأمين في ليبيا، تستخدم نظام إدارة التأمين لإدارة الوثائق والمطالبات.",
+        description_en: "One of Libya's largest insurers, running policies and claims on the Insurance Management System.",
+        industry_slug: "insurance", product_slugs: ["insurance-management-system"],
+        is_featured: true, sort_order: 1, initials: "LI", accent: "#0f3460",
+      },
+      {
+        name_ar: "مستشفى طرابلس التخصصي", name_en: "Tripoli Specialist Hospital",
+        slug: "tripoli-specialist-hospital",
+        country_ar: "ليبيا", country_en: "Libya",
+        description_ar: "مستشفى تخصصي رائد يدير المواعيد والملفات الطبية والفوترة عبر نظام الإدارة الطبية.",
+        description_en: "A leading specialist hospital managing appointments, medical records, and billing on the Medical Management System.",
+        industry_slug: "healthcare", product_slugs: ["medical-management-system"],
+        is_featured: true, sort_order: 2, initials: "TS", accent: "#16697a",
+      },
+      {
+        name_ar: "جمعية الأمل الخيرية", name_en: "Al-Amal Charity",
+        slug: "al-amal-charity",
+        country_ar: "ليبيا", country_en: "Libya",
+        description_ar: "جمعية خيرية تدير مواردها المالية والمخزون والمشتريات عبر نظام تخطيط موارد المؤسسات.",
+        description_en: "A charity managing finance, inventory, and procurement on the ERP System.",
+        industry_slug: "ngo", product_slugs: ["erp-system"],
+        is_featured: false, sort_order: 3, initials: "AA", accent: "#533483",
+      },
+    ];
+
+    const clientIds: Record<string, number> = {};
+    for (const c of clients) {
+      const industry = await bySlug(industryQ, c.industry_slug);
+      const productIds: number[] = [];
+      for (const ps of c.product_slugs) {
+        const prod = await bySlug(productQ, ps);
+        if (prod) productIds.push(prod.id);
+      }
+      const created = await clientQ.create({
+        data: {
+          name_ar: c.name_ar, name_en: c.name_en, slug: c.slug,
+          country_ar: c.country_ar, country_en: c.country_en,
+          description_ar: c.description_ar, description_en: c.description_en,
+          industry: industry?.id ?? null,
+          software_products: productIds,
+          is_featured: c.is_featured, sort_order: c.sort_order,
+          publishedAt: now(),
+        },
+      }) as { id: number };
+      clientIds[c.slug] = created.id;
+      await uploadSvg(strapi, tmpDir, `${c.slug}-logo.svg`, logoSvg(c.initials, c.accent), {
+        ref: "api::client.client", refId: created.id, field: "logo",
+      });
+    }
+
+    // ── Partners (demo only) ──
+    const partners = [
+      {
+        name_ar: "مايكروسوفت", name_en: "Microsoft", slug: "microsoft",
+        website: "https://www.microsoft.com",
+        description_ar: "شراكة تقنية في حلول السحابة ومنصة Azure وتراخيص المؤسسات.",
+        description_en: "Technology partnership covering cloud solutions, Azure, and enterprise licensing.",
+        type_slug: "technology-partner", is_featured: true, sort_order: 1, initials: "MS", accent: "#106ebe",
+      },
+      {
+        name_ar: "سيسكو", name_en: "Cisco", slug: "cisco",
+        website: "https://www.cisco.com",
+        description_ar: "شراكة تكامل في حلول الشبكات والأمن السيبراني.",
+        description_en: "Integration partnership for networking and cybersecurity solutions.",
+        type_slug: "integration-partner", is_featured: true, sort_order: 2, initials: "CS", accent: "#1ba0d7",
+      },
+      {
+        name_ar: "ديل", name_en: "Dell", slug: "dell",
+        website: "https://www.dell.com",
+        description_ar: "شراكة استضافة وبنية تحتية للخوادم ومراكز البيانات.",
+        description_en: "Hosting and infrastructure partnership for servers and data centers.",
+        type_slug: "hosting-partner", is_featured: false, sort_order: 3, initials: "DL", accent: "#007db8",
+      },
+    ];
+    for (const p of partners) {
+      const ptype = await bySlug(partnerTypeQ, p.type_slug);
+      const created = await partnerQ.create({
+        data: {
+          name_ar: p.name_ar, name_en: p.name_en, slug: p.slug,
+          website: p.website,
+          description_ar: p.description_ar, description_en: p.description_en,
+          partner_type: ptype?.id ?? null,
+          is_featured: p.is_featured, sort_order: p.sort_order,
+          publishedAt: now(),
+        },
+      }) as { id: number };
+      await uploadSvg(strapi, tmpDir, `${p.slug}-logo.svg`, logoSvg(p.initials, p.accent), {
+        ref: "api::partner.partner", refId: created.id, field: "logo",
+      });
+    }
+
+    // ── Testimonials ──
+    const testimonials = [
+      {
+        customer_name_ar: "أحمد المنصوري", customer_name_en: "Ahmed Al-Mansouri",
+        position_ar: "مدير تقنية المعلومات", position_en: "IT Director",
+        company_ar: "شركة ليبيا للتأمين", company_en: "Libya Insurance Company",
+        text_ar: "نظام إدارة التأمين غيّر طريقة عملنا بالكامل، انخفض زمن معالجة المطالبات بشكل ملحوظ وأصبحت التقارير متاحة بضغطة زر.",
+        text_en: "The Insurance Management System transformed how we work — claims processing time dropped significantly and reports are one click away.",
+        rating: 5, client_slug: "libya-insurance-company", is_featured: true, sort_order: 1,
+        initials: "أ", accent: "#0f3460",
+      },
+      {
+        customer_name_ar: "د. سارة الفيتوري", customer_name_en: "Dr. Sara Al-Fitouri",
+        position_ar: "المديرة الطبية", position_en: "Medical Director",
+        company_ar: "مستشفى طرابلس التخصصي", company_en: "Tripoli Specialist Hospital",
+        text_ar: "الملف الطبي الإلكتروني وحّد بيانات مرضانا، وفريق الدعم في ألفا بيتا متجاوب في كل الأوقات.",
+        text_en: "The electronic medical record unified our patient data, and AlphaBeta's support team is responsive around the clock.",
+        rating: 5, client_slug: "tripoli-specialist-hospital", is_featured: true, sort_order: 2,
+        initials: "س", accent: "#16697a",
+      },
+      {
+        customer_name_ar: "محمد الزوي", customer_name_en: "Mohamed Al-Zway",
+        position_ar: "المدير المالي", position_en: "Finance Manager",
+        company_ar: "جمعية الأمل الخيرية", company_en: "Al-Amal Charity",
+        text_ar: "نظام ERP منحنا شفافية كاملة على مواردنا، وسهّل إعداد تقارير المانحين بشكل كبير.",
+        text_en: "The ERP gave us full transparency over our resources and made donor reporting far easier.",
+        rating: 4, client_slug: "al-amal-charity", is_featured: false, sort_order: 3,
+        initials: "م", accent: "#533483",
+      },
+    ];
+    for (const t of testimonials) {
+      const created = await testimonialQ.create({
+        data: {
+          customer_name_ar: t.customer_name_ar, customer_name_en: t.customer_name_en,
+          position_ar: t.position_ar, position_en: t.position_en,
+          company_ar: t.company_ar, company_en: t.company_en,
+          text_ar: t.text_ar, text_en: t.text_en,
+          rating: t.rating,
+          client: clientIds[t.client_slug] ?? null,
+          is_featured: t.is_featured, sort_order: t.sort_order,
+          publishedAt: now(),
+        },
+      }) as { id: number };
+      await uploadSvg(strapi, tmpDir, `testimonial-${t.sort_order}-avatar.svg`, logoSvg(t.initials, t.accent), {
+        ref: "api::testimonial.testimonial", refId: created.id, field: "image",
+      });
+    }
+
+    // ── Success stories + metrics ──
+    const stories = [
+      {
+        title_ar: "رقمنة دورة المطالبات في شركة ليبيا للتأمين",
+        title_en: "Digitizing the Claims Cycle at Libya Insurance",
+        slug: "libya-insurance-claims-digitization",
+        client_slug: "libya-insurance-company", product_slug: "insurance-management-system",
+        challenge_ar: "كانت معالجة المطالبات تتم ورقياً وتستغرق أسابيع، مع صعوبة في تتبع الحالة وتكرار البيانات بين الفروع.",
+        challenge_en: "Claims were paper-based, took weeks, and status tracking across branches was nearly impossible.",
+        solution_ar: "تم نشر نظام إدارة التأمين بوحدات المطالبات والوثائق والموافقات، مع ربط إلكتروني لمزودي الخدمة الطبية.",
+        solution_en: "Deployed the Insurance Management System with claims, policy, and approvals modules, plus electronic provider integration.",
+        results_ar: "انخفض زمن معالجة المطالبة من أسابيع إلى أيام، وأصبحت الإدارة ترى مؤشرات الأداء لحظياً.",
+        results_en: "Claim processing dropped from weeks to days, with real-time KPIs for management.",
+        is_featured: true, sort_order: 1, accent: "#0f3460",
+        metrics: [
+          { label_ar: "تسريع معالجة المطالبات", label_en: "Faster claims processing", value: "75%" },
+          { label_ar: "مطالبة شهرياً عبر النظام", label_en: "Claims per month on the system", value: "+4,000" },
+          { label_ar: "فروع مترابطة", label_en: "Connected branches", value: "12" },
+        ],
+      },
+      {
+        title_ar: "ملف طبي موحد في مستشفى طرابلس التخصصي",
+        title_en: "A Unified Medical Record at Tripoli Specialist Hospital",
+        slug: "tripoli-hospital-unified-emr",
+        client_slug: "tripoli-specialist-hospital", product_slug: "medical-management-system",
+        challenge_ar: "بيانات المرضى موزعة بين الورق وأنظمة منفصلة للمختبر والصيدلية، مع طوابير طويلة في الاستقبال.",
+        challenge_en: "Patient data was split across paper and disconnected lab/pharmacy systems, with long reception queues.",
+        solution_ar: "تم تطبيق نظام الإدارة الطبية بوحدات المواعيد والملفات والمختبر والفوترة في منصة واحدة.",
+        solution_en: "Implemented the Medical Management System with appointments, records, lab, and billing in one platform.",
+        results_ar: "اختفت الملفات الورقية للمراجعين الجدد وانخفض زمن الانتظار في الاستقبال إلى النصف.",
+        results_en: "New patients are fully paperless and reception waiting time was cut in half.",
+        is_featured: true, sort_order: 2, accent: "#16697a",
+        metrics: [
+          { label_ar: "خفض زمن الانتظار", label_en: "Lower waiting time", value: "50%" },
+          { label_ar: "ملف طبي إلكتروني", label_en: "Electronic medical records", value: "+30,000" },
+          { label_ar: "موعد يومياً عبر النظام", label_en: "Appointments per day", value: "600" },
+        ],
+      },
+      {
+        title_ar: "شفافية مالية كاملة في جمعية الأمل الخيرية",
+        title_en: "Full Financial Transparency at Al-Amal Charity",
+        slug: "al-amal-charity-erp-transparency",
+        client_slug: "al-amal-charity", product_slug: "erp-system",
+        challenge_ar: "إدارة التبرعات والمخزون بجداول متفرقة جعلت تقارير المانحين بطيئة وعرضة للأخطاء.",
+        challenge_en: "Managing donations and inventory in scattered spreadsheets made donor reporting slow and error-prone.",
+        solution_ar: "تم تطبيق نظام ERP بالوحدة المالية والمخزون والمشتريات مع سير عمل للموافقات.",
+        solution_en: "Implemented the ERP with finance, inventory, and procurement modules plus approval workflows.",
+        results_ar: "أصبحت تقارير المانحين تصدر في يوم واحد بدلاً من أسبوعين، مع تتبع كامل لكل دينار.",
+        results_en: "Donor reports now take one day instead of two weeks, with full traceability of every dinar.",
+        is_featured: false, sort_order: 3, accent: "#533483",
+        metrics: [
+          { label_ar: "تسريع تقارير المانحين", label_en: "Faster donor reporting", value: "93%" },
+          { label_ar: "دقة جرد المخزون", label_en: "Inventory accuracy", value: "99%" },
+        ],
+      },
+    ];
+
+    for (const s of stories) {
+      const prod = await bySlug(productQ, s.product_slug);
+      const created = await storyQ.create({
+        data: {
+          title_ar: s.title_ar, title_en: s.title_en, slug: s.slug,
+          client: clientIds[s.client_slug] ?? null,
+          software_product: prod?.id ?? null,
+          challenge_ar: s.challenge_ar, challenge_en: s.challenge_en,
+          solution_ar: s.solution_ar, solution_en: s.solution_en,
+          results_ar: s.results_ar, results_en: s.results_en,
+          is_featured: s.is_featured, sort_order: s.sort_order,
+          publishedAt: now(),
+        },
+      }) as { id: number };
+
+      let order = 1;
+      for (const m of s.metrics) {
+        await metricQ.create({ data: { ...m, sort_order: order++, story: created.id } });
+      }
+
+      for (let i = 1; i <= 2; i++) {
+        await uploadSvg(
+          strapi, tmpDir, `${s.slug}-gallery-${i}.svg`,
+          placeholderSvg(`${s.title_en} — ${i}`, s.accent),
+          { ref: "api::success-story.success-story", refId: created.id, field: "gallery" },
+        );
+      }
+    }
+  } finally {
+    await rm(tmpDir, { recursive: true, force: true }).catch(() => {});
+  }
+
+  strapi.log.info("[bootstrap:seed] Created Sprint 4 trust layer (clients, partners, testimonials, stories)");
 }

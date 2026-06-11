@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "testimonials",
+  "info": {
+    "singularName": "testimonial",
+    "pluralName": "testimonials",
+    "displayName": "Testimonial",
+    "description": "Customer testimonials"
+  },
+  "options": { "draftAndPublish": true },
+  "pluginOptions": {},
+  "attributes": {
+    "customer_name_ar": { "type": "string", "required": true },
+    "customer_name_en": { "type": "string" },
+    "position_ar": { "type": "string" },
+    "position_en": { "type": "string" },
+    "company_ar": { "type": "string" },
+    "company_en": { "type": "string" },
+    "text_ar": { "type": "text", "required": true },
+    "text_en": { "type": "text" },
+    "rating": { "type": "integer", "min": 1, "max": 5, "default": 5 },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "client": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::client.client"
+    },
+    "is_featured": { "type": "boolean", "default": false },
+    "sort_order": { "type": "integer", "default": 0 }
+  }
+}

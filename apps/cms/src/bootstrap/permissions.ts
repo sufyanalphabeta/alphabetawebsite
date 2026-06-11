@@ -28,6 +28,19 @@ const PUBLIC_READS = [
   "api::product-faq.product-faq.find",
   "api::product-faq.product-faq.findOne",
   "api::contact-submission.contact-submission.create",
+  // Sprint 4
+  "api::client.client.find",
+  "api::client.client.findOne",
+  "api::partner.partner.find",
+  "api::partner.partner.findOne",
+  "api::partner-type.partner-type.find",
+  "api::partner-type.partner-type.findOne",
+  "api::testimonial.testimonial.find",
+  "api::testimonial.testimonial.findOne",
+  "api::success-story.success-story.find",
+  "api::success-story.success-story.findOne",
+  "api::success-metric.success-metric.find",
+  "api::success-metric.success-metric.findOne",
 ];
 
 export async function bootstrapPermissions(strapi: Core.Strapi) {

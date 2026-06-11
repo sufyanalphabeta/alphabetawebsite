@@ -24,6 +24,10 @@ const DETAIL_POPULATE: Record<string, string> = {
   "populate[downloads][populate]": "*",
   "populate[related_products][populate][0]": "category",
   "populate[related_products][populate][1]": "logo",
+  "populate[clients][populate][0]":          "logo",
+  "populate[clients][populate][1]":          "industry",
+  "populate[success_stories][populate][0]":  "metrics",
+  "populate[success_stories][populate][1]":  "client",
   "populate[seo][populate]":   "*",
 };
 
@@ -320,6 +324,11 @@ function ProductDetailPage() {
   const modules  = [...(product.modules ?? [])].sort((a, b) => a.sort_order - b.sort_order);
   const faqs     = [...(product.faqs ?? [])].sort((a, b) => a.sort_order - b.sort_order);
   const related  = product.related_products ?? [];
+  const clients  = product.clients ?? [];
+  const stories  = [...(product.success_stories ?? [])].sort((a, b) => a.sort_order - b.sort_order);
+  const metrics  = stories
+    .flatMap((s) => s.metrics ?? [])
+    .sort((a, b) => a.sort_order - b.sort_order);
   const longDesc = renderBlocks(product.long_description_ar);
 
   return (
@@ -437,6 +446,80 @@ function ProductDetailPage() {
                   <p style={{ margin: "0.75rem 0 0", color: "#555", lineHeight: 1.8, fontSize: "0.9rem" }}>{faq.answer_ar}</p>
                 )}
               </details>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Success metrics (from case studies) */}
+      {metrics.length > 0 && (
+        <section style={{ ...SECTION, marginTop: "3.5rem" }}>
+          <SectionTitle ar="نتائج حققها عملاؤنا" en="Success Metrics" />
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "1rem" }}>
+            {metrics.map((m) => (
+              <div key={m.id} style={{ background: "#0f3460", borderRadius: "0.85rem", padding: "1.4rem 1rem", textAlign: "center", color: "#fff" }}>
+                <p style={{ margin: 0, fontSize: "1.7rem", fontWeight: 800, color: "#e94560" }}>{m.value}</p>
+                <p style={{ margin: "0.3rem 0 0", fontSize: "0.78rem", color: "rgba(255,255,255,.75)" }}>{m.label_ar}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Related case studies */}
+      {stories.length > 0 && (
+        <section style={{ ...SECTION, marginTop: "3.5rem" }}>
+          <SectionTitle ar="قصص نجاح مرتبطة" en="Case Studies" />
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "1rem" }}>
+            {stories.map((story) => (
+              <Link
+                key={story.id}
+                to="/success-stories"
+                style={{ background: "#fff", border: "1px solid #eef0f4", borderRadius: "0.75rem", padding: "1.25rem", textDecoration: "none", display: "block" }}
+              >
+                <h3 style={{ margin: 0, fontSize: "1rem", color: "#0f3460" }}>{story.title_ar}</h3>
+                {story.client && (
+                  <p style={{ margin: "0.4rem 0 0", fontSize: "0.78rem", color: "#888" }}>{story.client.name_ar}</p>
+                )}
+                {story.results_ar && (
+                  <p style={{ margin: "0.6rem 0 0", fontSize: "0.85rem", color: "#666", lineHeight: 1.7 }}>{story.results_ar}</p>
+                )}
+                <span style={{ display: "inline-block", marginTop: "0.75rem", fontSize: "0.8rem", color: "#e94560" }}>
+                  اقرأ القصة كاملة ←
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Related clients */}
+      {clients.length > 0 && (
+        <section style={{ ...SECTION, marginTop: "3.5rem" }}>
+          <SectionTitle ar="يثقون بهذا النظام" en="Clients" />
+          <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+            {clients.map((client) => (
+              <Link
+                key={client.id}
+                to="/clients"
+                style={{
+                  display: "flex", alignItems: "center", gap: "0.75rem",
+                  background: "#fff", border: "1px solid #eef0f4", borderRadius: "0.75rem",
+                  padding: "0.85rem 1.25rem", textDecoration: "none",
+                }}
+              >
+                <div style={{ width: 40, height: 40, borderRadius: "0.5rem", overflow: "hidden", background: "#f1f3f8", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  {client.logo ? (
+                    <img src={mediaUrl(client.logo.url) ?? ""} alt={`شعار ${client.name_ar}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  ) : "🏢"}
+                </div>
+                <div>
+                  <p style={{ margin: 0, fontWeight: 700, fontSize: "0.9rem", color: "#0f3460" }}>{client.name_ar}</p>
+                  {client.industry && (
+                    <p style={{ margin: 0, fontSize: "0.72rem", color: "#999" }}>{client.industry.name_ar}</p>
+                  )}
+                </div>
+              </Link>
             ))}
           </div>
         </section>

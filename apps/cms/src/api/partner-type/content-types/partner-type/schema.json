@@ -1,0 +1,24 @@
+{
+  "kind": "collectionType",
+  "collectionName": "partner_types",
+  "info": {
+    "singularName": "partner-type",
+    "pluralName": "partner-types",
+    "displayName": "Partner Type",
+    "description": "Partnership categories (technology, strategic, hosting, integration)"
+  },
+  "options": { "draftAndPublish": false },
+  "pluginOptions": {},
+  "attributes": {
+    "name_ar": { "type": "string", "required": true },
+    "name_en": { "type": "string" },
+    "slug": { "type": "uid", "targetField": "name_en", "required": true },
+    "sort_order": { "type": "integer", "default": 0 },
+    "partners": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::partner.partner",
+      "mappedBy": "partner_type"
+    }
+  }
+}

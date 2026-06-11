@@ -74,6 +74,18 @@
       "relation": "manyToMany",
       "target": "api::software-product.software-product"
     },
+    "clients": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::client.client",
+      "mappedBy": "software_products"
+    },
+    "success_stories": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::success-story.success-story",
+      "mappedBy": "software_product"
+    },
     "videos": {
       "type": "component",
       "component": "shared.video-item",

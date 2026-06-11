@@ -1,0 +1,48 @@
+{
+  "kind": "collectionType",
+  "collectionName": "success_stories",
+  "info": {
+    "singularName": "success-story",
+    "pluralName": "success-stories",
+    "displayName": "Success Story",
+    "description": "Client success stories and case studies"
+  },
+  "options": { "draftAndPublish": true },
+  "pluginOptions": {},
+  "attributes": {
+    "title_ar": { "type": "string", "required": true },
+    "title_en": { "type": "string" },
+    "slug": { "type": "uid", "targetField": "title_en", "required": true },
+    "client": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::client.client"
+    },
+    "software_product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::software-product.software-product",
+      "inversedBy": "success_stories"
+    },
+    "challenge_ar": { "type": "text" },
+    "challenge_en": { "type": "text" },
+    "solution_ar": { "type": "text" },
+    "solution_en": { "type": "text" },
+    "results_ar": { "type": "text" },
+    "results_en": { "type": "text" },
+    "gallery": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "metrics": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::success-metric.success-metric",
+      "mappedBy": "story"
+    },
+    "is_featured": { "type": "boolean", "default": false },
+    "sort_order": { "type": "integer", "default": 0 }
+  }
+}

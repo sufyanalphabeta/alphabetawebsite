@@ -188,6 +188,94 @@ export interface SeoMeta {
   twitter_card: "summary" | "summary_large_image" | null;
 }
 
+// ── Sprint 4: trust layer ──
+
+export interface Client {
+  id: number;
+  name_ar: string;
+  name_en: string | null;
+  slug: string;
+  logo: StrapiImage | null;
+  industry: Industry | null;
+  country_ar: string | null;
+  country_en: string | null;
+  description_ar: string | null;
+  description_en: string | null;
+  is_featured: boolean;
+  sort_order: number;
+  software_products: SoftwareProduct[] | null;
+  publishedAt: string | null;
+}
+
+export interface PartnerType {
+  id: number;
+  name_ar: string;
+  name_en: string | null;
+  slug: string;
+  sort_order: number;
+}
+
+export interface Partner {
+  id: number;
+  name_ar: string;
+  name_en: string | null;
+  slug: string;
+  logo: StrapiImage | null;
+  website: string | null;
+  description_ar: string | null;
+  description_en: string | null;
+  partner_type: PartnerType | null;
+  is_featured: boolean;
+  sort_order: number;
+  publishedAt: string | null;
+}
+
+export interface Testimonial {
+  id: number;
+  customer_name_ar: string;
+  customer_name_en: string | null;
+  position_ar: string | null;
+  position_en: string | null;
+  company_ar: string | null;
+  company_en: string | null;
+  text_ar: string;
+  text_en: string | null;
+  rating: number;
+  image: StrapiImage | null;
+  client: Client | null;
+  is_featured: boolean;
+  sort_order: number;
+  publishedAt: string | null;
+}
+
+export interface SuccessMetric {
+  id: number;
+  label_ar: string;
+  label_en: string | null;
+  value: string;
+  sort_order: number;
+}
+
+export interface SuccessStory {
+  id: number;
+  title_ar: string;
+  title_en: string | null;
+  slug: string;
+  client: Client | null;
+  software_product: SoftwareProduct | null;
+  challenge_ar: string | null;
+  challenge_en: string | null;
+  solution_ar: string | null;
+  solution_en: string | null;
+  results_ar: string | null;
+  results_en: string | null;
+  gallery: StrapiImage[] | null;
+  metrics: SuccessMetric[] | null;
+  is_featured: boolean;
+  sort_order: number;
+  publishedAt: string | null;
+}
+
 export interface SoftwareProductDetail extends SoftwareProduct {
   tagline_ar: string | null;
   tagline_en: string | null;
@@ -202,5 +290,7 @@ export interface SoftwareProductDetail extends SoftwareProduct {
   videos: VideoItem[] | null;
   downloads: DownloadItem[] | null;
   related_products: SoftwareProduct[] | null;
+  clients: Client[] | null;
+  success_stories: SuccessStory[] | null;
   seo: SeoMeta | null;
 }

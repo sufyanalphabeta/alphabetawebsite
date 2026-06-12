@@ -32,8 +32,10 @@ function RequestDemoPage() {
   });
 
   return (
-    <main style={{ maxWidth: 600, margin: "0 auto", padding: "3rem 1.5rem" }}>
-      <RequestForm kind="demo" products={products} preselectedSlug={product} />
+    <main className="bg-surface">
+      <div className="mx-auto max-w-2xl px-5 py-14 sm:px-8">
+        <RequestForm kind="demo" products={products} preselectedSlug={product} />
+      </div>
     </main>
   );
 }

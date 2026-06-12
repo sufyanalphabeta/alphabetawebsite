@@ -1,5 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { CheckCircle2 } from "lucide-react";
 import { getCollection } from "~/lib/strapi";
+import { useSeo } from "~/lib/seo";
+import { Badge, Card, Container, EmptyState, LinkButton, PageHero } from "~/components/ui";
 import type { Service } from "~/lib/types";
 
 export const Route = createFileRoute("/services")({
@@ -17,75 +20,53 @@ export const Route = createFileRoute("/services")({
   component: ServicesPage,
 });
 
-function ServiceCard({ service }: { service: Service }) {
-  return (
-    <div style={{
-      background: "#fff",
-      borderRadius: "0.75rem",
-      padding: "2rem",
-      boxShadow: "0 2px 10px rgba(0,0,0,.07)",
-      borderTop: service.is_featured ? "3px solid #e94560" : "3px solid #e2e8f0",
-      display: "flex",
-      flexDirection: "column",
-      gap: "0.75rem",
-    }}>
-      {service.is_featured && (
-        <span style={{
-          fontSize: "0.7rem",
-          background: "#e94560",
-          color: "#fff",
-          padding: "0.2rem 0.6rem",
-          borderRadius: "999px",
-          alignSelf: "flex-start",
-          letterSpacing: "0.05em",
-        }}>
-          مميز
-        </span>
-      )}
-      <h2 style={{ margin: 0, fontSize: "1.2rem", color: "#0f3460" }}>
-        {service.name_ar}
-      </h2>
-      {service.name_en && (
-        <p style={{ margin: 0, fontSize: "0.8rem", color: "#aaa", direction: "ltr" }}>
-          {service.name_en}
-        </p>
-      )}
-      {service.description_ar && (
-        <p style={{ margin: 0, color: "#555", lineHeight: 1.7, fontSize: "0.95rem" }}>
-          {service.description_ar}
-        </p>
-      )}
-    </div>
-  );
-}
-
 function ServicesPage() {
   const { services } = Route.useLoaderData();
 
-  return (
-    <main style={{ maxWidth: "1100px", margin: "0 auto", padding: "3rem 1.5rem" }}>
-      <header style={{ textAlign: "center", marginBottom: "3rem" }}>
-        <h1 style={{ fontSize: "2.25rem", color: "#0f3460", marginBottom: "0.5rem" }}>
-          خدماتنا
-        </h1>
-        <p style={{ color: "#888" }}>Our Services</p>
-      </header>
+  useSeo({
+    title:       "خدماتنا | ألفا بيتا",
+    description: "تطوير برمجيات مخصصة، تحول رقمي، دعم فني، وتدريب — خدمات ألفا بيتا",
+  });
 
-      {services.length === 0 ? (
-        <p style={{ textAlign: "center", color: "#aaa", padding: "4rem 0" }}>
-          لا توجد خدمات منشورة حالياً
-        </p>
-      ) : (
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-          gap: "1.5rem",
-        }}>
-          {services.map((svc) => (
-            <ServiceCard key={svc.id} service={svc} />
-          ))}
+  return (
+    <main>
+      <PageHero
+        title="خدماتنا"
+        titleEn="OUR SERVICES"
+        subtitle="من التطوير المخصص إلى التدريب والدعم المستمر — نرافقك في كل مرحلة من رحلتك الرقمية"
+      />
+
+      <Container className="py-14">
+        {services.length === 0 ? (
+          <EmptyState message="لا توجد خدمات منشورة حالياً" />
+        ) : (
+          <div className="grid gap-6 md:grid-cols-2">
+            {services.map((service) => (
+              <Card key={service.id} className="p-7">
+                <div className="flex items-start justify-between gap-3">
+                  <CheckCircle2 size={24} className="text-accent-500" />
+                  {service.is_featured && <Badge tone="accent">خدمة رئيسية</Badge>}
+                </div>
+                <h2 className="mt-3 text-xl font-bold text-primary-900">{service.name_ar}</h2>
+                {service.name_en && (
+                  <p dir="ltr" className="mt-0.5 text-start text-xs text-slate-400">{service.name_en}</p>
+                )}
+                {service.description_ar && (
+                  <p className="mt-3 leading-loose text-slate-600">{service.description_ar}</p>
+                )}
+              </Card>
+            ))}
+          </div>
+        )}
+
+        <div className="mt-14 rounded-2xl bg-cta p-10 text-center text-white">
+          <h2 className="text-2xl font-bold">عندك مشروع في بالك؟</h2>
+          <p className="mx-auto mt-2 max-w-lg text-sm text-primary-100/80">
+            احكِ لنا عن فكرتك وسنقترح عليك المسار التقني الأنسب وخطة تنفيذ واضحة.
+          </p>
+          <LinkButton to="/contact" variant="accent" className="mt-6">تواصل معنا</LinkButton>
         </div>
-      )}
+      </Container>
     </main>
   );
 }

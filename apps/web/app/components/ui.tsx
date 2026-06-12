@@ -159,6 +159,31 @@ export function StatTile({ value, label, dark = false }: { value: string; label:
   );
 }
 
+/* ── Page hero (inner pages) ────────────────────────────────── */
+
+export function PageHero({
+  title,
+  titleEn,
+  subtitle,
+  children,
+}: {
+  title: string;
+  titleEn?: string;
+  subtitle?: string;
+  children?: ReactNode;
+}) {
+  return (
+    <section className="bg-hero py-14 text-white sm:py-16">
+      <Container>
+        {titleEn && <p className="mb-2 text-sm font-semibold tracking-widest text-accent-300">{titleEn}</p>}
+        <h1 className="text-3xl font-bold sm:text-4xl">{title}</h1>
+        {subtitle && <p className="mt-3 max-w-2xl text-primary-100/80">{subtitle}</p>}
+        {children}
+      </Container>
+    </section>
+  );
+}
+
 /* ── Misc ───────────────────────────────────────────────────── */
 
 export function EmptyState({ message }: { message: string }) {

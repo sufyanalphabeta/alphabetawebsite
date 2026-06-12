@@ -1,6 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { getCollection } from "~/lib/strapi";
 import { useSeo } from "~/lib/seo";
+import { Container, PageHero } from "~/components/ui";
 import { SupportArticles } from "~/components/SupportArticles";
 import type { SupportArticle, SupportCategory } from "~/lib/types";
 
@@ -22,9 +23,9 @@ export const Route = createFileRoute("/support_/category/$slug")({
     return { category, articles: articlesRes.data };
   },
   notFoundComponent: () => (
-    <main style={{ maxWidth: 700, margin: "0 auto", padding: "5rem 1.5rem", textAlign: "center" }}>
-      <h1 style={{ color: "#0f3460" }}>القسم غير موجود</h1>
-      <Link to="/support" style={{ color: "#e94560" }}>← العودة إلى مركز الدعم</Link>
+    <main className="mx-auto max-w-2xl px-6 py-24 text-center">
+      <h1 className="text-2xl font-bold text-primary-800">القسم غير موجود</h1>
+      <Link to="/support" className="mt-4 inline-block font-semibold text-accent-600">← العودة إلى مركز الدعم</Link>
     </main>
   ),
   component: SupportCategoryPage,
@@ -39,17 +40,18 @@ function SupportCategoryPage() {
   });
 
   return (
-    <main style={{ maxWidth: "950px", margin: "0 auto", padding: "3rem 1.5rem" }}>
-      <nav style={{ fontSize: "0.85rem", marginBottom: "1.5rem" }}>
-        <Link to="/support" style={{ color: "#888", textDecoration: "none" }}>مركز الدعم</Link>
-        <span style={{ color: "#ccc", margin: "0 0.5rem" }}>/</span>
-        <span style={{ color: "#0f3460" }}>{category.name_ar}</span>
-      </nav>
-      <header style={{ marginBottom: "2rem" }}>
-        <h1 style={{ fontSize: "1.9rem", color: "#0f3460", margin: 0 }}>{category.name_ar}</h1>
-        {category.description_ar && <p style={{ color: "#888", margin: "0.4rem 0 0" }}>{category.description_ar}</p>}
-      </header>
-      <SupportArticles articles={articles} lockedCategorySlug={category.slug} />
+    <main>
+      <PageHero title={category.name_ar} titleEn={category.name_en ?? undefined} subtitle={category.description_ar ?? undefined}>
+        <nav className="mt-4 flex items-center gap-2 text-sm text-primary-100/60">
+          <Link to="/support" className="hover:text-white">مركز الدعم</Link>
+          <span>/</span>
+          <span className="text-primary-100">{category.name_ar}</span>
+        </nav>
+      </PageHero>
+
+      <Container className="max-w-5xl py-12">
+        <SupportArticles articles={articles} lockedCategorySlug={category.slug} />
+      </Container>
     </main>
   );
 }

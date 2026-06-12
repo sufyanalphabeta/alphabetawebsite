@@ -1,15 +1,19 @@
 import { useMemo, useState } from "react";
+import { Download, Search } from "lucide-react";
 import { mediaUrl } from "~/lib/strapi";
 import { formatFileSize, formatDate, LANGUAGE_LABEL, fileExtBadge } from "~/lib/format";
+import { cx, EmptyState } from "~/components/ui";
 import type { DownloadCenterItem } from "~/lib/types";
 
-const SELECT_STYLE: React.CSSProperties = {
-  padding: "0.5rem 0.75rem",
-  fontSize: "0.85rem",
-  border: "1px solid #d8dde6",
-  borderRadius: "0.5rem",
-  background: "#fff",
-  fontFamily: "inherit",
+const FIELD =
+  "rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-700 focus:border-primary-400 focus:outline-none";
+
+const EXT_COLOR: Record<string, string> = {
+  PDF:  "bg-red-600",
+  ZIP:  "bg-amber-500",
+  DOCX: "bg-blue-600",
+  PPTX: "bg-orange-600",
+  XLSX: "bg-emerald-600",
 };
 
 export interface DownloadCenterProps {
@@ -49,26 +53,30 @@ export function DownloadCenter({ items, lockedCategorySlug }: DownloadCenterProp
 
   return (
     <>
-      <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginBottom: "1.75rem" }}>
-        <input
-          type="search"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="🔍 ابحث في الملفات…"
-          style={{ ...SELECT_STYLE, flex: 1, minWidth: 220 }}
-          aria-label="بحث"
-        />
+      {/* Filter toolbar */}
+      <div className="mb-7 flex flex-wrap gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-card">
+        <label className="relative min-w-[220px] flex-1">
+          <Search size={15} className="absolute end-3 top-1/2 -translate-y-1/2 text-slate-300" />
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="ابحث في الملفات…"
+            className={cx(FIELD, "w-full pe-9")}
+            aria-label="بحث"
+          />
+        </label>
         {!lockedCategorySlug && (
-          <select value={category} onChange={(e) => setCategory(e.target.value)} style={SELECT_STYLE} aria-label="الفئة">
+          <select value={category} onChange={(e) => setCategory(e.target.value)} className={FIELD} aria-label="الفئة">
             <option value="">كل الفئات</option>
             {categories.map((c) => <option key={c.slug} value={c.slug}>{c.name_ar}</option>)}
           </select>
         )}
-        <select value={product} onChange={(e) => setProduct(e.target.value)} style={SELECT_STYLE} aria-label="النظام">
+        <select value={product} onChange={(e) => setProduct(e.target.value)} className={FIELD} aria-label="النظام">
           <option value="">كل الأنظمة</option>
           {products.map((p) => <option key={p.slug} value={p.slug}>{p.name_ar}</option>)}
         </select>
-        <select value={language} onChange={(e) => setLanguage(e.target.value)} style={SELECT_STYLE} aria-label="اللغة">
+        <select value={language} onChange={(e) => setLanguage(e.target.value)} className={FIELD} aria-label="اللغة">
           <option value="">كل اللغات</option>
           <option value="ar">{LANGUAGE_LABEL.ar}</option>
           <option value="en">{LANGUAGE_LABEL.en}</option>
@@ -77,53 +85,48 @@ export function DownloadCenter({ items, lockedCategorySlug }: DownloadCenterProp
       </div>
 
       {filtered.length === 0 ? (
-        <p style={{ textAlign: "center", color: "#aaa", padding: "3rem 0" }}>لا توجد ملفات مطابقة</p>
+        <EmptyState message="لا توجد ملفات مطابقة" />
       ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
-          {filtered.map((item) => (
-            <article
-              key={item.id}
-              style={{
-                background: "#fff", border: "1px solid #eef0f4", borderRadius: "0.85rem",
-                padding: "1.1rem 1.35rem", display: "flex", gap: "1rem", alignItems: "center", flexWrap: "wrap",
-              }}
-            >
-              <div style={{
-                width: 52, height: 52, borderRadius: "0.6rem", background: "#0f3460", color: "#fff",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: "0.7rem", fontWeight: 800, flexShrink: 0,
-              }}>
-                {fileExtBadge(item.file?.ext)}
-              </div>
-              <div style={{ flex: 1, minWidth: 220 }}>
-                <h3 style={{ margin: 0, fontSize: "1rem", color: "#0f3460" }}>{item.title_ar}</h3>
-                {item.description_ar && (
-                  <p style={{ margin: "0.25rem 0 0", fontSize: "0.82rem", color: "#777" }}>{item.description_ar}</p>
-                )}
-                <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginTop: "0.5rem", fontSize: "0.72rem", color: "#888" }}>
-                  {item.category && <span style={{ background: "#eef0f4", color: "#0f3460", padding: "0.15rem 0.55rem", borderRadius: 999 }}>{item.category.name_ar}</span>}
-                  {item.software_product && <span style={{ background: "#eef0f4", color: "#0f3460", padding: "0.15rem 0.55rem", borderRadius: 999 }}>{item.software_product.name_ar}</span>}
-                  <span style={{ background: "#eef0f4", color: "#0f3460", padding: "0.15rem 0.55rem", borderRadius: 999 }}>{LANGUAGE_LABEL[item.language]}</span>
-                  {item.version && <span>الإصدار {item.version}</span>}
-                  {item.release_date && <span>{formatDate(item.release_date)}</span>}
-                  {item.file && <span>{formatFileSize(item.file.size)}</span>}
+        <div className="space-y-3">
+          {filtered.map((item) => {
+            const ext = fileExtBadge(item.file?.ext);
+            return (
+              <article
+                key={item.id}
+                className="flex flex-wrap items-center gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-card transition-shadow hover:shadow-card-hover sm:p-5"
+              >
+                <span className={cx(
+                  "flex h-12 w-12 shrink-0 items-center justify-center rounded-lg text-[0.62rem] font-bold text-white",
+                  EXT_COLOR[ext] ?? "bg-primary-700",
+                )}>
+                  {ext}
+                </span>
+                <div className="min-w-[200px] flex-1">
+                  <h3 className="font-bold text-primary-900">{item.title_ar}</h3>
+                  {item.description_ar && (
+                    <p className="mt-0.5 text-xs leading-relaxed text-slate-500">{item.description_ar}</p>
+                  )}
+                  <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-400">
+                    {item.category && <span className="rounded-full bg-primary-50 px-2.5 py-0.5 font-medium text-primary-700">{item.category.name_ar}</span>}
+                    {item.software_product && <span className="rounded-full bg-primary-50 px-2.5 py-0.5 font-medium text-primary-700">{item.software_product.name_ar}</span>}
+                    <span>{LANGUAGE_LABEL[item.language]}</span>
+                    {item.version && <span>الإصدار {item.version}</span>}
+                    {item.release_date && <span>{formatDate(item.release_date)}</span>}
+                    {item.file && <span>{formatFileSize(item.file.size)}</span>}
+                  </div>
                 </div>
-              </div>
-              {item.file && (
-                <a
-                  href={mediaUrl(item.file.url) ?? "#"}
-                  download
-                  style={{
-                    background: "#e94560", color: "#fff", padding: "0.55rem 1.3rem",
-                    borderRadius: "0.5rem", textDecoration: "none", fontSize: "0.88rem", fontWeight: 600,
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  ⬇ تحميل
-                </a>
-              )}
-            </article>
-          ))}
+                {item.file && (
+                  <a
+                    href={mediaUrl(item.file.url) ?? "#"}
+                    download
+                    className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-accent-500 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-accent-600"
+                  >
+                    <Download size={15} /> تحميل
+                  </a>
+                )}
+              </article>
+            );
+          })}
         </div>
       )}
     </>

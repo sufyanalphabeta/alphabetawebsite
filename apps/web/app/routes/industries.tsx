@@ -1,5 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Factory } from "lucide-react";
 import { getCollection } from "~/lib/strapi";
+import { useSeo } from "~/lib/seo";
+import { Card, Container, EmptyState, PageHero } from "~/components/ui";
 import type { Industry } from "~/lib/types";
 
 export const Route = createFileRoute("/industries")({
@@ -17,61 +20,44 @@ export const Route = createFileRoute("/industries")({
   component: IndustriesPage,
 });
 
-function IndustryCard({ industry }: { industry: Industry }) {
-  return (
-    <div style={{
-      background: "#fff",
-      borderRadius: "0.75rem",
-      padding: "1.75rem",
-      boxShadow: "0 2px 8px rgba(0,0,0,.06)",
-      textAlign: "center",
-      border: "1px solid #eef0f4",
-      transition: "box-shadow .2s",
-    }}>
-      <h2 style={{ margin: "0 0 0.5rem", fontSize: "1.1rem", color: "#0f3460" }}>
-        {industry.name_ar}
-      </h2>
-      {industry.name_en && (
-        <p style={{ margin: "0 0 0.75rem", fontSize: "0.8rem", color: "#bbb", direction: "ltr" }}>
-          {industry.name_en}
-        </p>
-      )}
-      {industry.description_ar && (
-        <p style={{ margin: 0, color: "#666", fontSize: "0.9rem", lineHeight: 1.7 }}>
-          {industry.description_ar}
-        </p>
-      )}
-    </div>
-  );
-}
-
 function IndustriesPage() {
   const { industries } = Route.useLoaderData();
 
-  return (
-    <main style={{ maxWidth: "1100px", margin: "0 auto", padding: "3rem 1.5rem" }}>
-      <header style={{ textAlign: "center", marginBottom: "3rem" }}>
-        <h1 style={{ fontSize: "2.25rem", color: "#0f3460", marginBottom: "0.5rem" }}>
-          القطاعات التي نخدمها
-        </h1>
-        <p style={{ color: "#888" }}>Industries We Serve</p>
-      </header>
+  useSeo({
+    title:       "القطاعات | ألفا بيتا",
+    description: "القطاعات التي تخدمها أنظمة ألفا بيتا: التأمين، الصحة، التعليم، الحكومة، والمزيد",
+  });
 
-      {industries.length === 0 ? (
-        <p style={{ textAlign: "center", color: "#aaa", padding: "4rem 0" }}>
-          لا توجد قطاعات منشورة حالياً
-        </p>
-      ) : (
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
-          gap: "1.25rem",
-        }}>
-          {industries.map((ind) => (
-            <IndustryCard key={ind.id} industry={ind} />
-          ))}
-        </div>
-      )}
+  return (
+    <main>
+      <PageHero
+        title="القطاعات التي نخدمها"
+        titleEn="INDUSTRIES"
+        subtitle="خبرة عملية متراكمة في قطاعات متنوعة تنعكس مباشرة في تصميم أنظمتنا"
+      />
+
+      <Container className="py-14">
+        {industries.length === 0 ? (
+          <EmptyState message="لا توجد قطاعات منشورة حالياً" />
+        ) : (
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {industries.map((industry) => (
+              <Card key={industry.id} className="p-6 text-center">
+                <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-primary-50">
+                  <Factory size={22} className="text-primary-600" />
+                </span>
+                <h2 className="mt-3 font-bold text-primary-900">{industry.name_ar}</h2>
+                {industry.name_en && (
+                  <p dir="ltr" className="text-xs text-slate-400">{industry.name_en}</p>
+                )}
+                {industry.description_ar && (
+                  <p className="mt-2.5 text-sm leading-relaxed text-slate-500">{industry.description_ar}</p>
+                )}
+              </Card>
+            ))}
+          </div>
+        )}
+      </Container>
     </main>
   );
 }

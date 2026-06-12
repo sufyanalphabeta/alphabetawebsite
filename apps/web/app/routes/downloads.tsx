@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { getCollection } from "~/lib/strapi";
 import { useSeo } from "~/lib/seo";
+import { Container, PageHero } from "~/components/ui";
 import { DownloadCenter } from "~/components/DownloadCenter";
 import type { DownloadCategory, DownloadCenterItem } from "~/lib/types";
 
@@ -38,28 +39,31 @@ function DownloadsPage() {
   });
 
   return (
-    <main style={{ maxWidth: "950px", margin: "0 auto", padding: "3rem 1.5rem" }}>
-      <header style={{ textAlign: "center", marginBottom: "2.5rem" }}>
-        <h1 style={{ fontSize: "2.25rem", color: "#0f3460", marginBottom: "0.5rem" }}>مركز التحميلات</h1>
-        <p style={{ color: "#888" }}>Downloads Center</p>
-      </header>
+    <main>
+      <PageHero
+        title="مركز التحميلات"
+        titleEn="DOWNLOADS CENTER"
+        subtitle="بروشورات، أدلة مستخدم، عروض تقديمية، وأدوات — كل ملفات الأنظمة في مكان واحد"
+      >
+        {categories.length > 0 && (
+          <div className="mt-6 flex flex-wrap gap-2">
+            {categories.map((cat) => (
+              <Link
+                key={cat.id}
+                to="/downloads/category/$slug"
+                params={{ slug: cat.slug }}
+                className="rounded-full border border-white/25 px-4 py-1.5 text-sm text-white transition-colors hover:bg-white/10"
+              >
+                {cat.name_ar}
+              </Link>
+            ))}
+          </div>
+        )}
+      </PageHero>
 
-      <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap", justifyContent: "center", marginBottom: "2rem" }}>
-        {categories.map((cat) => (
-          <Link
-            key={cat.id}
-            to="/downloads/category/$slug" params={{ slug: cat.slug }}
-            style={{
-              fontSize: "0.85rem", color: "#0f3460", textDecoration: "none",
-              border: "1px solid #d8dde6", padding: "0.45rem 1.1rem", borderRadius: 999, background: "#fff",
-            }}
-          >
-            {cat.name_ar}
-          </Link>
-        ))}
-      </div>
-
-      <DownloadCenter items={items} />
+      <Container className="max-w-5xl py-12">
+        <DownloadCenter items={items} />
+      </Container>
     </main>
   );
 }

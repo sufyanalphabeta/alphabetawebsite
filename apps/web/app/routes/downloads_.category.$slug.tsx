@@ -1,6 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { getCollection } from "~/lib/strapi";
 import { useSeo } from "~/lib/seo";
+import { Container, PageHero } from "~/components/ui";
 import { DownloadCenter } from "~/components/DownloadCenter";
 import type { DownloadCategory, DownloadCenterItem } from "~/lib/types";
 
@@ -23,9 +24,9 @@ export const Route = createFileRoute("/downloads_/category/$slug")({
     return { category, items: itemsRes.data };
   },
   notFoundComponent: () => (
-    <main style={{ maxWidth: 700, margin: "0 auto", padding: "5rem 1.5rem", textAlign: "center" }}>
-      <h1 style={{ color: "#0f3460" }}>الفئة غير موجودة</h1>
-      <Link to="/downloads" style={{ color: "#e94560" }}>← العودة إلى مركز التحميلات</Link>
+    <main className="mx-auto max-w-2xl px-6 py-24 text-center">
+      <h1 className="text-2xl font-bold text-primary-800">الفئة غير موجودة</h1>
+      <Link to="/downloads" className="mt-4 inline-block font-semibold text-accent-600">← العودة إلى مركز التحميلات</Link>
     </main>
   ),
   component: DownloadsCategoryPage,
@@ -40,16 +41,18 @@ function DownloadsCategoryPage() {
   });
 
   return (
-    <main style={{ maxWidth: "950px", margin: "0 auto", padding: "3rem 1.5rem" }}>
-      <nav style={{ fontSize: "0.85rem", marginBottom: "1.5rem" }}>
-        <Link to="/downloads" style={{ color: "#888", textDecoration: "none" }}>مركز التحميلات</Link>
-        <span style={{ color: "#ccc", margin: "0 0.5rem" }}>/</span>
-        <span style={{ color: "#0f3460" }}>{category.name_ar}</span>
-      </nav>
-      <header style={{ marginBottom: "2rem" }}>
-        <h1 style={{ fontSize: "1.9rem", color: "#0f3460", margin: 0 }}>{category.name_ar}</h1>
-      </header>
-      <DownloadCenter items={items} lockedCategorySlug={category.slug} />
+    <main>
+      <PageHero title={category.name_ar} titleEn={category.name_en ?? undefined}>
+        <nav className="mt-4 flex items-center gap-2 text-sm text-primary-100/60">
+          <Link to="/downloads" className="hover:text-white">مركز التحميلات</Link>
+          <span>/</span>
+          <span className="text-primary-100">{category.name_ar}</span>
+        </nav>
+      </PageHero>
+
+      <Container className="max-w-5xl py-12">
+        <DownloadCenter items={items} lockedCategorySlug={category.slug} />
+      </Container>
     </main>
   );
 }

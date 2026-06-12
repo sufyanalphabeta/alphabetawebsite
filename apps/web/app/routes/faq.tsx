@@ -1,7 +1,9 @@
 import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { ChevronDown, Search } from "lucide-react";
 import { getCollection } from "~/lib/strapi";
 import { useSeo } from "~/lib/seo";
+import { Container, cx, EmptyState, PageHero } from "~/components/ui";
 import type { FaqCategory, FaqItem } from "~/lib/types";
 
 export const Route = createFileRoute("/faq")({
@@ -27,6 +29,30 @@ export const Route = createFileRoute("/faq")({
   },
   component: FaqPage,
 });
+
+const FIELD =
+  "rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-700 focus:border-primary-400 focus:outline-none";
+
+function FaqEntry({ item }: { item: FaqItem }) {
+  return (
+    <details className="group rounded-xl border border-slate-200 bg-white shadow-card">
+      <summary className="flex cursor-pointer items-center justify-between gap-3 p-5">
+        <span className="font-bold text-primary-900">
+          {item.question_ar}
+          {item.software_product && (
+            <span className="ms-2 rounded-full bg-primary-50 px-2.5 py-0.5 text-xs font-medium text-primary-700">
+              {item.software_product.name_ar}
+            </span>
+          )}
+        </span>
+        <ChevronDown size={18} className="shrink-0 text-slate-400 transition-transform group-open:rotate-180" />
+      </summary>
+      {item.answer_ar && (
+        <p className="border-t border-slate-100 p-5 pt-4 text-sm leading-loose text-slate-600">{item.answer_ar}</p>
+      )}
+    </details>
+  );
+}
 
 function FaqPage() {
   const { categories, items } = Route.useLoaderData();
@@ -54,85 +80,69 @@ function FaqPage() {
     return true;
   });
 
+  const uncategorized = filtered.filter((i) => !i.category);
+
   return (
-    <main style={{ maxWidth: "850px", margin: "0 auto", padding: "3rem 1.5rem" }}>
-      <header style={{ textAlign: "center", marginBottom: "2.5rem" }}>
-        <h1 style={{ fontSize: "2.25rem", color: "#0f3460", marginBottom: "0.5rem" }}>الأسئلة الشائعة</h1>
-        <p style={{ color: "#888" }}>FAQ Center</p>
-      </header>
+    <main>
+      <PageHero
+        title="الأسئلة الشائعة"
+        titleEn="FAQ CENTER"
+        subtitle="إجابات مباشرة لأكثر الأسئلة تكراراً حول أنظمتنا وخدماتنا وطرق الترخيص"
+      />
 
-      <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginBottom: "2rem" }}>
-        <input
-          type="search"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="🔍 ابحث في الأسئلة…"
-          style={{ flex: 1, minWidth: 220, padding: "0.5rem 0.75rem", fontSize: "0.85rem", border: "1px solid #d8dde6", borderRadius: "0.5rem", fontFamily: "inherit" }}
-          aria-label="بحث"
-        />
-        <select
-          value={product}
-          onChange={(e) => setProduct(e.target.value)}
-          style={{ padding: "0.5rem 0.75rem", fontSize: "0.85rem", border: "1px solid #d8dde6", borderRadius: "0.5rem", background: "#fff", fontFamily: "inherit" }}
-          aria-label="النظام"
-        >
-          <option value="">كل الأنظمة</option>
-          {products.map((p) => <option key={p.slug} value={p.slug}>{p.name_ar}</option>)}
-        </select>
-      </div>
+      <Container className="max-w-4xl py-12">
+        <div className="mb-8 flex flex-wrap gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-card">
+          <label className="relative min-w-[220px] flex-1">
+            <Search size={15} className="absolute end-3 top-1/2 -translate-y-1/2 text-slate-300" />
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="ابحث في الأسئلة…"
+              className={cx(FIELD, "w-full pe-9")}
+              aria-label="بحث"
+            />
+          </label>
+          <select value={product} onChange={(e) => setProduct(e.target.value)} className={FIELD} aria-label="النظام">
+            <option value="">كل الأنظمة</option>
+            {products.map((p) => <option key={p.slug} value={p.slug}>{p.name_ar}</option>)}
+          </select>
+        </div>
 
-      {filtered.length === 0 ? (
-        <p style={{ textAlign: "center", color: "#aaa", padding: "3rem 0" }}>لا توجد أسئلة مطابقة</p>
-      ) : (
-        categories.map((cat) => {
-          const catItems = filtered.filter((i) => i.category?.id === cat.id);
-          if (catItems.length === 0) return null;
-          return (
-            <section key={cat.id} style={{ marginBottom: "2rem" }}>
-              <h2 style={{ fontSize: "1.25rem", color: "#0f3460", marginBottom: "0.9rem" }}>{cat.name_ar}</h2>
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.7rem" }}>
-                {catItems.map((item) => (
-                  <details key={item.id} style={{ background: "#fff", border: "1px solid #eef0f4", borderRadius: "0.75rem", padding: "1rem 1.25rem" }}>
-                    <summary style={{ cursor: "pointer", fontWeight: 600, color: "#0f3460" }}>
-                      {item.question_ar}
-                      {item.software_product && (
-                        <span style={{ marginRight: "0.6rem", fontSize: "0.68rem", background: "#eef0f4", color: "#0f3460", padding: "0.12rem 0.5rem", borderRadius: 999, fontWeight: 400 }}>
-                          {item.software_product.name_ar}
-                        </span>
-                      )}
-                    </summary>
-                    {item.answer_ar && (
-                      <p style={{ margin: "0.75rem 0 0", color: "#555", lineHeight: 1.8, fontSize: "0.9rem" }}>{item.answer_ar}</p>
-                    )}
-                  </details>
-                ))}
+        {filtered.length === 0 ? (
+          <EmptyState message="لا توجد أسئلة مطابقة" />
+        ) : (
+          <>
+            {categories.map((cat) => {
+              const catItems = filtered.filter((i) => i.category?.id === cat.id);
+              if (catItems.length === 0) return null;
+              return (
+                <section key={cat.id} className="mb-9">
+                  <h2 className="mb-4 text-xl font-bold text-primary-900">
+                    {cat.name_ar}
+                    {cat.name_en && <span className="ms-2 text-xs font-normal tracking-wide text-slate-300">{cat.name_en}</span>}
+                  </h2>
+                  <div className="space-y-3">
+                    {catItems.map((item) => <FaqEntry key={item.id} item={item} />)}
+                  </div>
+                </section>
+              );
+            })}
+            {uncategorized.length > 0 && (
+              <div className="space-y-3">
+                {uncategorized.map((item) => <FaqEntry key={item.id} item={item} />)}
               </div>
-            </section>
-          );
-        })
-      )}
+            )}
+          </>
+        )}
 
-      {/* Items without a category */}
-      {(() => {
-        const uncategorized = filtered.filter((i) => !i.category);
-        if (uncategorized.length === 0) return null;
-        return (
-          <section>
-            {uncategorized.map((item) => (
-              <details key={item.id} style={{ background: "#fff", border: "1px solid #eef0f4", borderRadius: "0.75rem", padding: "1rem 1.25rem", marginBottom: "0.7rem" }}>
-                <summary style={{ cursor: "pointer", fontWeight: 600, color: "#0f3460" }}>{item.question_ar}</summary>
-                {item.answer_ar && <p style={{ margin: "0.75rem 0 0", color: "#555", lineHeight: 1.8, fontSize: "0.9rem" }}>{item.answer_ar}</p>}
-              </details>
-            ))}
-          </section>
-        );
-      })()}
-
-      <div style={{ marginTop: "2.5rem", textAlign: "center" }}>
-        <p style={{ color: "#888", fontSize: "0.9rem" }}>
-          لم تجد إجابتك؟ <Link to="/contact" style={{ color: "#e94560" }}>تواصل معنا</Link> أو تصفح <Link to="/support" style={{ color: "#e94560" }}>مركز الدعم</Link>
+        <p className="mt-10 text-center text-sm text-slate-400">
+          لم تجد إجابتك؟{" "}
+          <Link to="/contact" className="font-semibold text-accent-600 hover:text-accent-700">تواصل معنا</Link>
+          {" "}أو تصفح{" "}
+          <Link to="/support" className="font-semibold text-accent-600 hover:text-accent-700">مركز الدعم</Link>
         </p>
-      </div>
+      </Container>
     </main>
   );
 }

@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { BookOpen, CircleHelp, Settings, Wrench } from "lucide-react";
 import { getCollection } from "~/lib/strapi";
 import { useSeo } from "~/lib/seo";
+import { Card, Container, LinkButton, PageHero } from "~/components/ui";
 import { SupportArticles } from "~/components/SupportArticles";
 import type { SupportArticle, SupportCategory } from "~/lib/types";
 
@@ -28,10 +30,10 @@ export const Route = createFileRoute("/support")({
   component: SupportPage,
 });
 
-const CATEGORY_ICON: Record<string, string> = {
-  "installation-guides": "🛠️",
-  "user-manuals":        "📘",
-  "troubleshooting":     "🔧",
+const CATEGORY_ICON: Record<string, typeof Settings> = {
+  "installation-guides": Settings,
+  "user-manuals":        BookOpen,
+  "troubleshooting":     Wrench,
 };
 
 function SupportPage() {
@@ -43,50 +45,52 @@ function SupportPage() {
   });
 
   return (
-    <main style={{ maxWidth: "950px", margin: "0 auto", padding: "3rem 1.5rem" }}>
-      <header style={{ textAlign: "center", marginBottom: "2.5rem" }}>
-        <h1 style={{ fontSize: "2.25rem", color: "#0f3460", marginBottom: "0.5rem" }}>مركز الدعم</h1>
-        <p style={{ color: "#888" }}>Support Center</p>
-      </header>
+    <main>
+      <PageHero
+        title="كيف يمكننا مساعدتك؟"
+        titleEn="SUPPORT CENTER"
+        subtitle="أدلة التثبيت والاستخدام، حلول المشكلات الشائعة، وإجابات لأكثر الأسئلة تكراراً"
+      />
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1rem", marginBottom: "2.5rem" }}>
-        {categories.map((cat) => (
-          <Link
-            key={cat.id}
-            to="/support/category/$slug" params={{ slug: cat.slug }}
-            style={{
-              background: "#fff", border: "1px solid #eef0f4", borderRadius: "0.85rem",
-              padding: "1.4rem", textDecoration: "none", textAlign: "center",
-            }}
-          >
-            <span style={{ fontSize: "1.8rem" }}>{CATEGORY_ICON[cat.slug] ?? "📄"}</span>
-            <h2 style={{ margin: "0.6rem 0 0", fontSize: "1rem", color: "#0f3460" }}>{cat.name_ar}</h2>
-            {cat.description_ar && (
-              <p style={{ margin: "0.35rem 0 0", fontSize: "0.78rem", color: "#888" }}>{cat.description_ar}</p>
-            )}
+      <Container className="max-w-5xl py-12">
+        {/* Category cards */}
+        <div className="mb-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {categories.map((cat) => {
+            const Icon = CATEGORY_ICON[cat.slug] ?? BookOpen;
+            return (
+              <Link key={cat.id} to="/support/category/$slug" params={{ slug: cat.slug }}>
+                <Card className="h-full p-6 text-center">
+                  <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-primary-50">
+                    <Icon size={22} className="text-primary-600" />
+                  </span>
+                  <h2 className="mt-3 font-bold text-primary-900">{cat.name_ar}</h2>
+                  {cat.description_ar && (
+                    <p className="mt-1 text-xs leading-relaxed text-slate-400">{cat.description_ar}</p>
+                  )}
+                </Card>
+              </Link>
+            );
+          })}
+          <Link to="/faq">
+            <Card className="h-full bg-primary-700 p-6 text-center hover:bg-primary-800">
+              <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-white/10">
+                <CircleHelp size={22} className="text-white" />
+              </span>
+              <h2 className="mt-3 font-bold text-white">الأسئلة الشائعة</h2>
+              <p className="mt-1 text-xs text-primary-100/60">إجابات لأكثر الأسئلة تكراراً</p>
+            </Card>
           </Link>
-        ))}
-        <Link
-          to="/faq"
-          style={{
-            background: "#0f3460", border: "1px solid #0f3460", borderRadius: "0.85rem",
-            padding: "1.4rem", textDecoration: "none", textAlign: "center",
-          }}
-        >
-          <span style={{ fontSize: "1.8rem" }}>❓</span>
-          <h2 style={{ margin: "0.6rem 0 0", fontSize: "1rem", color: "#fff" }}>الأسئلة الشائعة</h2>
-          <p style={{ margin: "0.35rem 0 0", fontSize: "0.78rem", color: "rgba(255,255,255,.6)" }}>إجابات لأكثر الأسئلة تكراراً</p>
-        </Link>
-      </div>
+        </div>
 
-      <SupportArticles articles={articles} />
+        <SupportArticles articles={articles} />
 
-      <div style={{ marginTop: "3rem", background: "#f7f8fb", borderRadius: "1rem", padding: "1.75rem", textAlign: "center" }}>
-        <p style={{ margin: 0, color: "#555" }}>لم تجد ما تبحث عنه؟</p>
-        <Link to="/contact" style={{ display: "inline-block", marginTop: "0.75rem", background: "#e94560", color: "#fff", padding: "0.6rem 1.5rem", borderRadius: "0.5rem", textDecoration: "none", fontWeight: 600 }}>
-          تواصل مع الدعم الفني
-        </Link>
-      </div>
+        {/* Contact support CTA */}
+        <div className="mt-12 rounded-2xl bg-cta p-8 text-center text-white">
+          <h2 className="text-xl font-bold">لم تجد ما تبحث عنه؟</h2>
+          <p className="mt-1.5 text-sm text-primary-100/75">فريق الدعم الفني جاهز لمساعدتك على مدار الساعة</p>
+          <LinkButton to="/contact" variant="accent" className="mt-5">تواصل مع الدعم الفني</LinkButton>
+        </div>
+      </Container>
     </main>
   );
 }

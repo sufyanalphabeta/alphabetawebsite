@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Quote } from "lucide-react";
 import { getCollection, mediaUrl } from "~/lib/strapi";
 import { useSeo } from "~/lib/seo";
+import { Card, Container, EmptyState, PageHero, Stars } from "~/components/ui";
 import type { Testimonial } from "~/lib/types";
 
 export const Route = createFileRoute("/testimonials")({
@@ -21,15 +23,6 @@ export const Route = createFileRoute("/testimonials")({
   component: TestimonialsPage,
 });
 
-function Stars({ rating }: { rating: number }) {
-  return (
-    <span aria-label={`التقييم ${rating} من 5`} style={{ color: "#f5a623", letterSpacing: 2 }}>
-      {"★".repeat(Math.max(0, Math.min(5, rating)))}
-      <span style={{ color: "#dde2ea" }}>{"★".repeat(5 - Math.max(0, Math.min(5, rating)))}</span>
-    </span>
-  );
-}
-
 function TestimonialsPage() {
   const { testimonials } = Route.useLoaderData();
 
@@ -39,47 +32,45 @@ function TestimonialsPage() {
   });
 
   return (
-    <main style={{ maxWidth: "1100px", margin: "0 auto", padding: "3rem 1.5rem" }}>
-      <header style={{ textAlign: "center", marginBottom: "3rem" }}>
-        <h1 style={{ fontSize: "2.25rem", color: "#0f3460", marginBottom: "0.5rem" }}>آراء العملاء</h1>
-        <p style={{ color: "#888" }}>Testimonials</p>
-      </header>
+    <main>
+      <PageHero
+        title="آراء العملاء"
+        titleEn="TESTIMONIALS"
+        subtitle="شهادات حقيقية من مدراء ومسؤولين يعملون بأنظمتنا يومياً"
+      />
 
-      {testimonials.length === 0 ? (
-        <p style={{ textAlign: "center", color: "#aaa", padding: "4rem 0" }}>لا توجد آراء منشورة حالياً</p>
-      ) : (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "1.5rem" }}>
-          {testimonials.map((t) => (
-            <article
-              key={t.id}
-              style={{
-                background: "#fff", borderRadius: "1rem", padding: "1.75rem",
-                border: t.is_featured ? "2px solid #e94560" : "1px solid #eef0f4",
-                boxShadow: "0 2px 12px rgba(0,0,0,.06)",
-                display: "flex", flexDirection: "column", gap: "1rem",
-              }}
-            >
-              <Stars rating={t.rating} />
-              <blockquote style={{ margin: 0, color: "#444", lineHeight: 1.9, fontSize: "0.95rem", flex: 1 }}>
-                "{t.text_ar}"
-              </blockquote>
-              <footer style={{ display: "flex", alignItems: "center", gap: "0.85rem", paddingTop: "1rem", borderTop: "1px solid #f1f3f8" }}>
-                <div style={{ width: 48, height: 48, borderRadius: "50%", overflow: "hidden", background: "#f1f3f8", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  {t.image ? (
-                    <img src={mediaUrl(t.image.url) ?? ""} alt={t.customer_name_ar} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                  ) : "👤"}
+      <Container className="py-14">
+        {testimonials.length === 0 ? (
+          <EmptyState message="لا توجد آراء منشورة حالياً" />
+        ) : (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {testimonials.map((t) => (
+              <Card key={t.id} className="flex flex-col p-7">
+                <div className="flex items-center justify-between">
+                  <Stars rating={t.rating} />
+                  <Quote size={26} className="text-primary-100" />
                 </div>
-                <div>
-                  <p style={{ margin: 0, fontWeight: 700, color: "#0f3460", fontSize: "0.92rem" }}>{t.customer_name_ar}</p>
-                  <p style={{ margin: 0, fontSize: "0.78rem", color: "#888" }}>
-                    {[t.position_ar, t.company_ar ?? t.client?.name_ar].filter(Boolean).join(" — ")}
-                  </p>
-                </div>
-              </footer>
-            </article>
-          ))}
-        </div>
-      )}
+                <blockquote className="mt-4 flex-1 leading-loose text-slate-600">
+                  "{t.text_ar}"
+                </blockquote>
+                <footer className="mt-6 flex items-center gap-3.5 border-t border-slate-100 pt-5">
+                  <span className="h-12 w-12 shrink-0 overflow-hidden rounded-full bg-primary-50">
+                    {t.image && (
+                      <img src={mediaUrl(t.image.url) ?? ""} alt={t.customer_name_ar} className="h-full w-full object-cover" />
+                    )}
+                  </span>
+                  <div>
+                    <p className="font-bold text-primary-900">{t.customer_name_ar}</p>
+                    <p className="text-xs text-slate-400">
+                      {[t.position_ar, t.company_ar ?? t.client?.name_ar].filter(Boolean).join(" — ")}
+                    </p>
+                  </div>
+                </footer>
+              </Card>
+            ))}
+          </div>
+        )}
+      </Container>
     </main>
   );
 }

@@ -1,14 +1,11 @@
 import { useState } from "react";
+import { CheckCircle2 } from "lucide-react";
 import { createEntry } from "~/lib/strapi";
+import { Button, cx } from "~/components/ui";
 import type { SoftwareProduct } from "~/lib/types";
 
-const INPUT_STYLE: React.CSSProperties = {
-  padding: "0.65rem 0.8rem",
-  fontSize: "0.95rem",
-  border: "1px solid #d8dde6",
-  borderRadius: "0.5rem",
-  fontFamily: "inherit",
-};
+const FIELD =
+  "w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-[0.95rem] text-slate-700 placeholder:text-slate-400 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-100";
 
 export interface RequestFormProps {
   /** "demo" | "quote" — controls labels and the submission subject */
@@ -21,14 +18,14 @@ export interface RequestFormProps {
 const COPY = {
   demo: {
     title_ar: "اطلب عرضاً توضيحياً",
-    title_en: "Request a Demo",
+    title_en: "REQUEST A DEMO",
     intro:    "املأ النموذج وسيتواصل معك فريقنا لترتيب عرض توضيحي مباشر للنظام.",
     subject:  "طلب عرض توضيحي",
     button:   "إرسال طلب العرض التوضيحي",
   },
   quote: {
     title_ar: "اطلب عرض سعر",
-    title_en: "Request a Quote",
+    title_en: "REQUEST A QUOTE",
     intro:    "أخبرنا عن احتياجك وسنوافيك بعرض سعر مخصص لمؤسستك.",
     subject:  "طلب عرض سعر",
     button:   "إرسال طلب عرض السعر",
@@ -65,56 +62,55 @@ export function RequestForm({ kind, products, preselectedSlug }: RequestFormProp
 
   if (status === "sent") {
     return (
-      <div style={{ background: "#f0faf4", border: "1px solid #bfe8cf", borderRadius: "0.75rem", padding: "2rem", textAlign: "center" }}>
-        <p style={{ fontSize: "1.1rem", color: "#1a7f4b", margin: 0 }}>✓ تم استلام طلبك بنجاح</p>
-        <p style={{ color: "#555", margin: "0.5rem 0 0" }}>سيتواصل معك فريقنا في أقرب وقت.</p>
+      <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-10 text-center">
+        <CheckCircle2 size={40} className="mx-auto text-emerald-600" />
+        <p className="mt-4 text-lg font-bold text-emerald-700">تم استلام طلبك بنجاح</p>
+        <p className="mt-1 text-sm text-slate-500">سيتواصل معك فريقنا في أقرب وقت.</p>
       </div>
     );
   }
 
   return (
     <>
-      <header style={{ textAlign: "center", marginBottom: "2rem" }}>
-        <h1 style={{ fontSize: "2rem", color: "#0f3460", margin: 0 }}>{copy.title_ar}</h1>
-        <p style={{ color: "#aaa", margin: "0.25rem 0 0", fontSize: "0.85rem" }}>{copy.title_en}</p>
-        <p style={{ color: "#666", marginTop: "1rem" }}>{copy.intro}</p>
+      <header className="mb-8 text-center">
+        <p className="text-xs font-semibold tracking-widest text-accent-600">{copy.title_en}</p>
+        <h1 className="mt-1 text-3xl font-bold text-primary-900">{copy.title_ar}</h1>
+        <p className="mt-3 text-slate-500">{copy.intro}</p>
       </header>
 
-      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-        <select name="product" defaultValue={preselectedSlug ?? ""} style={INPUT_STYLE}>
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-4 rounded-2xl border border-slate-200 bg-white p-7 shadow-card"
+      >
+        <select name="product" defaultValue={preselectedSlug ?? ""} className={FIELD}>
           <option value="">— اختر النظام (اختياري) —</option>
           {products.map((p) => (
             <option key={p.id} value={p.slug}>{p.name_ar}</option>
           ))}
         </select>
-        <input name="name" placeholder="الاسم الكامل *" required style={INPUT_STYLE} />
-        <input name="company" placeholder="اسم المؤسسة" style={INPUT_STYLE} />
-        <input name="email" type="email" placeholder="البريد الإلكتروني *" required style={INPUT_STYLE} />
-        <input name="phone" type="tel" placeholder="رقم الهاتف" style={INPUT_STYLE} />
-        <textarea name="message" placeholder="أخبرنا عن احتياجك *" rows={5} required style={INPUT_STYLE} />
+        <div className="grid gap-4 sm:grid-cols-2">
+          <input name="name" placeholder="الاسم الكامل *" required className={FIELD} />
+          <input name="company" placeholder="اسم المؤسسة" className={FIELD} />
+          <input name="email" type="email" placeholder="البريد الإلكتروني *" required className={FIELD} />
+          <input name="phone" type="tel" placeholder="رقم الهاتف" className={FIELD} />
+        </div>
+        <textarea name="message" placeholder="أخبرنا عن احتياجك *" rows={5} required className={FIELD} />
 
         {status === "error" && (
-          <p style={{ color: "#c0392b", margin: 0, fontSize: "0.9rem" }}>
+          <p className="text-sm text-red-600">
             تعذر إرسال الطلب، يرجى المحاولة مرة أخرى أو التواصل معنا مباشرة.
           </p>
         )}
 
-        <button
+        <Button
           type="submit"
           disabled={status === "sending"}
-          style={{
-            padding: "0.85rem",
-            fontSize: "1rem",
-            background: status === "sending" ? "#aab4c4" : "#e94560",
-            color: "#fff",
-            border: "none",
-            borderRadius: "0.5rem",
-            cursor: status === "sending" ? "wait" : "pointer",
-            fontWeight: 600,
-          }}
+          variant="accent"
+          size="lg"
+          className={cx("w-full", status === "sending" && "cursor-wait opacity-60")}
         >
           {status === "sending" ? "جارٍ الإرسال…" : copy.button}
-        </button>
+        </Button>
       </form>
     </>
   );

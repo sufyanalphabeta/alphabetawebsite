@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowLeft } from "lucide-react";
 import { getCollection, mediaUrl } from "~/lib/strapi";
 import { useSeo } from "~/lib/seo";
+import { Card, Container, EmptyState, PageHero } from "~/components/ui";
 import type { SuccessStory } from "~/lib/types";
 
 export const Route = createFileRoute("/success-stories")({
@@ -27,10 +29,10 @@ function StoryBlock({ label, labelEn, text }: { label: string; labelEn: string; 
   if (!text) return null;
   return (
     <div>
-      <h3 style={{ margin: "0 0 0.35rem", fontSize: "0.92rem", color: "#0f3460" }}>
-        {label} <span style={{ fontSize: "0.7rem", color: "#bbb", fontWeight: 400 }}>{labelEn}</span>
+      <h3 className="text-sm font-bold text-primary-900">
+        {label} <span className="ms-1 text-xs font-normal text-slate-300">{labelEn}</span>
       </h3>
-      <p style={{ margin: 0, fontSize: "0.88rem", color: "#555", lineHeight: 1.8 }}>{text}</p>
+      <p className="mt-1.5 text-sm leading-loose text-slate-600">{text}</p>
     </div>
   );
 }
@@ -44,83 +46,80 @@ function SuccessStoriesPage() {
   });
 
   return (
-    <main style={{ maxWidth: "950px", margin: "0 auto", padding: "3rem 1.5rem" }}>
-      <header style={{ textAlign: "center", marginBottom: "3rem" }}>
-        <h1 style={{ fontSize: "2.25rem", color: "#0f3460", marginBottom: "0.5rem" }}>قصص النجاح</h1>
-        <p style={{ color: "#888" }}>Success Stories</p>
-      </header>
+    <main>
+      <PageHero
+        title="قصص النجاح"
+        titleEn="SUCCESS STORIES"
+        subtitle="نتائج حقيقية وقابلة للقياس حققها عملاؤنا بعد التحول إلى أنظمة ألفا بيتا"
+      />
 
-      {stories.length === 0 ? (
-        <p style={{ textAlign: "center", color: "#aaa", padding: "4rem 0" }}>لا توجد قصص منشورة حالياً</p>
-      ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
-          {stories.map((story) => (
-            <article
-              key={story.id}
-              style={{
-                background: "#fff", borderRadius: "1rem", overflow: "hidden",
-                border: story.is_featured ? "2px solid #e94560" : "1px solid #eef0f4",
-                boxShadow: "0 2px 12px rgba(0,0,0,.06)",
-              }}
-            >
-              <header style={{ background: "#0f3460", color: "#fff", padding: "1.5rem 1.75rem", display: "flex", alignItems: "center", gap: "1rem", flexWrap: "wrap" }}>
-                {story.client?.logo && (
-                  <img
-                    src={mediaUrl(story.client.logo.url) ?? ""}
-                    alt={`شعار ${story.client.name_ar}`}
-                    style={{ width: 48, height: 48, borderRadius: "0.6rem", objectFit: "cover" }}
-                  />
-                )}
-                <div style={{ flex: 1, minWidth: 220 }}>
-                  <h2 style={{ margin: 0, fontSize: "1.2rem" }}>{story.title_ar}</h2>
-                  <p style={{ margin: "0.2rem 0 0", fontSize: "0.78rem", color: "rgba(255,255,255,.6)" }}>
-                    {[story.client?.name_ar, story.software_product?.name_ar].filter(Boolean).join(" • ")}
-                  </p>
+      <Container className="max-w-5xl py-14">
+        {stories.length === 0 ? (
+          <EmptyState message="لا توجد قصص منشورة حالياً" />
+        ) : (
+          <div className="space-y-10">
+            {stories.map((story) => (
+              <Card key={story.id} className="overflow-hidden">
+                <header className="flex flex-wrap items-center gap-4 bg-hero p-6 text-white">
+                  {story.client?.logo && (
+                    <img
+                      src={mediaUrl(story.client.logo.url) ?? ""}
+                      alt={`شعار ${story.client.name_ar}`}
+                      className="h-12 w-12 rounded-xl object-cover ring-1 ring-white/20"
+                    />
+                  )}
+                  <div className="min-w-[220px] flex-1">
+                    <h2 className="text-lg font-bold">{story.title_ar}</h2>
+                    <p className="mt-0.5 text-xs text-primary-100/60">
+                      {[story.client?.name_ar, story.software_product?.name_ar].filter(Boolean).join(" • ")}
+                    </p>
+                  </div>
+                  {story.software_product && (
+                    <Link
+                      to="/software/$slug"
+                      params={{ slug: story.software_product.slug }}
+                      className="inline-flex items-center gap-1.5 rounded-full bg-white/12 px-4 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-white/20"
+                    >
+                      عرض النظام <ArrowLeft size={13} />
+                    </Link>
+                  )}
+                </header>
+
+                <div className="space-y-6 p-7">
+                  <StoryBlock label="التحدي"  labelEn="Challenge" text={story.challenge_ar} />
+                  <StoryBlock label="الحل"    labelEn="Solution"  text={story.solution_ar} />
+                  <StoryBlock label="النتائج" labelEn="Results"   text={story.results_ar} />
+
+                  {(story.metrics?.length ?? 0) > 0 && (
+                    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+                      {[...story.metrics!].sort((a, b) => a.sort_order - b.sort_order).map((m) => (
+                        <div key={m.id} className="rounded-xl bg-surface p-5 text-center">
+                          <p className="text-2xl font-bold text-accent-600">{m.value}</p>
+                          <p className="mt-1 text-xs text-slate-500">{m.label_ar}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {(story.gallery?.length ?? 0) > 0 && (
+                    <div className="flex flex-wrap gap-3">
+                      {story.gallery!.map((img) => (
+                        <img
+                          key={img.id}
+                          src={mediaUrl(img.url) ?? ""}
+                          alt={img.alternativeText ?? story.title_ar}
+                          className="h-28 w-48 rounded-xl border border-slate-200 object-cover"
+                          loading="lazy"
+                        />
+                      ))}
+                    </div>
+                  )}
                 </div>
-                {story.software_product && (
-                  <Link
-                    to="/software/$slug" params={{ slug: story.software_product.slug }}
-                    style={{ fontSize: "0.78rem", color: "#fff", background: "rgba(255,255,255,.14)", padding: "0.35rem 0.85rem", borderRadius: 999, textDecoration: "none" }}
-                  >
-                    عرض النظام ←
-                  </Link>
-                )}
-              </header>
-
-              <div style={{ padding: "1.75rem", display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-                <StoryBlock label="التحدي" labelEn="Challenge" text={story.challenge_ar} />
-                <StoryBlock label="الحل"   labelEn="Solution"  text={story.solution_ar} />
-                <StoryBlock label="النتائج" labelEn="Results"  text={story.results_ar} />
-
-                {(story.metrics?.length ?? 0) > 0 && (
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: "0.75rem" }}>
-                    {[...story.metrics!].sort((a, b) => a.sort_order - b.sort_order).map((m) => (
-                      <div key={m.id} style={{ background: "#f7f8fb", borderRadius: "0.75rem", padding: "1rem", textAlign: "center" }}>
-                        <p style={{ margin: 0, fontSize: "1.5rem", fontWeight: 800, color: "#e94560" }}>{m.value}</p>
-                        <p style={{ margin: "0.25rem 0 0", fontSize: "0.75rem", color: "#666" }}>{m.label_ar}</p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {(story.gallery?.length ?? 0) > 0 && (
-                  <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
-                    {story.gallery!.map((img) => (
-                      <img
-                        key={img.id}
-                        src={mediaUrl(img.url) ?? ""}
-                        alt={img.alternativeText ?? story.title_ar}
-                        style={{ width: 200, height: 120, objectFit: "cover", borderRadius: "0.6rem", border: "1px solid #eef0f4" }}
-                        loading="lazy"
-                      />
-                    ))}
-                  </div>
-                )}
-              </div>
-            </article>
-          ))}
-        </div>
-      )}
+              </Card>
+            ))}
+          </div>
+        )}
+      </Container>
     </main>
   );
 }

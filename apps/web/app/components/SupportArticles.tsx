@@ -1,14 +1,10 @@
 import { useMemo, useState } from "react";
+import { ChevronDown, Search } from "lucide-react";
+import { cx, EmptyState } from "~/components/ui";
 import type { BlocksNode, BlocksTextNode, SupportArticle } from "~/lib/types";
 
-const SELECT_STYLE: React.CSSProperties = {
-  padding: "0.5rem 0.75rem",
-  fontSize: "0.85rem",
-  border: "1px solid #d8dde6",
-  borderRadius: "0.5rem",
-  background: "#fff",
-  fontFamily: "inherit",
-};
+const FIELD =
+  "rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-700 focus:border-primary-400 focus:outline-none";
 
 function blocksToParagraphs(nodes: BlocksNode[] | null) {
   if (!nodes?.length) return null;
@@ -17,7 +13,7 @@ function blocksToParagraphs(nodes: BlocksNode[] | null) {
       .map((c) => ("text" in c ? (c as BlocksTextNode).text : ""))
       .join("");
     if (!text.trim()) return null;
-    return <p key={i} style={{ margin: "0.6rem 0 0", color: "#555", lineHeight: 1.9, fontSize: "0.9rem" }}>{text}</p>;
+    return <p key={i} className="mt-3 text-sm leading-loose text-slate-600">{text}</p>;
   });
 }
 
@@ -55,42 +51,54 @@ export function SupportArticles({ articles, lockedCategorySlug }: SupportArticle
 
   return (
     <>
-      <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginBottom: "1.75rem" }}>
-        <input
-          type="search"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="🔍 ابحث في المقالات…"
-          style={{ ...SELECT_STYLE, flex: 1, minWidth: 220 }}
-          aria-label="بحث"
-        />
+      <div className="mb-7 flex flex-wrap gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-card">
+        <label className="relative min-w-[220px] flex-1">
+          <Search size={15} className="absolute end-3 top-1/2 -translate-y-1/2 text-slate-300" />
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="ابحث في المقالات…"
+            className={cx(FIELD, "w-full pe-9")}
+            aria-label="بحث"
+          />
+        </label>
         {!lockedCategorySlug && (
-          <select value={category} onChange={(e) => setCategory(e.target.value)} style={SELECT_STYLE} aria-label="القسم">
+          <select value={category} onChange={(e) => setCategory(e.target.value)} className={FIELD} aria-label="القسم">
             <option value="">كل الأقسام</option>
             {categories.map((c) => <option key={c.slug} value={c.slug}>{c.name_ar}</option>)}
           </select>
         )}
-        <select value={product} onChange={(e) => setProduct(e.target.value)} style={SELECT_STYLE} aria-label="النظام">
+        <select value={product} onChange={(e) => setProduct(e.target.value)} className={FIELD} aria-label="النظام">
           <option value="">كل الأنظمة</option>
           {products.map((p) => <option key={p.slug} value={p.slug}>{p.name_ar}</option>)}
         </select>
       </div>
 
       {filtered.length === 0 ? (
-        <p style={{ textAlign: "center", color: "#aaa", padding: "3rem 0" }}>لا توجد مقالات مطابقة</p>
+        <EmptyState message="لا توجد مقالات مطابقة" />
       ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
+        <div className="space-y-3">
           {filtered.map((a) => (
-            <details key={a.id} style={{ background: "#fff", border: "1px solid #eef0f4", borderRadius: "0.85rem", padding: "1.1rem 1.35rem" }}>
-              <summary style={{ cursor: "pointer" }}>
-                <span style={{ fontWeight: 700, color: "#0f3460" }}>{a.title_ar}</span>
-                <span style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginTop: "0.4rem", fontSize: "0.72rem" }}>
-                  {a.category && <span style={{ background: "#eef0f4", color: "#0f3460", padding: "0.15rem 0.55rem", borderRadius: 999 }}>{a.category.name_ar}</span>}
-                  {a.software_product && <span style={{ background: "#eef0f4", color: "#0f3460", padding: "0.15rem 0.55rem", borderRadius: 999 }}>{a.software_product.name_ar}</span>}
+            <details key={a.id} className="group rounded-xl border border-slate-200 bg-white shadow-card">
+              <summary className="flex cursor-pointer items-start justify-between gap-4 p-5">
+                <span className="min-w-0">
+                  <span className="block font-bold text-primary-900">{a.title_ar}</span>
+                  <span className="mt-1.5 flex flex-wrap gap-2">
+                    {a.category && (
+                      <span className="rounded-full bg-primary-50 px-2.5 py-0.5 text-xs font-medium text-primary-700">{a.category.name_ar}</span>
+                    )}
+                    {a.software_product && (
+                      <span className="rounded-full bg-primary-50 px-2.5 py-0.5 text-xs font-medium text-primary-700">{a.software_product.name_ar}</span>
+                    )}
+                  </span>
+                  {a.excerpt_ar && (
+                    <span className="mt-1.5 block text-xs leading-relaxed text-slate-500">{a.excerpt_ar}</span>
+                  )}
                 </span>
-                {a.excerpt_ar && <span style={{ display: "block", marginTop: "0.4rem", fontSize: "0.83rem", color: "#777", fontWeight: 400 }}>{a.excerpt_ar}</span>}
+                <ChevronDown size={18} className="mt-1 shrink-0 text-slate-400 transition-transform group-open:rotate-180" />
               </summary>
-              {blocksToParagraphs(a.body_ar)}
+              <div className="border-t border-slate-100 px-5 pb-5">{blocksToParagraphs(a.body_ar)}</div>
             </details>
           ))}
         </div>

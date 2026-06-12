@@ -1,4 +1,6 @@
-import { createRootRoute, Link, Outlet } from "@tanstack/react-router";
+import { createRootRoute, Outlet } from "@tanstack/react-router";
+import { SiteHeader } from "~/components/SiteHeader";
+import { SiteFooter } from "~/components/SiteFooter";
 
 export const Route = createRootRoute({
   component: RootLayout,
@@ -7,13 +9,13 @@ export const Route = createRootRoute({
 
 function RootError({ error }: { error: Error }) {
   return (
-    <main dir="rtl" style={{ maxWidth: 700, margin: "0 auto", padding: "5rem 1.5rem", textAlign: "center" }}>
-      <h1 style={{ color: "#0f3460" }}>حدث خطأ غير متوقع</h1>
-      <p style={{ color: "#888", fontSize: "0.9rem", direction: "ltr" }}>{error.message}</p>
+    <main dir="rtl" className="mx-auto max-w-2xl px-6 py-24 text-center">
+      <h1 className="text-2xl font-bold text-primary-800">حدث خطأ غير متوقع</h1>
+      <p dir="ltr" className="mt-2 text-sm text-slate-400">{error.message}</p>
       <button
         type="button"
         onClick={() => window.location.reload()}
-        style={{ marginTop: "1rem", background: "#e94560", color: "#fff", border: "none", padding: "0.6rem 1.5rem", borderRadius: "0.5rem", cursor: "pointer", fontFamily: "inherit" }}
+        className="mt-6 rounded-lg bg-accent-500 px-6 py-2.5 font-semibold text-white transition-colors hover:bg-accent-600"
       >
         إعادة تحميل الصفحة
       </button>
@@ -23,36 +25,12 @@ function RootError({ error }: { error: Error }) {
 
 function RootLayout() {
   return (
-    <div dir="rtl" lang="ar">
-      <nav style={{
-        padding: "1rem 2rem",
-        borderBottom: "1px solid #eef0f4",
-        display: "flex",
-        gap: "1.5rem",
-        alignItems: "center",
-        background: "#fff",
-        boxShadow: "0 1px 4px rgba(0,0,0,.06)",
-      }}>
-        <Link
-          to="/"
-          style={{ fontWeight: 700, color: "#0f3460", fontSize: "1.1rem", textDecoration: "none" }}
-          activeProps={{ style: { fontWeight: 700, color: "#e94560", fontSize: "1.1rem", textDecoration: "none" } }}
-        >
-          ألفا بيتا
-        </Link>
-        <Link to="/about"      activeProps={{ style: { fontWeight: "bold" } }}>من نحن</Link>
-        <Link to="/services"   activeProps={{ style: { fontWeight: "bold" } }}>خدماتنا</Link>
-        <Link to="/industries" activeProps={{ style: { fontWeight: "bold" } }}>القطاعات</Link>
-        <Link to="/software"   activeProps={{ style: { fontWeight: "bold" } }}>البرمجيات</Link>
-        <Link to="/clients"    activeProps={{ style: { fontWeight: "bold" } }}>عملاؤنا</Link>
-        <Link to="/partners"   activeProps={{ style: { fontWeight: "bold" } }}>شركاؤنا</Link>
-        <Link to="/success-stories" activeProps={{ style: { fontWeight: "bold" } }}>قصص النجاح</Link>
-        <Link to="/testimonials"    activeProps={{ style: { fontWeight: "bold" } }}>آراء العملاء</Link>
-        <Link to="/support"    activeProps={{ style: { fontWeight: "bold" } }}>الدعم</Link>
-        <Link to="/downloads"  activeProps={{ style: { fontWeight: "bold" } }}>التحميلات</Link>
-        <Link to="/contact"    activeProps={{ style: { fontWeight: "bold" } }}>تواصل معنا</Link>
-      </nav>
-      <Outlet />
+    <div dir="rtl" lang="ar" className="flex min-h-screen flex-col">
+      <SiteHeader />
+      <div className="flex-1">
+        <Outlet />
+      </div>
+      <SiteFooter />
     </div>
   );
 }

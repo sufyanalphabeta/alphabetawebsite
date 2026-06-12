@@ -13,3 +13,4 @@ apps/cms/public/uploads/
 routeTree.gen.ts
 .claude/
 apps/web/.tanstack/
+app.config.timestamp_*.js

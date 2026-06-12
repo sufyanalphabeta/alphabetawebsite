@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+/* ── ALPHABETA Brand Tokens ─────────────────────────────────── */
+@theme {
+  /* Primary — ALPHABETA navy */
+  --color-primary-50:  #eef3fa;
+  --color-primary-100: #d9e4f2;
+  --color-primary-200: #b3c8e4;
+  --color-primary-300: #84a4d0;
+  --color-primary-400: #4f7ab4;
+  --color-primary-500: #2a5694;
+  --color-primary-600: #1a4377;
+  --color-primary-700: #0f3460; /* brand primary */
+  --color-primary-800: #0b2850;
+  --color-primary-900: #08213f; /* brand primary dark */
+  --color-primary-950: #051528;
+  --color-primary: #0f3460;
+
+  /* Accent — ALPHABETA crimson */
+  --color-accent-50:  #fdeef1;
+  --color-accent-100: #fbd8df;
+  --color-accent-200: #f6adbc;
+  --color-accent-300: #f0828f;
+  --color-accent-400: #ec6377;
+  --color-accent-500: #e94560; /* brand accent */
+  --color-accent-600: #d73754; /* brand accent hover */
+  --color-accent-700: #b32a45;
+  --color-accent: #e94560;
+
+  /* Surfaces */
+  --color-surface: #f7f8fb;
+  --color-surface-2: #eef1f6;
+
+  --font-sans: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, system-ui, sans-serif;
+
+  --shadow-card: 0 1px 3px rgb(15 52 96 / 0.06), 0 4px 16px rgb(15 52 96 / 0.06);
+  --shadow-card-hover: 0 2px 6px rgb(15 52 96 / 0.08), 0 12px 32px rgb(15 52 96 / 0.12);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-white font-sans text-slate-700 antialiased;
+    font-size: 16px;
+  }
+  ::selection {
+    @apply bg-primary-700 text-white;
+  }
+  summary {
+    list-style: none;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+}
+
+@layer utilities {
+  /* Hero gradient used across enterprise sections */
+  .bg-hero {
+    background: linear-gradient(135deg, #08213f 0%, #0f3460 55%, #1a4377 100%);
+  }
+  .bg-cta {
+    background: linear-gradient(120deg, #0f3460 0%, #08213f 100%);
+  }
+}

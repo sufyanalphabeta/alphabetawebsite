@@ -98,6 +98,95 @@ export const SYSTEM_MOCKUPS: Record<string, MockupConfig> = {
   },
 };
 
+/* Phase 6 — real ALPHABETA products */
+SYSTEM_MOCKUPS["rakiza-erp-system"] = {
+  appName: "الركيزة",
+  nav: ["لوحة التحكم", "المبيعات", "المخازن", "المشتريات", "الحسابات"],
+  kpis: [
+    { icon: Wallet,     label: "مبيعات اليوم",  value: "48,250", delta: "+14%" },
+    { icon: Boxes,      label: "أصناف المخزون", value: "12,840", delta: "+220" },
+    { icon: TrendingUp, label: "ربح الشهر",      value: "186K",   delta: "+9%" },
+  ],
+  chartTitle: "المبيعات الأسبوعية",
+  chartBadge: "آخر 7 أيام",
+  bars: [58, 72, 50, 85, 68, 95, 80],
+  rows: [
+    { label: "فاتورة بيع #18223 — فرع المدينة", width: 90 },
+    { label: "تحويل مخزني — مستودع الجملة",     width: 74 },
+    { label: "تنبيه: 6 أصناف بلغت حد الطلب",     width: 60 },
+  ],
+};
+SYSTEM_MOCKUPS["tpa-medical-claims-system"] = {
+  appName: "TPA",
+  nav: ["لوحة التحكم", "المطالبات", "الموافقات", "الشبكة الطبية", "المنافع"],
+  kpis: [
+    { icon: FileCheck,  label: "مطالبات اليوم",   value: "1,284", delta: "+6%" },
+    { icon: HeartPulse, label: "مزودو الخدمة",    value: "640",   delta: "+12" },
+    { icon: TrendingUp, label: "معالجة آلية",      value: "92%",   delta: "+2.1%" },
+  ],
+  chartTitle: "المطالبات المعالجة",
+  chartBadge: "آخر 7 أيام",
+  bars: [62, 75, 58, 88, 70, 96, 82],
+  rows: [
+    { label: "مطالبة #99812 — تحقق لحظي ✓",     width: 88 },
+    { label: "موافقة طبية — عملية قلب مفتوح",    width: 72 },
+    { label: "تنبيه تكلفة — تجاوز متوقع للسقف",  width: 58 },
+  ],
+};
+SYSTEM_MOCKUPS["alpha-care-insurance-system"] = {
+  appName: "ألفا كير",
+  nav: ["لوحة التحكم", "السقوف", "المستفيدون", "التحقق والخصم", "التقارير"],
+  kpis: [
+    { icon: Users,      label: "مستفيدون نشطون", value: "52,300", delta: "+340" },
+    { icon: Wallet,     label: "خصومات اليوم",    value: "9,120",  delta: "+4%" },
+    { icon: TrendingUp, label: "دقة التحقق",       value: "99.8%",  delta: "✓" },
+  ],
+  chartTitle: "الخصم اللحظي من السقوف",
+  chartBadge: "آخر 7 أيام",
+  bars: [50, 66, 54, 78, 62, 90, 74],
+  rows: [
+    { label: "خصم لحظي — مستشفى السلام",         width: 86 },
+    { label: "تحقق تغطية — صيدلية الوحدة ✓",      width: 70 },
+    { label: "تجديد سقف سنوي — مجموعة عائلية",   width: 58 },
+  ],
+};
+SYSTEM_MOCKUPS["rakiza-restaurant-system"] = {
+  appName: "مطاعم",
+  nav: ["لوحة التحكم", "نقاط البيع", "المطبخ", "الطاولات", "التوصيل"],
+  kpis: [
+    { icon: FileCheck,    label: "طلبات اليوم",  value: "412",   delta: "+11%" },
+    { icon: CalendarDays, label: "طاولات نشطة",  value: "18/24", delta: "75%" },
+    { icon: TrendingUp,   label: "متوسط الفاتورة", value: "38.5", delta: "+5%" },
+  ],
+  chartTitle: "الطلبات بالساعة",
+  chartBadge: "اليوم",
+  bars: [30, 45, 70, 95, 60, 80, 50],
+  rows: [
+    { label: "طلب #882 — جاهز في المطبخ",      width: 88 },
+    { label: "طاولة 7 — طلب تقسيم فاتورة",      width: 70 },
+    { label: "توصيل #214 — في الطريق",          width: 56 },
+  ],
+};
+SYSTEM_MOCKUPS["attendance-workforce-system"] = {
+  appName: "حضور",
+  nav: ["لوحة التحكم", "الحركات", "الورديات", "الإجازات", "التقارير"],
+  kpis: [
+    { icon: Users,        label: "حاضرون الآن",  value: "386",  delta: "94%" },
+    { icon: CalendarDays, label: "طلبات إجازة",   value: "12",   delta: "معلقة" },
+    { icon: TrendingUp,   label: "نسبة الالتزام",  value: "96%",  delta: "+1.2%" },
+  ],
+  chartTitle: "الحضور الأسبوعي",
+  chartBadge: "آخر 7 أيام",
+  bars: [88, 92, 85, 94, 90, 60, 30],
+  rows: [
+    { label: "بصمة دخول — بوابة المصنع الرئيسية", width: 86 },
+    { label: "طلب إذن خروج — قيد الاعتماد",        width: 70 },
+    { label: "وردية ليلية — تبديل المجموعة B",     width: 56 },
+  ],
+};
+SYSTEM_MOCKUPS["rakiza-projects-system"] = SYSTEM_MOCKUPS["erp-system"];
+SYSTEM_MOCKUPS["rakiza-archive-system"] = GENERIC;
+
 export function mockupFor(slug?: string): MockupConfig {
   return (slug && SYSTEM_MOCKUPS[slug]) || GENERIC;
 }

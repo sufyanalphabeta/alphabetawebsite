@@ -2,6 +2,7 @@ import type { Core } from "@strapi/strapi";
 import { mkdtemp, writeFile, stat, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
+import { seedPhase6RealContent } from "./seed-phase6";
 
 export async function bootstrapSeed(strapi: Core.Strapi) {
   try {
@@ -15,6 +16,7 @@ export async function bootstrapSeed(strapi: Core.Strapi) {
     await seedSprint4TrustLayer(strapi);
     await seedSprint5SupportDownloads(strapi);
     await seedTargetAudiences(strapi);
+    await seedPhase6RealContent(strapi);
     strapi.log.info("[bootstrap:seed] ✓ Seed ready");
   } catch (err) {
     strapi.log.warn(`[bootstrap:seed] ⚠ ${String(err)}`);
@@ -203,11 +205,11 @@ async function seedSoftwareProducts(strapi: Core.Strapi) {
 
 // ────────────────────────────── Sprint 3 ──────────────────────────────
 
-function blocks(text: string) {
+export function blocks(text: string) {
   return [{ type: "paragraph", children: [{ type: "text", text }] }];
 }
 
-function placeholderSvg(label: string, bg: string) {
+export function placeholderSvg(label: string, bg: string) {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="800" viewBox="0 0 1280 800">
   <rect width="1280" height="800" fill="${bg}"/>
   <rect x="40" y="40" width="1200" height="80" rx="12" fill="rgba(255,255,255,.12)"/>
@@ -218,7 +220,7 @@ function placeholderSvg(label: string, bg: string) {
 </svg>`;
 }
 
-async function uploadAsset(
+export async function uploadAsset(
   strapi: Core.Strapi,
   dir: string,
   fileName: string,
@@ -240,7 +242,7 @@ async function uploadAsset(
   });
 }
 
-function uploadSvg(
+export function uploadSvg(
   strapi: Core.Strapi,
   dir: string,
   fileName: string,
@@ -251,7 +253,7 @@ function uploadSvg(
 }
 
 /** Minimal one-page valid PDF with a visible title line. */
-function placeholderPdf(title: string) {
+export function placeholderPdf(title: string) {
   const safe = title.replace(/[()\\]/g, "");
   const objects = [
     "<</Type/Catalog/Pages 2 0 R>>",
@@ -274,11 +276,11 @@ function placeholderPdf(title: string) {
 }
 
 /** Minimal valid empty ZIP archive (end-of-central-directory record only). */
-function emptyZip() {
+export function emptyZip() {
   return Buffer.from([0x50, 0x4b, 0x05, 0x06, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 }
 
-function logoSvg(initials: string, bg: string) {
+export function logoSvg(initials: string, bg: string) {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256"><rect width="256" height="256" rx="48" fill="${bg}"/><text x="128" y="148" text-anchor="middle" font-family="Arial" font-size="64" fill="#fff">${initials}</text></svg>`;
 }
 

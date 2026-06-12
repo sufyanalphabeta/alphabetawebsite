@@ -49,6 +49,22 @@ function ProductCard({ product }: { product: SoftwareProduct }) {
           <p className="mt-4 flex-1 text-sm leading-relaxed text-slate-500">{product.short_description_ar}</p>
         )}
 
+        {/* hover mini-preview (pure CSS) */}
+        <div className="max-h-0 overflow-hidden opacity-0 transition-all duration-300 group-hover:mt-4 group-hover:max-h-24 group-hover:opacity-100">
+          <div className="rounded-xl border border-slate-100 bg-surface p-3">
+            <div className="flex items-end gap-1.5">
+              {[40, 65, 50, 80, 60, 90, 72, 55].map((h, i) => (
+                <span
+                  key={i}
+                  className="flex-1 rounded-t-sm bg-gradient-to-t from-royal-600 to-royal-400"
+                  style={{ height: `${Math.round(h * 0.4)}px`, opacity: 0.55 + (i / 16) }}
+                />
+              ))}
+            </div>
+            <p className="mt-2 text-[0.6rem] font-semibold text-slate-400">معاينة لوحة التحكم</p>
+          </div>
+        </div>
+
         <div className="mt-5 flex items-center justify-between border-t border-slate-100 pt-4">
           {product.category ? (
             <Badge tone="primary">{product.category.name_ar}</Badge>

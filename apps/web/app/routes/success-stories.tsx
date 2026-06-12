@@ -1,8 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft } from "lucide-react";
+import { AlertTriangle, ArrowLeft, Lightbulb, TrendingUp } from "lucide-react";
 import { getCollection, mediaUrl } from "~/lib/strapi";
 import { useSeo } from "~/lib/seo";
-import { Card, Container, EmptyState, PageHero } from "~/components/ui";
+import { Card, Container, cx, EmptyState, PageHero } from "~/components/ui";
 import type { SuccessStory } from "~/lib/types";
 
 export const Route = createFileRoute("/success-stories")({
@@ -25,14 +25,43 @@ export const Route = createFileRoute("/success-stories")({
   component: SuccessStoriesPage,
 });
 
-function StoryBlock({ label, labelEn, text }: { label: string; labelEn: string; text: string | null }) {
-  if (!text) return null;
+const TIMELINE_STEPS = [
+  { key: "challenge" as const, label: "التحدي",  labelEn: "Challenge", icon: AlertTriangle, tone: "text-amber-500 bg-amber-500/10" },
+  { key: "solution"  as const, label: "الحل",    labelEn: "Solution",  icon: Lightbulb,     tone: "text-royal-500 bg-royal-500/10" },
+  { key: "results"   as const, label: "النتائج", labelEn: "Results",   icon: TrendingUp,    tone: "text-emerald-600 bg-emerald-600/10" },
+];
+
+/** Challenge → Solution → Results as a connected timeline. */
+function StoryTimeline({ story }: { story: SuccessStory }) {
+  const texts = {
+    challenge: story.challenge_ar,
+    solution:  story.solution_ar,
+    results:   story.results_ar,
+  };
+  const steps = TIMELINE_STEPS.filter((s) => texts[s.key]);
+  if (steps.length === 0) return null;
+
   return (
-    <div>
-      <h3 className="text-sm font-bold text-primary-900">
-        {label} <span className="ms-1 text-xs font-normal text-slate-300">{labelEn}</span>
-      </h3>
-      <p className="mt-1.5 text-sm leading-loose text-slate-600">{text}</p>
+    <div className="relative grid gap-8 md:grid-cols-3 md:gap-6">
+      {/* connector (desktop) */}
+      <div className="absolute inset-x-12 top-6 hidden border-t-2 border-dashed border-slate-200 md:block" />
+      {steps.map(({ key, label, labelEn, icon: Icon, tone }, i) => (
+        <div key={key} className="relative">
+          <div className="flex items-center gap-3 md:flex-col md:items-start">
+            <span className={cx("relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full ring-4 ring-card", tone)}>
+              <Icon size={20} />
+            </span>
+            <div>
+              <p className="font-bold text-primary-900">
+                {label}
+                <span className="ms-2 text-[0.65rem] font-semibold uppercase tracking-wider text-slate-300">{labelEn}</span>
+              </p>
+              <p className="text-[0.65rem] font-semibold text-slate-300">المرحلة {i + 1} من {steps.length}</p>
+            </div>
+          </div>
+          <p className="mt-3 text-sm leading-loose text-slate-600">{texts[key]}</p>
+        </div>
+      ))}
     </div>
   );
 }
@@ -85,10 +114,8 @@ function SuccessStoriesPage() {
                   )}
                 </header>
 
-                <div className="space-y-6 p-7">
-                  <StoryBlock label="التحدي"  labelEn="Challenge" text={story.challenge_ar} />
-                  <StoryBlock label="الحل"    labelEn="Solution"  text={story.solution_ar} />
-                  <StoryBlock label="النتائج" labelEn="Results"   text={story.results_ar} />
+                <div className="space-y-7 p-7">
+                  <StoryTimeline story={story} />
 
                   {(story.metrics?.length ?? 0) > 0 && (
                     <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">

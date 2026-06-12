@@ -174,24 +174,23 @@ function HomePage() {
         </section>
       )}
 
-      {/* ── Animated stats band ───────────────────────────── */}
-      <Section tone="muted" className="py-12 sm:py-14">
-        <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">
-          <div className="text-center">
-            <p className="text-3xl font-bold text-royal-500 sm:text-4xl"><CountUp end={10} prefix="+" /></p>
-            <p className="mt-1 text-sm text-slate-500">سنوات خبرة</p>
-          </div>
-          <div className="text-center">
-            <p className="text-3xl font-bold text-royal-500 sm:text-4xl"><CountUp end={50} prefix="+" /></p>
-            <p className="mt-1 text-sm text-slate-500">مؤسسة تثق بنا</p>
-          </div>
-          <div className="text-center">
-            <p className="text-3xl font-bold text-royal-500 sm:text-4xl"><CountUp end={products.length || 6} suffix="+" /></p>
-            <p className="mt-1 text-sm text-slate-500">أنظمة متكاملة</p>
-          </div>
-          <StatTile value="24/7" label="دعم فني متواصل" />
-        </div>
-      </Section>
+      {/* ── Animated stats band (enterprise dark) ─────────── */}
+      <section className="bg-cta relative overflow-hidden py-14 text-white sm:py-16">
+        <div className="bg-grid-dark pointer-events-none absolute inset-0" />
+        <Container className="relative grid grid-cols-2 gap-y-10 divide-x divide-x-reverse divide-white/10 lg:grid-cols-4">
+          {[
+            { node: <CountUp end={10} prefix="+" />, label: "سنوات خبرة" },
+            { node: <CountUp end={50} prefix="+" />, label: "مؤسسة تثق بنا" },
+            { node: <CountUp end={products.length || 6} suffix="+" />, label: "أنظمة متكاملة" },
+            { node: <>24/7</>, label: "دعم فني متواصل" },
+          ].map((s, i) => (
+            <div key={i} className="px-4 text-center">
+              <p className="text-4xl font-extrabold tracking-tight text-royal-400 sm:text-5xl">{s.node}</p>
+              <p className="mt-2 text-sm text-heroink-100/75">{s.label}</p>
+            </div>
+          ))}
+        </Container>
+      </section>
 
       {/* ── Featured products ─────────────────────────────── */}
       <Section>

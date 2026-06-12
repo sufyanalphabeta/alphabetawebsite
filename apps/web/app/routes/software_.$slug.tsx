@@ -18,6 +18,8 @@ import { getCollection, mediaUrl } from "~/lib/strapi";
 import { useSeo } from "~/lib/seo";
 import { formatFileSize, formatDate, LANGUAGE_LABEL, fileExtBadge } from "~/lib/format";
 import { Badge, BrandWatermark, BrowserFrame, buttonClass, Card, Container, cx, LinkButton, Reveal, SectionHeading } from "~/components/ui";
+import { DashboardMockup, mockupFor } from "~/components/DashboardMockup";
+import { ModulesDiagram } from "~/components/ModulesDiagram";
 import type {
   BlocksNode,
   BlocksTextNode,
@@ -331,6 +333,13 @@ function ProductDetailPage() {
               </Link>
             </div>
           </div>
+
+          {/* System-specific dashboard mockup */}
+          <div className="mt-12 hidden lg:block">
+            <div className="glass mx-auto max-w-4xl rounded-3xl p-3">
+              <DashboardMockup config={mockupFor(product.slug)} />
+            </div>
+          </div>
         </Container>
       </section>
 
@@ -419,8 +428,19 @@ function ProductDetailPage() {
       {modules.length > 0 && (
         <section id="modules" className="scroll-mt-28 bg-surface py-14">
           <Container>
-            <SectionHeading align="start" eyebrow="Modules" title="وحدات النظام" />
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <SectionHeading
+              align="start"
+              eyebrow="Architecture"
+              title="وحدات النظام"
+              description="بنية معيارية مترابطة — مرّر على أي وحدة لمعرفة دورها"
+            />
+            {/* enterprise architecture diagram (desktop) */}
+            {modules.length >= 3 && (
+              <div className="mb-6 hidden lg:block">
+                <ModulesDiagram systemName={product.name_ar} modules={modules} />
+              </div>
+            )}
+            <div className={cx("grid gap-4 sm:grid-cols-2 lg:grid-cols-3", modules.length >= 3 && "lg:hidden")}>
               {modules.map((m) => (
                 <Card key={m.id} className={cx("p-5", m.is_core && "border-primary-300 ring-1 ring-primary-200")}>
                   <div className="flex items-start justify-between gap-2">

@@ -2,7 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Building2, MapPin } from "lucide-react";
 import { getCollection, mediaUrl } from "~/lib/strapi";
 import { useSeo } from "~/lib/seo";
-import { Badge, Card, Container, EmptyState, PageHero } from "~/components/ui";
+import { Badge, Card, Container, EmptyState, PageHero, SectionHeading } from "~/components/ui";
+import { LibyaMap } from "~/components/LibyaMap";
 import type { Client } from "~/lib/types";
 
 export const Route = createFileRoute("/clients")({
@@ -57,6 +58,18 @@ function ClientsPage() {
           </Container>
         </section>
       )}
+
+      {/* Coverage map */}
+      <section className="bg-surface py-16">
+        <Container>
+          <SectionHeading
+            eyebrow="Coverage"
+            title="حضور يغطي ليبيا"
+            description="ندعم عملاءنا ميدانياً في المدن الرئيسية، مع إمكانية النشر السحابي في أي مكان"
+          />
+          <LibyaMap />
+        </Container>
+      </section>
 
       <Container className="py-14">
         {clients.length === 0 ? (

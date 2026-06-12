@@ -6,13 +6,17 @@ import {
   Badge,
   Card,
   Container,
+  CountUp,
   EmptyState,
   LinkButton,
+  Marquee,
+  Reveal,
   Section,
   SectionHeading,
   Stars,
   StatTile,
 } from "~/components/ui";
+import { DashboardMockup } from "~/components/DashboardMockup";
 import type {
   Client,
   Partner,
@@ -85,26 +89,30 @@ function HomePage() {
   return (
     <main>
       {/* ── Hero ──────────────────────────────────────────── */}
-      <section className="bg-hero text-white">
-        <Container className="grid items-center gap-12 py-20 sm:py-24 lg:grid-cols-2">
-          <div>
-            <Badge tone="darkGlass" className="mb-5">منصة ألفا بيتا للأنظمة المؤسسية</Badge>
-            <h1 className="text-4xl font-bold leading-tight sm:text-5xl">
+      <section className="bg-mesh relative overflow-hidden text-white">
+        <div className="bg-grid-dark pointer-events-none absolute inset-0" />
+        <Container className="relative grid items-center gap-14 py-20 sm:py-28 lg:grid-cols-2">
+          <div className="animate-fade-up">
+            <Badge tone="darkGlass" className="mb-5 ring-1 ring-white/15">
+              <span className="me-1 inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
+              منصة ألفا بيتا للأنظمة المؤسسية
+            </Badge>
+            <h1 className="text-4xl font-bold leading-[1.15] sm:text-[3.4rem]">
               {setting?.tagline_ar ?? "نصنع البرمجيات، نبني المستقبل"}
             </h1>
-            <p className="mt-5 max-w-xl text-lg leading-relaxed text-primary-100/85">
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-primary-100/85">
               أنظمة متكاملة للتأمين والرعاية الصحية وتخطيط موارد المؤسسات — مصممة للسوق الليبي،
               بمعايير عالمية وبدعم عربي كامل.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <LinkButton to="/request-demo" variant="accent" size="lg">
+            <div className="mt-9 flex flex-wrap gap-3">
+              <LinkButton to="/request-demo" variant="accent" size="lg" className="shadow-lg shadow-accent-500/25">
                 اطلب عرضاً توضيحياً
               </LinkButton>
-              <LinkButton to="/software" variant="ghostDark" size="lg">
+              <LinkButton to="/software" variant="ghostDark" size="lg" className="glass border-0">
                 استعرض الأنظمة
               </LinkButton>
             </div>
-            <ul className="mt-10 flex flex-wrap gap-x-7 gap-y-3">
+            <ul className="mt-11 flex flex-wrap gap-x-7 gap-y-3">
               {TRUST_POINTS.map(({ icon: Icon, label }) => (
                 <li key={label} className="flex items-center gap-2 text-sm text-primary-100/80">
                   <Icon size={16} className="text-accent-400" /> {label}
@@ -113,66 +121,73 @@ function HomePage() {
             </ul>
           </div>
 
-          {/* Hero product showcase */}
-          <div className="hidden lg:block">
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
-              <p className="mb-4 text-sm font-semibold text-primary-100/70">الأنظمة الأكثر طلباً</p>
-              <div className="space-y-3">
-                {heroProducts.map((p) => (
-                  <Link
-                    key={p.id}
-                    to="/software/$slug"
-                    params={{ slug: p.slug }}
-                    className="flex items-center gap-4 rounded-xl bg-white/10 p-4 transition-colors hover:bg-white/15"
-                  >
-                    <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white/15">
-                      {p.logo ? (
-                        <img src={mediaUrl(p.logo.url) ?? ""} alt="" className="h-full w-full object-cover" />
-                      ) : (
-                        <MonitorCheck size={20} className="text-white" />
-                      )}
-                    </span>
-                    <span className="min-w-0 flex-1">
-                      <span className="block truncate font-semibold text-white">{p.name_ar}</span>
-                      <span className="block truncate text-xs text-primary-100/60">{p.short_description_ar}</span>
-                    </span>
-                    <ArrowLeft size={16} className="shrink-0 text-accent-400" />
-                  </Link>
-                ))}
-              </div>
+          {/* Hero dashboard mockup */}
+          <div className="relative hidden lg:block">
+            <div className="glass animate-float rounded-3xl p-3">
+              <DashboardMockup />
+            </div>
+            {/* floating product chips */}
+            <div className="absolute -start-6 -bottom-6 space-y-2">
+              {heroProducts.slice(0, 2).map((p) => (
+                <Link
+                  key={p.id}
+                  to="/software/$slug"
+                  params={{ slug: p.slug }}
+                  className="glass flex items-center gap-3 rounded-xl px-4 py-2.5 transition-colors hover:bg-white/15"
+                >
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white/15">
+                    {p.logo ? (
+                      <img src={mediaUrl(p.logo.url) ?? ""} alt="" className="h-full w-full object-cover" />
+                    ) : (
+                      <MonitorCheck size={15} className="text-white" />
+                    )}
+                  </span>
+                  <span className="text-xs font-semibold text-white">{p.name_ar}</span>
+                  <ArrowLeft size={13} className="text-accent-400" />
+                </Link>
+              ))}
             </div>
           </div>
         </Container>
       </section>
 
-      {/* ── Client logo wall ──────────────────────────────── */}
+      {/* ── Client logo marquee ───────────────────────────── */}
       {clients.length > 0 && (
         <section className="border-b border-slate-100 bg-white py-10">
           <Container>
-            <p className="mb-6 text-center text-sm font-medium text-slate-400">
+            <p className="mb-7 text-center text-sm font-medium text-slate-400">
               مؤسسات رائدة تدير أعمالها بأنظمة ألفا بيتا
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6">
+            <Marquee>
               {clients.map((c) => (
-                <Link key={c.id} to="/clients" title={c.name_ar} className="flex items-center gap-2.5 opacity-70 grayscale transition hover:opacity-100 hover:grayscale-0">
+                <Link key={c.id} to="/clients" title={c.name_ar} className="flex shrink-0 items-center gap-2.5 opacity-60 grayscale transition hover:opacity-100 hover:grayscale-0">
                   {c.logo && (
-                    <img src={mediaUrl(c.logo.url) ?? ""} alt={c.name_ar} className="h-9 w-9 rounded-md object-cover" />
+                    <img src={mediaUrl(c.logo.url) ?? ""} alt={c.name_ar} className="h-10 w-10 rounded-lg object-cover" />
                   )}
-                  <span className="text-sm font-semibold text-slate-600">{c.name_ar}</span>
+                  <span className="whitespace-nowrap text-sm font-semibold text-slate-600">{c.name_ar}</span>
                 </Link>
               ))}
-            </div>
+            </Marquee>
           </Container>
         </section>
       )}
 
-      {/* ── Stats band ────────────────────────────────────── */}
+      {/* ── Animated stats band ───────────────────────────── */}
       <Section tone="muted" className="py-12 sm:py-14">
         <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">
-          <StatTile value="+10"     label="سنوات خبرة" />
-          <StatTile value="+50"     label="مؤسسة تثق بنا" />
-          <StatTile value={`${products.length || 6}+`} label="أنظمة متكاملة" />
-          <StatTile value="24/7"    label="دعم فني متواصل" />
+          <div className="text-center">
+            <p className="text-3xl font-bold text-accent-600 sm:text-4xl"><CountUp end={10} prefix="+" /></p>
+            <p className="mt-1 text-sm text-slate-500">سنوات خبرة</p>
+          </div>
+          <div className="text-center">
+            <p className="text-3xl font-bold text-accent-600 sm:text-4xl"><CountUp end={50} prefix="+" /></p>
+            <p className="mt-1 text-sm text-slate-500">مؤسسة تثق بنا</p>
+          </div>
+          <div className="text-center">
+            <p className="text-3xl font-bold text-accent-600 sm:text-4xl"><CountUp end={products.length || 6} suffix="+" /></p>
+            <p className="mt-1 text-sm text-slate-500">أنظمة متكاملة</p>
+          </div>
+          <StatTile value="24/7" label="دعم فني متواصل" />
         </div>
       </Section>
 
@@ -186,7 +201,7 @@ function HomePage() {
         {products.length === 0 ? (
           <EmptyState message="لا توجد أنظمة منشورة حالياً" />
         ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <Reveal className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {products.slice(0, 6).map((p) => (
               <Link key={p.id} to="/software/$slug" params={{ slug: p.slug }} className="group">
                 <Card className="flex h-full flex-col p-6">
@@ -213,7 +228,7 @@ function HomePage() {
                 </Card>
               </Link>
             ))}
-          </div>
+          </Reveal>
         )}
         <div className="mt-10 text-center">
           <LinkButton to="/software" variant="outline" size="md">جميع الأنظمة</LinkButton>
@@ -246,7 +261,7 @@ function HomePage() {
       {testimonials.length > 0 && (
         <Section>
           <SectionHeading eyebrow="آراء العملاء" title="ماذا يقول من يعمل بأنظمتنا يومياً؟" />
-          <div className="grid gap-6 md:grid-cols-3">
+          <Reveal className="grid gap-6 md:grid-cols-3">
             {testimonials.map((t) => (
               <Card key={t.id} className="flex flex-col p-6">
                 <Stars rating={t.rating} />
@@ -266,7 +281,7 @@ function HomePage() {
                 </footer>
               </Card>
             ))}
-          </div>
+          </Reveal>
           <div className="mt-8 text-center">
             <Link to="/testimonials" className="text-sm font-semibold text-accent-600 hover:text-accent-700">
               جميع آراء العملاء ←

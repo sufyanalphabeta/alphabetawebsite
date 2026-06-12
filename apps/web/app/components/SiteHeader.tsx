@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { cx, LinkButton } from "~/components/ui";
+import { LogoWordmark } from "~/components/Logo";
 
 interface NavLeaf {
   label: string;
@@ -120,14 +121,8 @@ export function SiteHeader() {
     >
       <div className="mx-auto flex h-16 w-full max-w-7xl items-center gap-2 px-5 sm:px-8">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2.5 text-decoration-none">
-          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary-700 text-lg font-bold text-white">
-            αβ
-          </span>
-          <span className="flex flex-col leading-tight">
-            <span className="text-[1.05rem] font-bold text-primary-800">ألفا بيتا</span>
-            <span className="text-[0.6rem] font-medium tracking-widest text-slate-400">ALPHABETA</span>
-          </span>
+        <Link to="/" aria-label="ألفا بيتا — الرئيسية">
+          <LogoWordmark />
         </Link>
 
         {/* Desktop nav */}

@@ -17,7 +17,7 @@ import {
 import { getCollection, mediaUrl } from "~/lib/strapi";
 import { useSeo } from "~/lib/seo";
 import { formatFileSize, formatDate, LANGUAGE_LABEL, fileExtBadge } from "~/lib/format";
-import { Badge, buttonClass, Card, Container, cx, LinkButton, SectionHeading } from "~/components/ui";
+import { Badge, BrowserFrame, buttonClass, Card, Container, cx, LinkButton, Reveal, SectionHeading } from "~/components/ui";
 import type {
   BlocksNode,
   BlocksTextNode,
@@ -155,24 +155,26 @@ function GallerySection({ product }: { product: SoftwareProductDetail }) {
     <section id="gallery" className="scroll-mt-28 py-14">
       <Container>
         <SectionHeading align="start" eyebrow="Screenshots" title="لقطات من النظام" />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <Reveal className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {shots.map((shot, i) => (
             <button
               key={shot.id}
               type="button"
               onClick={() => setIndex(i)}
-              className="group overflow-hidden rounded-xl border border-slate-200 bg-white shadow-card transition-shadow hover:shadow-card-hover"
+              className="group block text-start transition-transform duration-200 hover:-translate-y-1"
               aria-label={`عرض الصورة ${i + 1}`}
             >
-              <img
-                src={mediaUrl(shot.url) ?? ""}
-                alt={shot.alternativeText ?? `${product.name_ar} — صورة ${i + 1}`}
-                className="h-48 w-full cursor-zoom-in object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-                loading="lazy"
-              />
+              <BrowserFrame url={`${product.slug}.alphabeta.ly`}>
+                <img
+                  src={mediaUrl(shot.url) ?? ""}
+                  alt={shot.alternativeText ?? `${product.name_ar} — صورة ${i + 1}`}
+                  className="h-44 w-full cursor-zoom-in object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                  loading="lazy"
+                />
+              </BrowserFrame>
             </button>
           ))}
-        </div>
+        </Reveal>
       </Container>
 
       {index !== null && (
@@ -283,8 +285,9 @@ function ProductDetailPage() {
   return (
     <main>
       {/* ── Hero ─────────────────────────────────────────── */}
-      <section className="bg-hero text-white">
-        <Container className="py-14 sm:py-16">
+      <section className="bg-mesh relative overflow-hidden text-white">
+        <div className="bg-grid-dark pointer-events-none absolute inset-0" />
+        <Container className="relative py-14 sm:py-16">
           <nav className="mb-6 flex items-center gap-2 text-sm text-primary-100/60">
             <Link to="/" className="hover:text-white">الرئيسية</Link>
             <span>/</span>

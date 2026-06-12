@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import type { ReactNode, ComponentProps } from "react";
 import { Link } from "@tanstack/react-router";
 
@@ -140,10 +141,129 @@ export function Badge({
 }
 
 export const CARD =
-  "rounded-2xl border border-slate-200/80 bg-white shadow-card transition-shadow duration-200 hover:shadow-card-hover";
+  "rounded-2xl border border-slate-200/80 bg-white shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card-hover";
 
 export function Card({ className, children }: { className?: string; children: ReactNode }) {
   return <div className={cx(CARD, className)}>{children}</div>;
+}
+
+/* ── Motion primitives (IntersectionObserver, no deps) ──────── */
+
+function useInView(threshold = 0.15) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || typeof IntersectionObserver === "undefined") {
+      setInView(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          io.disconnect();
+        }
+      },
+      { threshold },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [threshold]);
+  return { ref, inView };
+}
+
+/** Fades+slides children in when scrolled into view. */
+export function Reveal({
+  children,
+  className,
+  delay = 0,
+}: {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+}) {
+  const { ref, inView } = useInView();
+  return (
+    <div
+      ref={ref}
+      style={inView && delay ? { animationDelay: `${delay}ms` } : undefined}
+      className={cx(inView ? "animate-fade-up" : "opacity-0", className)}
+    >
+      {children}
+    </div>
+  );
+}
+
+/** Animated counter that runs once when visible. */
+export function CountUp({
+  end,
+  prefix = "",
+  suffix = "",
+  duration = 1400,
+}: {
+  end: number;
+  prefix?: string;
+  suffix?: string;
+  duration?: number;
+}) {
+  const { ref, inView } = useInView(0.4);
+  const [value, setValue] = useState(0);
+  useEffect(() => {
+    if (!inView) return;
+    let raf = 0;
+    const start = performance.now();
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      setValue(Math.round(end * eased));
+      if (t < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [inView, end, duration]);
+  return (
+    <span ref={ref as React.RefObject<HTMLSpanElement>}>
+      {prefix}{value}{suffix}
+    </span>
+  );
+}
+
+/** Infinite horizontal logo marquee (CSS-only animation). */
+export function Marquee({ children, className }: { children: ReactNode; className?: string }) {
+  return (
+    <div dir="ltr" className={cx("mask-fade-x overflow-hidden", className)}>
+      <div className="flex w-max items-center gap-14 animate-marquee">
+        {children}
+        {children}
+      </div>
+    </div>
+  );
+}
+
+/** Browser-chrome frame for screenshots / mockups. */
+export function BrowserFrame({
+  url = "app.alphabeta.ly",
+  className,
+  children,
+}: {
+  url?: string;
+  className?: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className={cx("overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-card-hover", className)}>
+      <div dir="ltr" className="flex items-center gap-2 border-b border-slate-100 bg-surface px-4 py-2.5">
+        <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
+        <span className="h-2.5 w-2.5 rounded-full bg-amber-400" />
+        <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
+        <span className="mx-auto flex items-center rounded-md bg-white px-4 py-0.5 text-[0.65rem] text-slate-400 ring-1 ring-slate-200">
+          {url}
+        </span>
+      </div>
+      {children}
+    </div>
+  );
 }
 
 /* ── Stats ──────────────────────────────────────────────────── */
@@ -173,8 +293,9 @@ export function PageHero({
   children?: ReactNode;
 }) {
   return (
-    <section className="bg-hero py-14 text-white sm:py-16">
-      <Container>
+    <section className="bg-mesh relative overflow-hidden py-14 text-white sm:py-16">
+      <div className="bg-grid-dark pointer-events-none absolute inset-0" />
+      <Container className="relative animate-fade-up">
         {titleEn && <p className="mb-2 text-sm font-semibold tracking-widest text-accent-300">{titleEn}</p>}
         <h1 className="text-3xl font-bold sm:text-4xl">{title}</h1>
         {subtitle && <p className="mt-3 max-w-2xl text-primary-100/80">{subtitle}</p>}

@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Mail, MapPin, Phone } from "lucide-react";
+import { LogoWordmark } from "~/components/Logo";
 
 const COLUMNS: Array<{ title: string; links: Array<{ label: string; to: string }> }> = [
   {
@@ -39,12 +40,7 @@ export function SiteFooter() {
       <div className="mx-auto grid w-full max-w-7xl gap-10 px-5 py-14 sm:px-8 md:grid-cols-2 lg:grid-cols-5">
         {/* Brand + contact */}
         <div className="lg:col-span-2">
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/10 text-lg font-bold text-white">
-              αβ
-            </span>
-            <span className="text-lg font-bold text-white">ألفا بيتا</span>
-          </div>
+          <LogoWordmark dark />
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-primary-200/80">
             شركة ليبية متخصصة في تطوير الأنظمة البرمجية للمؤسسات — نصنع البرمجيات، نبني المستقبل.
           </p>

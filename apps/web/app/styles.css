@@ -64,4 +64,55 @@
   .bg-cta {
     background: linear-gradient(120deg, #0f3460 0%, #08213f 100%);
   }
+
+  /* Premium mesh hero: navy gradient + radial glows */
+  .bg-mesh {
+    background:
+      radial-gradient(800px 420px at 85% -10%, rgb(56 189 248 / 0.18), transparent 60%),
+      radial-gradient(700px 380px at 8% 110%, rgb(233 69 96 / 0.14), transparent 60%),
+      linear-gradient(135deg, #051528 0%, #08213f 45%, #0f3460 100%);
+  }
+
+  /* Faint blueprint grid overlay (use on dark surfaces) */
+  .bg-grid-dark {
+    background-image:
+      linear-gradient(rgb(255 255 255 / 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(255 255 255 / 0.045) 1px, transparent 1px);
+    background-size: 38px 38px;
+  }
+
+  /* Glassmorphism panel (dark surfaces) */
+  .glass {
+    background: rgb(255 255 255 / 0.07);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgb(255 255 255 / 0.14);
+  }
+
+  /* Edge-fade mask for marquees */
+  .mask-fade-x {
+    mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+  }
+}
+
+@keyframes ab-fade-up {
+  from { opacity: 0; transform: translateY(26px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes ab-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes ab-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-12px); }
+}
+
+@layer utilities {
+  .animate-fade-up { animation: ab-fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .animate-marquee { animation: ab-marquee 36s linear infinite; }
+  .animate-float   { animation: ab-float 7s ease-in-out infinite; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-fade-up, .animate-marquee, .animate-float { animation: none; }
+  }
 }

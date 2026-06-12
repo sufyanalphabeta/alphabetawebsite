@@ -80,8 +80,10 @@ function SoftwarePage() {
   return (
     <main>
       {/* Page hero */}
-      <section className="bg-hero py-14 text-white sm:py-16">
-        <Container>
+      <section className="bg-mesh relative overflow-hidden py-14 text-white sm:py-16">
+        <div className="bg-grid-dark pointer-events-none absolute inset-0" />
+        <Container className="relative animate-fade-up">
+          <p className="mb-2 text-sm font-semibold tracking-widest text-accent-300">SOFTWARE HUB</p>
           <h1 className="text-3xl font-bold sm:text-4xl">منظومة البرمجيات</h1>
           <p className="mt-3 max-w-2xl text-primary-100/80">
             أنظمة مؤسسية متكاملة، عربية أولاً، قابلة للتخصيص — صممت لتدير أعمالك من طرف إلى طرف.

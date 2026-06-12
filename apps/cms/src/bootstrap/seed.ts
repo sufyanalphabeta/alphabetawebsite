@@ -14,6 +14,7 @@ export async function bootstrapSeed(strapi: Core.Strapi) {
     await seedSprint3Products(strapi);
     await seedSprint4TrustLayer(strapi);
     await seedSprint5SupportDownloads(strapi);
+    await seedTargetAudiences(strapi);
     strapi.log.info("[bootstrap:seed] ✓ Seed ready");
   } catch (err) {
     strapi.log.warn(`[bootstrap:seed] ⚠ ${String(err)}`);
@@ -930,4 +931,35 @@ async function seedSprint5SupportDownloads(strapi: Core.Strapi) {
   }
 
   strapi.log.info("[bootstrap:seed] Created Sprint 5 support & downloads center");
+}
+
+// ─────────────────────── Phase 5.5: target audiences ───────────────────────
+
+async function seedTargetAudiences(strapi: Core.Strapi) {
+  const q = strapi.db.query("api::software-product.software-product");
+  const audiences: Record<string, Array<{ title_ar: string; title_en: string }>> = {
+    "insurance-management-system": [
+      { title_ar: "شركات التأمين",   title_en: "Insurance Companies" },
+      { title_ar: "وسطاء التأمين",   title_en: "Brokers" },
+      { title_ar: "إدارات المطالبات", title_en: "Claims Departments" },
+      { title_ar: "الفرق المالية",    title_en: "Finance Teams" },
+    ],
+    "medical-management-system": [
+      { title_ar: "المستشفيات",      title_en: "Hospitals" },
+      { title_ar: "العيادات",        title_en: "Clinics" },
+      { title_ar: "المراكز الطبية",  title_en: "Medical Centers" },
+    ],
+    "erp-system": [
+      { title_ar: "الشركات الصغيرة والمتوسطة", title_en: "SMEs" },
+      { title_ar: "المؤسسات الكبرى",            title_en: "Enterprises" },
+      { title_ar: "المنظمات غير الربحية",        title_en: "NGOs" },
+    ],
+  };
+  for (const [slug, list] of Object.entries(audiences)) {
+    const product = await q.findOne({ where: { slug } }) as
+      | { id: number; target_audiences?: unknown } | null;
+    if (product && !product.target_audiences) {
+      await q.update({ where: { id: product.id }, data: { target_audiences: list } });
+    }
+  }
 }

@@ -19,6 +19,7 @@
     "long_description_en": { "type": "blocks" },
     "tagline_ar": { "type": "string" },
     "tagline_en": { "type": "string" },
+    "target_audiences": { "type": "json" },
     "logo": {
       "type": "media",
       "multiple": false,

@@ -350,9 +350,15 @@ export interface SupportArticle {
   publishedAt: string | null;
 }
 
+export interface TargetAudience {
+  title_ar: string;
+  title_en?: string;
+}
+
 export interface SoftwareProductDetail extends SoftwareProduct {
   tagline_ar: string | null;
   tagline_en: string | null;
+  target_audiences: TargetAudience[] | null;
   long_description_ar: BlocksNode[] | null;
   long_description_en: BlocksNode[] | null;
   main_image: StrapiImage | null;

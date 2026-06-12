@@ -25,7 +25,7 @@ export const Route = createFileRoute("/support_/category/$slug")({
   notFoundComponent: () => (
     <main className="mx-auto max-w-2xl px-6 py-24 text-center">
       <h1 className="text-2xl font-bold text-primary-800">القسم غير موجود</h1>
-      <Link to="/support" className="mt-4 inline-block font-semibold text-accent-600">← العودة إلى مركز الدعم</Link>
+      <Link to="/support" className="mt-4 inline-block font-semibold text-royal-500">← العودة إلى مركز الدعم</Link>
     </main>
   ),
   component: SupportCategoryPage,
@@ -42,10 +42,10 @@ function SupportCategoryPage() {
   return (
     <main>
       <PageHero title={category.name_ar} titleEn={category.name_en ?? undefined} subtitle={category.description_ar ?? undefined}>
-        <nav className="mt-4 flex items-center gap-2 text-sm text-primary-100/60">
+        <nav className="mt-4 flex items-center gap-2 text-sm text-heroink-100/60">
           <Link to="/support" className="hover:text-white">مركز الدعم</Link>
           <span>/</span>
-          <span className="text-primary-100">{category.name_ar}</span>
+          <span className="text-heroink-100">{category.name_ar}</span>
         </nav>
       </PageHero>
 

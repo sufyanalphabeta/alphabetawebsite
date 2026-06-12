@@ -4,7 +4,7 @@ import { cx, EmptyState } from "~/components/ui";
 import type { BlocksNode, BlocksTextNode, SupportArticle } from "~/lib/types";
 
 const FIELD =
-  "rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-700 focus:border-primary-400 focus:outline-none";
+  "rounded-lg border border-slate-200 bg-card px-3.5 py-2.5 text-sm text-slate-700 focus:border-primary-400 focus:outline-none";
 
 function blocksToParagraphs(nodes: BlocksNode[] | null) {
   if (!nodes?.length) return null;
@@ -51,7 +51,7 @@ export function SupportArticles({ articles, lockedCategorySlug }: SupportArticle
 
   return (
     <>
-      <div className="mb-7 flex flex-wrap gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-card">
+      <div className="mb-7 flex flex-wrap gap-3 rounded-2xl border border-slate-200 bg-card p-4 shadow-card">
         <label className="relative min-w-[220px] flex-1">
           <Search size={15} className="absolute end-3 top-1/2 -translate-y-1/2 text-slate-300" />
           <input
@@ -80,7 +80,7 @@ export function SupportArticles({ articles, lockedCategorySlug }: SupportArticle
       ) : (
         <div className="space-y-3">
           {filtered.map((a) => (
-            <details key={a.id} className="group rounded-xl border border-slate-200 bg-white shadow-card">
+            <details key={a.id} className="group rounded-xl border border-slate-200 bg-card shadow-card">
               <summary className="flex cursor-pointer items-start justify-between gap-4 p-5">
                 <span className="min-w-0">
                   <span className="block font-bold text-primary-900">{a.title_ar}</span>

@@ -1,40 +1,191 @@
 @import "tailwindcss";
 
-/* ── ALPHABETA Brand Tokens ─────────────────────────────────── */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ── ALPHABETA semantic tokens (light) ──────────────────────── */
+:root {
+  color-scheme: light;
+
+  --th-bg: #ffffff;
+  --th-card: #ffffff;
+  --th-surface: #f7f8fb;
+  --th-surface-2: #eef1f6;
+  --th-surface-3: #eef3fa;
+
+  /* neutral text/border scale (maps to slate-*) */
+  --th-slate-50:  #f8fafc;
+  --th-slate-100: #f1f5f9;
+  --th-slate-200: #e2e8f0;
+  --th-slate-300: #cbd5e1;
+  --th-slate-400: #94a3b8;
+  --th-slate-500: #64748b;
+  --th-slate-600: #475569;
+  --th-slate-700: #334155;
+  --th-slate-800: #1e293b;
+  --th-slate-900: #0f172a;
+
+  /* primary navy scale */
+  --th-primary-50:  #eef3fa;
+  --th-primary-100: #d9e4f2;
+  --th-primary-200: #b3c8e4;
+  --th-primary-300: #84a4d0;
+  --th-primary-400: #4f7ab4;
+  --th-primary-500: #2a5694;
+  --th-primary-600: #1a4377;
+  --th-primary-700: #0f3460;
+  --th-primary-800: #0b2850;
+  --th-primary-900: #08213f;
+
+  /* solid fills that must keep white text in BOTH themes */
+  --th-primary-solid: #0f3460;
+  --th-primary-solid-hover: #0b2850;
+
+  /* accent — CTA only */
+  --th-accent-50:  #fdeef1;
+  --th-accent-100: #fbd8df;
+  --th-accent-200: #f6adbc;
+  --th-accent-300: #f0828f;
+  --th-accent-400: #ec6377;
+  --th-accent-500: #e94560;
+  --th-accent-600: #d73754;
+  --th-accent-700: #b32a45;
+
+  /* state colors that flip for readability */
+  --th-emerald-50:  #ecfdf5;
+  --th-emerald-200: #a7f3d0;
+  --th-emerald-600: #059669;
+  --th-emerald-700: #047857;
+  --th-red-500: #ef4444;
+
+  --th-shadow-card: 0 1px 3px rgb(15 52 96 / 0.06), 0 4px 16px rgb(15 52 96 / 0.06);
+  --th-shadow-card-hover: 0 2px 6px rgb(15 52 96 / 0.08), 0 12px 32px rgb(15 52 96 / 0.12);
+}
+
+/* ── Dark theme ─────────────────────────────────────────────── */
+.dark {
+  color-scheme: dark;
+
+  --th-bg: #0a1322;
+  --th-card: #10203a;
+  --th-surface: #0d1a2e;
+  --th-surface-2: #16294a;
+  --th-surface-3: #122441;
+
+  --th-slate-50:  #152a4a;
+  --th-slate-100: #1b2e4d;
+  --th-slate-200: #243a5e;
+  --th-slate-300: #3b5377;
+  --th-slate-400: #7d92ad;
+  --th-slate-500: #93a7c0;
+  --th-slate-600: #b3c3d8;
+  --th-slate-700: #cbd7e8;
+  --th-slate-800: #e0e9f5;
+  --th-slate-900: #eef4fb;
+
+  --th-primary-50:  #152a4a;
+  --th-primary-100: #1d3a63;
+  --th-primary-200: #2a4d80;
+  --th-primary-300: #3b659f;
+  --th-primary-400: #5585c0;
+  --th-primary-500: #6f9cd2;
+  --th-primary-600: #7da7d9;
+  --th-primary-700: #97bce6;
+  --th-primary-800: #b9d3f0;
+  --th-primary-900: #dbe7f6;
+
+  --th-primary-solid: #2b66b3;
+  --th-primary-solid-hover: #3573c4;
+
+  --th-accent-50:  #3a1c28;
+  --th-accent-100: #4a2331;
+  --th-accent-200: #5e2c3c;
+  --th-accent-300: #d94f68;
+  --th-accent-400: #ec6377;
+  --th-accent-500: #e94560;
+  --th-accent-600: #f0627a;
+  --th-accent-700: #f58aa0;
+
+  --th-emerald-50:  #0c2b21;
+  --th-emerald-200: #1f4f3e;
+  --th-emerald-600: #34d399;
+  --th-emerald-700: #6ee7b7;
+  --th-red-500: #f87171;
+
+  --th-shadow-card: 0 1px 3px rgb(0 0 0 / 0.35), 0 4px 16px rgb(0 0 0 / 0.35);
+  --th-shadow-card-hover: 0 2px 6px rgb(0 0 0 / 0.4), 0 12px 32px rgb(0 0 0 / 0.5);
+}
+
+/* ── Map tokens into Tailwind utilities ─────────────────────── */
+@theme inline {
+  --color-background: var(--th-bg);
+  --color-card: var(--th-card);
+  --color-surface: var(--th-surface);
+  --color-surface-2: var(--th-surface-2);
+  --color-surface-3: var(--th-surface-3);
+
+  --color-slate-50:  var(--th-slate-50);
+  --color-slate-100: var(--th-slate-100);
+  --color-slate-200: var(--th-slate-200);
+  --color-slate-300: var(--th-slate-300);
+  --color-slate-400: var(--th-slate-400);
+  --color-slate-500: var(--th-slate-500);
+  --color-slate-600: var(--th-slate-600);
+  --color-slate-700: var(--th-slate-700);
+  --color-slate-800: var(--th-slate-800);
+  --color-slate-900: var(--th-slate-900);
+
+  --color-primary-50:  var(--th-primary-50);
+  --color-primary-100: var(--th-primary-100);
+  --color-primary-200: var(--th-primary-200);
+  --color-primary-300: var(--th-primary-300);
+  --color-primary-400: var(--th-primary-400);
+  --color-primary-500: var(--th-primary-500);
+  --color-primary-600: var(--th-primary-600);
+  --color-primary-700: var(--th-primary-700);
+  --color-primary-800: var(--th-primary-800);
+  --color-primary-900: var(--th-primary-900);
+  --color-primary: var(--th-primary-700);
+  --color-primary-solid: var(--th-primary-solid);
+  --color-primary-solid-hover: var(--th-primary-solid-hover);
+
+  --color-accent-50:  var(--th-accent-50);
+  --color-accent-100: var(--th-accent-100);
+  --color-accent-200: var(--th-accent-200);
+  --color-accent-300: var(--th-accent-300);
+  --color-accent-400: var(--th-accent-400);
+  --color-accent-500: var(--th-accent-500);
+  --color-accent-600: var(--th-accent-600);
+  --color-accent-700: var(--th-accent-700);
+  --color-accent: var(--th-accent-500);
+
+  --color-emerald-50:  var(--th-emerald-50);
+  --color-emerald-200: var(--th-emerald-200);
+  --color-emerald-600: var(--th-emerald-600);
+  --color-emerald-700: var(--th-emerald-700);
+  --color-red-500: var(--th-red-500);
+
+  --shadow-card: var(--th-shadow-card);
+  --shadow-card-hover: var(--th-shadow-card-hover);
+}
+
+/* ── Static brand tokens (identical in both themes) ─────────── */
 @theme {
-  /* Primary — ALPHABETA navy */
-  --color-primary-50:  #eef3fa;
-  --color-primary-100: #d9e4f2;
-  --color-primary-200: #b3c8e4;
-  --color-primary-300: #84a4d0;
-  --color-primary-400: #4f7ab4;
-  --color-primary-500: #2a5694;
-  --color-primary-600: #1a4377;
-  --color-primary-700: #0f3460; /* brand primary */
-  --color-primary-800: #0b2850;
-  --color-primary-900: #08213f; /* brand primary dark */
-  --color-primary-950: #051528;
-  --color-primary: #0f3460;
+  /* Royal blue — the logo secondary, replaces decorative red */
+  --color-royal-400: #38bdf8;
+  --color-royal-500: #2563eb;
+  --color-royal-600: #1d4ed8;
 
-  /* Accent — ALPHABETA crimson */
-  --color-accent-50:  #fdeef1;
-  --color-accent-100: #fbd8df;
-  --color-accent-200: #f6adbc;
-  --color-accent-300: #f0828f;
-  --color-accent-400: #ec6377;
-  --color-accent-500: #e94560; /* brand accent */
-  --color-accent-600: #d73754; /* brand accent hover */
-  --color-accent-700: #b32a45;
-  --color-accent: #e94560;
+  /* Fixed navy values for surfaces that stay dark in both themes */
+  --color-navy-700: #0f3460;
+  --color-navy-900: #08213f;
+  --color-navy-950: #051528;
 
-  /* Surfaces */
-  --color-surface: #f7f8fb;
-  --color-surface-2: #eef1f6;
+  /* Static light ink for text on permanently-dark surfaces (heroes, footer) */
+  --color-heroink-100: #d9e4f2;
+  --color-heroink-200: #b3c8e4;
+  --color-heroink-300: #84a4d0;
 
   --font-sans: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, system-ui, sans-serif;
-
-  --shadow-card: 0 1px 3px rgb(15 52 96 / 0.06), 0 4px 16px rgb(15 52 96 / 0.06);
-  --shadow-card-hover: 0 2px 6px rgb(15 52 96 / 0.08), 0 12px 32px rgb(15 52 96 / 0.12);
 }
 
 @layer base {
@@ -42,11 +193,16 @@
     scroll-behavior: smooth;
   }
   body {
-    @apply bg-white font-sans text-slate-700 antialiased;
+    background-color: var(--th-bg);
+    @apply font-sans text-slate-700 antialiased;
     font-size: 16px;
   }
+  h1, h2, h3 {
+    letter-spacing: -0.01em;
+  }
   ::selection {
-    @apply bg-primary-700 text-white;
+    background-color: #0f3460;
+    color: #fff;
   }
   summary {
     list-style: none;
@@ -69,7 +225,7 @@
   .bg-mesh {
     background:
       radial-gradient(800px 420px at 85% -10%, rgb(56 189 248 / 0.18), transparent 60%),
-      radial-gradient(700px 380px at 8% 110%, rgb(233 69 96 / 0.14), transparent 60%),
+      radial-gradient(700px 380px at 8% 110%, rgb(37 99 235 / 0.16), transparent 60%),
       linear-gradient(135deg, #051528 0%, #08213f 45%, #0f3460 100%);
   }
 
@@ -106,13 +262,18 @@
   0%, 100% { transform: translateY(0); }
   50%      { transform: translateY(-12px); }
 }
+@keyframes ab-pulse-dot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%      { transform: scale(1.8); opacity: 0.4; }
+}
 
 @layer utilities {
-  .animate-fade-up { animation: ab-fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
-  .animate-marquee { animation: ab-marquee 36s linear infinite; }
-  .animate-float   { animation: ab-float 7s ease-in-out infinite; }
+  .animate-fade-up   { animation: ab-fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .animate-marquee   { animation: ab-marquee 36s linear infinite; }
+  .animate-float     { animation: ab-float 7s ease-in-out infinite; }
+  .animate-pulse-dot { animation: ab-pulse-dot 2.4s ease-in-out infinite; }
 
   @media (prefers-reduced-motion: reduce) {
-    .animate-fade-up, .animate-marquee, .animate-float { animation: none; }
+    .animate-fade-up, .animate-marquee, .animate-float, .animate-pulse-dot { animation: none; }
   }
 }

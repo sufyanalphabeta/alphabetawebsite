@@ -16,7 +16,7 @@ export function Container({ className, children }: { className?: string; childre
 export type SectionTone = "white" | "muted" | "dark";
 
 const SECTION_TONE: Record<SectionTone, string> = {
-  white: "bg-white",
+  white: "bg-card",
   muted: "bg-surface",
   dark:  "bg-hero text-white",
 };
@@ -33,7 +33,7 @@ export function Section({
   children: ReactNode;
 }) {
   return (
-    <section id={id} className={cx(SECTION_TONE[tone], "py-16 sm:py-20", className)}>
+    <section id={id} className={cx(SECTION_TONE[tone], "py-20 sm:py-24", className)}>
       <Container>{children}</Container>
     </section>
   );
@@ -53,15 +53,15 @@ export function SectionHeading({
   dark?: boolean;
 }) {
   return (
-    <header className={cx("mb-10 max-w-3xl", align === "center" ? "mx-auto text-center" : "text-start")}>
+    <header className={cx("mb-12 max-w-3xl", align === "center" ? "mx-auto text-center" : "text-start")}>
       {eyebrow && (
-        <p className={cx("mb-2 text-sm font-semibold tracking-wide", dark ? "text-accent-300" : "text-accent-600")}>
+        <p className={cx("mb-2.5 text-sm font-bold uppercase tracking-[0.18em]", dark ? "text-royal-400" : "text-royal-500")}>
           {eyebrow}
         </p>
       )}
-      <h2 className={cx("text-3xl font-bold sm:text-4xl", dark ? "text-white" : "text-primary-900")}>{title}</h2>
+      <h2 className={cx("text-3xl font-extrabold tracking-tight sm:text-4xl", dark ? "text-white" : "text-primary-900")}>{title}</h2>
       {description && (
-        <p className={cx("mt-3 text-base leading-relaxed", dark ? "text-primary-100/80" : "text-slate-500")}>
+        <p className={cx("mt-3 text-base leading-relaxed", dark ? "text-heroink-100/80" : "text-slate-500")}>
           {description}
         </p>
       )}
@@ -79,10 +79,10 @@ const BTN_BASE =
 
 const BTN_VARIANT: Record<ButtonVariant, string> = {
   accent:    "bg-accent-500 text-white hover:bg-accent-600 shadow-sm",
-  primary:   "bg-primary-700 text-white hover:bg-primary-800 shadow-sm",
-  outline:   "border border-primary-200 text-primary-700 hover:border-primary-400 hover:bg-primary-50 bg-white",
+  primary:   "bg-primary-solid text-white hover:bg-primary-solid-hover shadow-sm",
+  outline:   "border border-primary-200 text-primary-700 hover:border-primary-400 hover:bg-primary-50 bg-card",
   ghostDark: "border border-white/30 text-white hover:bg-white/10",
-  white:     "bg-white text-primary-800 hover:bg-primary-50 shadow-sm",
+  white:     "bg-card text-primary-800 hover:bg-primary-50 shadow-sm",
 };
 
 const BTN_SIZE: Record<ButtonSize, string> = {
@@ -141,7 +141,7 @@ export function Badge({
 }
 
 export const CARD =
-  "rounded-2xl border border-slate-200/80 bg-white shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card-hover";
+  "rounded-2xl border border-slate-200/80 bg-card shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card-hover";
 
 export function Card({ className, children }: { className?: string; children: ReactNode }) {
   return <div className={cx(CARD, className)}>{children}</div>;
@@ -252,12 +252,12 @@ export function BrowserFrame({
   children: ReactNode;
 }) {
   return (
-    <div className={cx("overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-card-hover", className)}>
+    <div className={cx("overflow-hidden rounded-2xl border border-slate-200 bg-card shadow-card-hover", className)}>
       <div dir="ltr" className="flex items-center gap-2 border-b border-slate-100 bg-surface px-4 py-2.5">
         <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
         <span className="h-2.5 w-2.5 rounded-full bg-amber-400" />
         <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
-        <span className="mx-auto flex items-center rounded-md bg-white px-4 py-0.5 text-[0.65rem] text-slate-400 ring-1 ring-slate-200">
+        <span className="mx-auto flex items-center rounded-md bg-card px-4 py-0.5 text-[0.65rem] text-slate-400 ring-1 ring-slate-200">
           {url}
         </span>
       </div>
@@ -272,10 +272,30 @@ export function StatTile({ value, label, dark = false }: { value: string; label:
   return (
     <div className="text-center">
       <p className={cx("text-3xl font-bold sm:text-4xl", dark ? "text-white" : "text-primary-800")}>
-        <span className={dark ? "text-accent-400" : "text-accent-600"}>{value}</span>
+        <span className={dark ? "text-royal-400" : "text-royal-500"}>{value}</span>
       </p>
-      <p className={cx("mt-1 text-sm", dark ? "text-primary-100/75" : "text-slate-500")}>{label}</p>
+      <p className={cx("mt-1 text-sm", dark ? "text-heroink-100/75" : "text-slate-500")}>{label}</p>
     </div>
+  );
+}
+
+/* ── Brand watermark (mono mark for hero corners) ───────────── */
+
+export function BrandWatermark({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 120 120"
+      aria-hidden="true"
+      className={cx("pointer-events-none absolute text-white", className)}
+    >
+      <g fill="none" stroke="currentColor" strokeWidth="11" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M 101.7 79.4 A 46 46 0 1 0 79.4 101.7" />
+        <path d="M 22.3 86.4 L 56 26 L 101.7 79.4" />
+        <path d="M 60 62 L 90 97" />
+      </g>
+      <circle cx="56" cy="26" r="9.5" fill="currentColor" />
+      <circle cx="60" cy="62" r="9.5" fill="currentColor" />
+    </svg>
   );
 }
 
@@ -295,10 +315,11 @@ export function PageHero({
   return (
     <section className="bg-mesh relative overflow-hidden py-14 text-white sm:py-16">
       <div className="bg-grid-dark pointer-events-none absolute inset-0" />
+      <BrandWatermark className="-end-20 -bottom-32 h-80 w-80 opacity-[0.06]" />
       <Container className="relative animate-fade-up">
-        {titleEn && <p className="mb-2 text-sm font-semibold tracking-widest text-accent-300">{titleEn}</p>}
-        <h1 className="text-3xl font-bold sm:text-4xl">{title}</h1>
-        {subtitle && <p className="mt-3 max-w-2xl text-primary-100/80">{subtitle}</p>}
+        {titleEn && <p className="mb-2.5 text-sm font-bold uppercase tracking-[0.18em] text-royal-400">{titleEn}</p>}
+        <h1 className="text-3xl font-extrabold tracking-tight sm:text-[2.75rem] sm:leading-[1.15]">{title}</h1>
+        {subtitle && <p className="mt-4 max-w-2xl text-lg text-heroink-100/80">{subtitle}</p>}
         {children}
       </Container>
     </section>

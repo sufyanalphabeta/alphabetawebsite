@@ -48,7 +48,7 @@ function TestimonialsPage() {
               <Card key={t.id} className="flex flex-col p-7">
                 <div className="flex items-center justify-between">
                   <Stars rating={t.rating} />
-                  <Quote size={26} className="text-primary-100" />
+                  <Quote size={26} className="text-heroink-100" />
                 </div>
                 <blockquote className="mt-4 flex-1 leading-loose text-slate-600">
                   "{t.text_ar}"

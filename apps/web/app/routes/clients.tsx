@@ -42,14 +42,14 @@ function ClientsPage() {
 
       {/* Logo wall */}
       {clients.length > 0 && (
-        <section className="border-b border-slate-100 bg-white py-10">
+        <section className="border-b border-slate-100 bg-card py-10">
           <Container className="flex flex-wrap items-center justify-center gap-x-14 gap-y-6">
             {clients.map((c) => (
               <span key={c.id} className="flex items-center gap-2.5 opacity-80">
                 {c.logo ? (
                   <img src={mediaUrl(c.logo.url) ?? ""} alt={c.name_ar} className="h-10 w-10 rounded-lg object-cover" />
                 ) : (
-                  <Building2 size={22} className="text-primary-300" />
+                  <Building2 size={22} className="text-heroink-300" />
                 )}
                 <span className="font-semibold text-slate-600">{c.name_ar}</span>
               </span>
@@ -102,7 +102,7 @@ function ClientsPage() {
                           key={p.id}
                           to="/software/$slug"
                           params={{ slug: p.slug }}
-                          className="rounded-full border border-accent-200 px-3 py-1 text-xs font-medium text-accent-600 transition-colors hover:bg-accent-50"
+                          className="rounded-full border border-royal-500/40 px-3 py-1 text-xs font-medium text-royal-500 transition-colors hover:bg-royal-500/10"
                         >
                           {p.name_ar}
                         </Link>

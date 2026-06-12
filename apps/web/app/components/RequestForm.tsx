@@ -5,7 +5,7 @@ import { Button, cx } from "~/components/ui";
 import type { SoftwareProduct } from "~/lib/types";
 
 const FIELD =
-  "w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-[0.95rem] text-slate-700 placeholder:text-slate-400 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-100";
+  "w-full rounded-lg border border-slate-200 bg-card px-4 py-3 text-[0.95rem] text-slate-700 placeholder:text-slate-400 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-100";
 
 export interface RequestFormProps {
   /** "demo" | "quote" — controls labels and the submission subject */
@@ -73,14 +73,14 @@ export function RequestForm({ kind, products, preselectedSlug }: RequestFormProp
   return (
     <>
       <header className="mb-8 text-center">
-        <p className="text-xs font-semibold tracking-widest text-accent-600">{copy.title_en}</p>
+        <p className="text-xs font-semibold tracking-widest text-royal-500">{copy.title_en}</p>
         <h1 className="mt-1 text-3xl font-bold text-primary-900">{copy.title_ar}</h1>
         <p className="mt-3 text-slate-500">{copy.intro}</p>
       </header>
 
       <form
         onSubmit={handleSubmit}
-        className="space-y-4 rounded-2xl border border-slate-200 bg-white p-7 shadow-card"
+        className="space-y-4 rounded-2xl border border-slate-200 bg-card p-7 shadow-card"
       >
         <select name="product" defaultValue={preselectedSlug ?? ""} className={FIELD}>
           <option value="">— اختر النظام (اختياري) —</option>

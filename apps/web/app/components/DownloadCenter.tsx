@@ -6,7 +6,7 @@ import { cx, EmptyState } from "~/components/ui";
 import type { DownloadCenterItem } from "~/lib/types";
 
 const FIELD =
-  "rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-700 focus:border-primary-400 focus:outline-none";
+  "rounded-lg border border-slate-200 bg-card px-3.5 py-2.5 text-sm text-slate-700 focus:border-primary-400 focus:outline-none";
 
 const EXT_COLOR: Record<string, string> = {
   PDF:  "bg-red-600",
@@ -54,7 +54,7 @@ export function DownloadCenter({ items, lockedCategorySlug }: DownloadCenterProp
   return (
     <>
       {/* Filter toolbar */}
-      <div className="mb-7 flex flex-wrap gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-card">
+      <div className="mb-7 flex flex-wrap gap-3 rounded-2xl border border-slate-200 bg-card p-4 shadow-card">
         <label className="relative min-w-[220px] flex-1">
           <Search size={15} className="absolute end-3 top-1/2 -translate-y-1/2 text-slate-300" />
           <input
@@ -93,11 +93,11 @@ export function DownloadCenter({ items, lockedCategorySlug }: DownloadCenterProp
             return (
               <article
                 key={item.id}
-                className="flex flex-wrap items-center gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-card transition-shadow hover:shadow-card-hover sm:p-5"
+                className="flex flex-wrap items-center gap-4 rounded-xl border border-slate-200 bg-card p-4 shadow-card transition-shadow hover:shadow-card-hover sm:p-5"
               >
                 <span className={cx(
                   "flex h-12 w-12 shrink-0 items-center justify-center rounded-lg text-[0.62rem] font-bold text-white",
-                  EXT_COLOR[ext] ?? "bg-primary-700",
+                  EXT_COLOR[ext] ?? "bg-primary-solid",
                 )}>
                   {ext}
                 </span>

@@ -3,6 +3,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { cx, LinkButton } from "~/components/ui";
 import { LogoWordmark } from "~/components/Logo";
+import { ThemeToggle } from "~/components/ThemeToggle";
 
 interface NavLeaf {
   label: string;
@@ -79,7 +80,7 @@ function DesktopDropdown({ group }: { group: NavGroup }) {
       </button>
       {open && (
         <div className="absolute end-0 top-full z-50 w-64 pt-2">
-          <div className="overflow-hidden rounded-xl border border-slate-100 bg-white py-2 shadow-card-hover">
+          <div className="overflow-hidden rounded-xl border border-slate-100 bg-card py-2 shadow-card-hover">
             {group.items.map((item) => (
               <Link
                 key={item.to + item.label}
@@ -115,7 +116,7 @@ export function SiteHeader() {
   return (
     <header
       className={cx(
-        "sticky top-0 z-50 border-b bg-white/95 backdrop-blur transition-shadow",
+        "sticky top-0 z-50 border-b bg-card/95 backdrop-blur transition-shadow",
         scrolled ? "border-slate-200 shadow-sm" : "border-transparent",
       )}
     >
@@ -147,25 +148,29 @@ export function SiteHeader() {
           <Link to="/contact" className="text-[0.95rem] font-medium text-slate-600 transition-colors hover:text-primary-700">
             تواصل معنا
           </Link>
+          <ThemeToggle />
           <LinkButton to="/request-demo" variant="accent" size="sm">
             اطلب عرضاً توضيحياً
           </LinkButton>
         </div>
 
-        {/* Mobile toggle */}
-        <button
-          type="button"
-          onClick={() => setMobileOpen((v) => !v)}
-          className="ms-auto rounded-md p-2 text-primary-800 lg:hidden"
-          aria-label={mobileOpen ? "إغلاق القائمة" : "فتح القائمة"}
-        >
-          {mobileOpen ? <X size={22} /> : <Menu size={22} />}
-        </button>
+        {/* Mobile controls */}
+        <div className="ms-auto flex items-center gap-2 lg:hidden">
+          <ThemeToggle />
+          <button
+            type="button"
+            onClick={() => setMobileOpen((v) => !v)}
+            className="rounded-md p-2 text-primary-800"
+            aria-label={mobileOpen ? "إغلاق القائمة" : "فتح القائمة"}
+          >
+            {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <nav className="border-t border-slate-100 bg-white px-5 pb-6 pt-2 shadow-card lg:hidden">
+        <nav className="border-t border-slate-100 bg-card px-5 pb-6 pt-2 shadow-card lg:hidden">
           {NAV.map((entry) =>
             isGroup(entry) ? (
               <details key={entry.label} className="border-b border-slate-100">

@@ -44,7 +44,7 @@ function ServicesPage() {
             {services.map((service) => (
               <Card key={service.id} className="p-7">
                 <div className="flex items-start justify-between gap-3">
-                  <CheckCircle2 size={24} className="text-accent-500" />
+                  <CheckCircle2 size={24} className="text-royal-500" />
                   {service.is_featured && <Badge tone="accent">خدمة رئيسية</Badge>}
                 </div>
                 <h2 className="mt-3 text-xl font-bold text-primary-900">{service.name_ar}</h2>
@@ -61,7 +61,7 @@ function ServicesPage() {
 
         <div className="mt-14 rounded-2xl bg-cta p-10 text-center text-white">
           <h2 className="text-2xl font-bold">عندك مشروع في بالك؟</h2>
-          <p className="mx-auto mt-2 max-w-lg text-sm text-primary-100/80">
+          <p className="mx-auto mt-2 max-w-lg text-sm text-heroink-100/80">
             احكِ لنا عن فكرتك وسنقترح عليك المسار التقني الأنسب وخطة تنفيذ واضحة.
           </p>
           <LinkButton to="/contact" variant="accent" className="mt-6">تواصل معنا</LinkButton>

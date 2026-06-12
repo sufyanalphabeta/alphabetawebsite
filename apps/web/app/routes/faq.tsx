@@ -31,11 +31,11 @@ export const Route = createFileRoute("/faq")({
 });
 
 const FIELD =
-  "rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-700 focus:border-primary-400 focus:outline-none";
+  "rounded-lg border border-slate-200 bg-card px-3.5 py-2.5 text-sm text-slate-700 focus:border-primary-400 focus:outline-none";
 
 function FaqEntry({ item }: { item: FaqItem }) {
   return (
-    <details className="group rounded-xl border border-slate-200 bg-white shadow-card">
+    <details className="group rounded-xl border border-slate-200 bg-card shadow-card">
       <summary className="flex cursor-pointer items-center justify-between gap-3 p-5">
         <span className="font-bold text-primary-900">
           {item.question_ar}
@@ -91,7 +91,7 @@ function FaqPage() {
       />
 
       <Container className="max-w-4xl py-12">
-        <div className="mb-8 flex flex-wrap gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-card">
+        <div className="mb-8 flex flex-wrap gap-3 rounded-2xl border border-slate-200 bg-card p-4 shadow-card">
           <label className="relative min-w-[220px] flex-1">
             <Search size={15} className="absolute end-3 top-1/2 -translate-y-1/2 text-slate-300" />
             <input
@@ -138,9 +138,9 @@ function FaqPage() {
 
         <p className="mt-10 text-center text-sm text-slate-400">
           لم تجد إجابتك؟{" "}
-          <Link to="/contact" className="font-semibold text-accent-600 hover:text-accent-700">تواصل معنا</Link>
+          <Link to="/contact" className="font-semibold text-royal-500 hover:text-royal-600">تواصل معنا</Link>
           {" "}أو تصفح{" "}
-          <Link to="/support" className="font-semibold text-accent-600 hover:text-accent-700">مركز الدعم</Link>
+          <Link to="/support" className="font-semibold text-royal-500 hover:text-royal-600">مركز الدعم</Link>
         </p>
       </Container>
     </main>

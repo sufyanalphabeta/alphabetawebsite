@@ -17,7 +17,7 @@ import {
 import { getCollection, mediaUrl } from "~/lib/strapi";
 import { useSeo } from "~/lib/seo";
 import { formatFileSize, formatDate, LANGUAGE_LABEL, fileExtBadge } from "~/lib/format";
-import { Badge, BrowserFrame, buttonClass, Card, Container, cx, LinkButton, Reveal, SectionHeading } from "~/components/ui";
+import { Badge, BrandWatermark, BrowserFrame, buttonClass, Card, Container, cx, LinkButton, Reveal, SectionHeading } from "~/components/ui";
 import type {
   BlocksNode,
   BlocksTextNode,
@@ -81,7 +81,7 @@ export const Route = createFileRoute("/software_/$slug")({
     <main className="mx-auto max-w-2xl px-6 py-24 text-center">
       <h1 className="text-2xl font-bold text-primary-800">النظام غير موجود</h1>
       <p className="mt-2 text-slate-400">لم نعثر على النظام المطلوب.</p>
-      <Link to="/software" className="mt-4 inline-block font-semibold text-accent-600">← العودة إلى البرمجيات</Link>
+      <Link to="/software" className="mt-4 inline-block font-semibold text-royal-500">← العودة إلى البرمجيات</Link>
     </main>
   ),
   component: ProductDetailPage,
@@ -182,7 +182,7 @@ function GallerySection({ product }: { product: SoftwareProductDetail }) {
           role="dialog"
           aria-modal="true"
           onClick={() => setIndex(null)}
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-primary-950/90 p-6 backdrop-blur-sm"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-navy-950/90 p-6 backdrop-blur-sm"
         >
           <button
             type="button"
@@ -196,7 +196,7 @@ function GallerySection({ product }: { product: SoftwareProductDetail }) {
             src={mediaUrl(shots[index].url) ?? ""}
             alt={shots[index].alternativeText ?? product.name_ar}
             onClick={(e) => e.stopPropagation()}
-            className="max-h-[85vh] max-w-[90vw] rounded-lg bg-white"
+            className="max-h-[85vh] max-w-[90vw] rounded-lg bg-card"
           />
           <button
             type="button"
@@ -287,13 +287,14 @@ function ProductDetailPage() {
       {/* ── Hero ─────────────────────────────────────────── */}
       <section className="bg-mesh relative overflow-hidden text-white">
         <div className="bg-grid-dark pointer-events-none absolute inset-0" />
+        <BrandWatermark className="-end-20 -bottom-32 h-80 w-80 opacity-[0.06]" />
         <Container className="relative py-14 sm:py-16">
-          <nav className="mb-6 flex items-center gap-2 text-sm text-primary-100/60">
+          <nav className="mb-6 flex items-center gap-2 text-sm text-heroink-100/60">
             <Link to="/" className="hover:text-white">الرئيسية</Link>
             <span>/</span>
             <Link to="/software" className="hover:text-white">البرمجيات</Link>
             <span>/</span>
-            <span className="text-primary-100">{product.name_ar}</span>
+            <span className="text-heroink-100">{product.name_ar}</span>
           </nav>
 
           <div className="flex flex-wrap items-start gap-6">
@@ -308,10 +309,10 @@ function ProductDetailPage() {
             <div className="min-w-[260px] flex-1">
               <h1 className="text-3xl font-bold sm:text-4xl">{product.name_ar}</h1>
               {product.name_en && (
-                <p dir="ltr" className="mt-1 text-start text-sm text-primary-100/50">{product.name_en}</p>
+                <p dir="ltr" className="mt-1 text-start text-sm text-heroink-100/50">{product.name_en}</p>
               )}
               {product.tagline_ar && (
-                <p className="mt-3 max-w-2xl text-lg text-primary-100/85">{product.tagline_ar}</p>
+                <p className="mt-3 max-w-2xl text-lg text-heroink-100/85">{product.tagline_ar}</p>
               )}
               <div className="mt-4 flex flex-wrap gap-2">
                 {product.category && <Badge tone="accent">{product.category.name_ar}</Badge>}
@@ -334,7 +335,7 @@ function ProductDetailPage() {
       </section>
 
       {/* ── Sticky subnav ────────────────────────────────── */}
-      <div className="sticky top-16 z-40 border-b border-slate-200 bg-white/95 backdrop-blur">
+      <div className="sticky top-16 z-40 border-b border-slate-200 bg-card/95 backdrop-blur">
         <Container>
           <nav className="flex gap-1 overflow-x-auto py-1.5">
             {visibleSubnav.map((s) => (
@@ -399,7 +400,7 @@ function ProductDetailPage() {
                   <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {items.map((f) => (
                       <Card key={f.id} className="p-5">
-                        <Icon size={20} className="text-accent-500" />
+                        <Icon size={20} className="text-royal-500" />
                         <h3 className="mt-3 font-bold text-primary-900">{f.title_ar}</h3>
                         {f.description_ar && (
                           <p className="mt-1.5 text-sm leading-relaxed text-slate-500">{f.description_ar}</p>
@@ -475,8 +476,8 @@ function ProductDetailPage() {
             <div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
               {metrics.map((m) => (
                 <div key={m.id} className="rounded-2xl bg-white/5 p-6 text-center ring-1 ring-white/10">
-                  <p className="text-3xl font-bold text-accent-400">{m.value}</p>
-                  <p className="mt-1.5 text-sm text-primary-100/75">{m.label_ar}</p>
+                  <p className="text-3xl font-bold text-royal-400">{m.value}</p>
+                  <p className="mt-1.5 text-sm text-heroink-100/75">{m.label_ar}</p>
                 </div>
               ))}
             </div>
@@ -500,7 +501,7 @@ function ProductDetailPage() {
                         {story.results_ar && (
                           <p className="mt-3 flex-1 text-sm leading-relaxed text-slate-500">{story.results_ar}</p>
                         )}
-                        <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-accent-600 transition-transform group-hover:-translate-x-1">
+                        <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-royal-500 transition-transform group-hover:-translate-x-1">
                           اقرأ القصة كاملة <ArrowLeft size={15} />
                         </span>
                       </Card>
@@ -518,7 +519,7 @@ function ProductDetailPage() {
                     <Link
                       key={client.id}
                       to="/clients"
-                      className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-2.5 shadow-card transition-shadow hover:shadow-card-hover"
+                      className="flex items-center gap-3 rounded-xl border border-slate-200 bg-card px-4 py-2.5 shadow-card transition-shadow hover:shadow-card-hover"
                     >
                       {client.logo && (
                         <img src={mediaUrl(client.logo.url) ?? ""} alt="" className="h-9 w-9 rounded-lg object-cover" />
@@ -544,8 +545,8 @@ function ProductDetailPage() {
             <div className="grid gap-8 lg:grid-cols-2">
               <div className="space-y-3">
                 {downloadItems.map((item) => (
-                  <div key={item.id} className="flex items-center gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-card">
-                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-primary-700 text-[0.6rem] font-bold text-white">
+                  <div key={item.id} className="flex items-center gap-4 rounded-xl border border-slate-200 bg-card p-4 shadow-card">
+                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-primary-solid text-[0.6rem] font-bold text-white">
                       {fileExtBadge(item.file?.ext)}
                     </span>
                     <div className="min-w-0 flex-1">
@@ -578,9 +579,9 @@ function ProductDetailPage() {
                     target="_blank"
                     rel="noopener noreferrer"
                     download={Boolean(d.file?.url)}
-                    className="flex items-center gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-card transition-shadow hover:shadow-card-hover"
+                    className="flex items-center gap-4 rounded-xl border border-slate-200 bg-card p-4 shadow-card transition-shadow hover:shadow-card-hover"
                   >
-                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-primary-700 text-white">
+                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-primary-solid text-white">
                       <Download size={18} />
                     </span>
                     <span className="min-w-0 flex-1">
@@ -590,7 +591,7 @@ function ProductDetailPage() {
                   </a>
                 ))}
                 {downloadItems.length > 0 && (
-                  <Link to="/downloads" className="inline-flex items-center gap-1.5 pt-1 text-sm font-semibold text-accent-600 hover:text-accent-700">
+                  <Link to="/downloads" className="inline-flex items-center gap-1.5 pt-1 text-sm font-semibold text-royal-500 hover:text-royal-600">
                     تصفح مركز التحميلات كاملاً <ArrowLeft size={14} />
                   </Link>
                 )}
@@ -603,7 +604,7 @@ function ProductDetailPage() {
                       key={article.id}
                       to={article.category ? "/support/category/$slug" : "/support"}
                       params={article.category ? { slug: article.category.slug } : undefined}
-                      className="flex items-start gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-card transition-shadow hover:shadow-card-hover"
+                      className="flex items-start gap-4 rounded-xl border border-slate-200 bg-card p-4 shadow-card transition-shadow hover:shadow-card-hover"
                     >
                       <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-primary-50">
                         <FileText size={18} className="text-primary-600" />
@@ -631,7 +632,7 @@ function ProductDetailPage() {
             <SectionHeading align="start" eyebrow="FAQ" title="أسئلة شائعة" />
             <div className="space-y-3">
               {faqs.map((faq) => (
-                <details key={faq.id} className="group rounded-xl border border-slate-200 bg-white shadow-card">
+                <details key={faq.id} className="group rounded-xl border border-slate-200 bg-card shadow-card">
                   <summary className="flex cursor-pointer items-center justify-between gap-3 p-5 font-bold text-primary-900">
                     {faq.question_ar}
                     <ChevronDown size={18} className="shrink-0 text-slate-400 transition-transform group-open:rotate-180" />
@@ -668,7 +669,7 @@ function ProductDetailPage() {
                     {rp.short_description_ar && (
                       <p className="mt-3 flex-1 text-sm leading-relaxed text-slate-500">{rp.short_description_ar}</p>
                     )}
-                    <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-accent-600 transition-transform group-hover:-translate-x-1">
+                    <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-royal-500 transition-transform group-hover:-translate-x-1">
                       عرض التفاصيل <ArrowLeft size={15} />
                     </span>
                   </Card>
@@ -682,9 +683,9 @@ function ProductDetailPage() {
       {/* ── Final CTA ────────────────────────────────────── */}
       <section className="bg-cta py-16 text-white">
         <Container className="text-center">
-          <CheckCircle2 size={36} className="mx-auto text-accent-400" />
+          <CheckCircle2 size={36} className="mx-auto text-royal-400" />
           <h2 className="mt-4 text-3xl font-bold">جاهز لتجربة {product.name_ar}؟</h2>
-          <p className="mx-auto mt-3 max-w-xl text-primary-100/80">
+          <p className="mx-auto mt-3 max-w-xl text-heroink-100/80">
             تواصل مع فريقنا للحصول على عرض توضيحي مباشر أو عرض سعر مخصص لمؤسستك.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">

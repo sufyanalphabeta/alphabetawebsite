@@ -53,7 +53,7 @@ function ProductCard({ product }: { product: SoftwareProduct }) {
           {product.category ? (
             <Badge tone="primary">{product.category.name_ar}</Badge>
           ) : <span />}
-          <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent-600 transition-transform group-hover:-translate-x-1">
+          <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-royal-500 transition-transform group-hover:-translate-x-1">
             عرض التفاصيل <ArrowLeft size={15} />
           </span>
         </div>
@@ -83,9 +83,9 @@ function SoftwarePage() {
       <section className="bg-mesh relative overflow-hidden py-14 text-white sm:py-16">
         <div className="bg-grid-dark pointer-events-none absolute inset-0" />
         <Container className="relative animate-fade-up">
-          <p className="mb-2 text-sm font-semibold tracking-widest text-accent-300">SOFTWARE HUB</p>
+          <p className="mb-2 text-sm font-semibold tracking-widest text-royal-400">SOFTWARE HUB</p>
           <h1 className="text-3xl font-bold sm:text-4xl">منظومة البرمجيات</h1>
-          <p className="mt-3 max-w-2xl text-primary-100/80">
+          <p className="mt-3 max-w-2xl text-heroink-100/80">
             أنظمة مؤسسية متكاملة، عربية أولاً، قابلة للتخصيص — صممت لتدير أعمالك من طرف إلى طرف.
           </p>
         </Container>
@@ -101,8 +101,8 @@ function SoftwarePage() {
               className={cx(
                 "rounded-full border px-4 py-1.5 text-sm font-medium transition-colors",
                 category === ""
-                  ? "border-primary-700 bg-primary-700 text-white"
-                  : "border-slate-200 bg-white text-slate-600 hover:border-primary-300",
+                  ? "border-primary-700 bg-primary-solid text-white"
+                  : "border-slate-200 bg-card text-slate-600 hover:border-primary-300",
               )}
             >
               الكل
@@ -115,8 +115,8 @@ function SoftwarePage() {
                 className={cx(
                   "rounded-full border px-4 py-1.5 text-sm font-medium transition-colors",
                   category === c.slug
-                    ? "border-primary-700 bg-primary-700 text-white"
-                    : "border-slate-200 bg-white text-slate-600 hover:border-primary-300",
+                    ? "border-primary-700 bg-primary-solid text-white"
+                    : "border-slate-200 bg-card text-slate-600 hover:border-primary-300",
                 )}
               >
                 {c.name_ar}
@@ -136,7 +136,7 @@ function SoftwarePage() {
         {/* CTA */}
         <div className="mt-14 rounded-2xl bg-cta px-8 py-10 text-center text-white">
           <h2 className="text-2xl font-bold">لم تجد ما يناسب احتياجك بالضبط؟</h2>
-          <p className="mx-auto mt-2 max-w-lg text-sm text-primary-100/80">
+          <p className="mx-auto mt-2 max-w-lg text-sm text-heroink-100/80">
             نطوّر حلولاً مخصصة بالكامل — أخبرنا عن متطلباتك وسنقترح المسار الأنسب.
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-3">

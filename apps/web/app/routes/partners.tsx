@@ -59,7 +59,7 @@ function PartnerCard({ partner }: { partner: Partner }) {
           target="_blank"
           rel="noopener noreferrer"
           dir="ltr"
-          className="mt-4 inline-flex items-center gap-1.5 self-end text-sm font-semibold text-accent-600 hover:text-accent-700"
+          className="mt-4 inline-flex items-center gap-1.5 self-end text-sm font-semibold text-royal-500 hover:text-royal-600"
         >
           {partner.website.replace(/^https?:\/\/(www\.)?/, "")} <ExternalLink size={13} />
         </a>

@@ -72,12 +72,12 @@ function SupportPage() {
             );
           })}
           <Link to="/faq">
-            <Card className="h-full bg-primary-700 p-6 text-center hover:bg-primary-800">
+            <Card className="h-full bg-primary-solid p-6 text-center hover:bg-primary-solid-hover">
               <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-white/10">
                 <CircleHelp size={22} className="text-white" />
               </span>
               <h2 className="mt-3 font-bold text-white">الأسئلة الشائعة</h2>
-              <p className="mt-1 text-xs text-primary-100/60">إجابات لأكثر الأسئلة تكراراً</p>
+              <p className="mt-1 text-xs text-heroink-100/60">إجابات لأكثر الأسئلة تكراراً</p>
             </Card>
           </Link>
         </div>
@@ -87,7 +87,7 @@ function SupportPage() {
         {/* Contact support CTA */}
         <div className="mt-12 rounded-2xl bg-cta p-8 text-center text-white">
           <h2 className="text-xl font-bold">لم تجد ما تبحث عنه؟</h2>
-          <p className="mt-1.5 text-sm text-primary-100/75">فريق الدعم الفني جاهز لمساعدتك على مدار الساعة</p>
+          <p className="mt-1.5 text-sm text-heroink-100/75">فريق الدعم الفني جاهز لمساعدتك على مدار الساعة</p>
           <LinkButton to="/contact" variant="accent" className="mt-5">تواصل مع الدعم الفني</LinkButton>
         </div>
       </Container>

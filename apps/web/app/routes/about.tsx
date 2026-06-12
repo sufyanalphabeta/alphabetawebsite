@@ -48,7 +48,7 @@ function AboutPage() {
           <div className="grid gap-6 md:grid-cols-2">
             {profile.vision_ar && (
               <Card className="p-7">
-                <Compass size={24} className="text-accent-500" />
+                <Compass size={24} className="text-royal-500" />
                 <h2 className="mt-3 text-xl font-bold text-primary-900">رؤيتنا</h2>
                 <p className="mt-2 leading-loose text-slate-600">{profile.vision_ar}</p>
               </Card>

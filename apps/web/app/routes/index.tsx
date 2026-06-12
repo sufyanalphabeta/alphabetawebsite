@@ -4,6 +4,7 @@ import { getCollection, getSingle, mediaUrl } from "~/lib/strapi";
 import { useSeo } from "~/lib/seo";
 import {
   Badge,
+  BrandWatermark,
   Card,
   Container,
   CountUp,
@@ -91,6 +92,7 @@ function HomePage() {
       {/* ── Hero ──────────────────────────────────────────── */}
       <section className="bg-mesh relative overflow-hidden text-white">
         <div className="bg-grid-dark pointer-events-none absolute inset-0" />
+        <BrandWatermark className="-start-24 -bottom-40 h-[28rem] w-[28rem] opacity-[0.05]" />
         <Container className="relative grid items-center gap-14 py-20 sm:py-28 lg:grid-cols-2">
           <div className="animate-fade-up">
             <Badge tone="darkGlass" className="mb-5 ring-1 ring-white/15">
@@ -100,7 +102,7 @@ function HomePage() {
             <h1 className="text-4xl font-bold leading-[1.15] sm:text-[3.4rem]">
               {setting?.tagline_ar ?? "نصنع البرمجيات، نبني المستقبل"}
             </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-primary-100/85">
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-heroink-100/85">
               أنظمة متكاملة للتأمين والرعاية الصحية وتخطيط موارد المؤسسات — مصممة للسوق الليبي،
               بمعايير عالمية وبدعم عربي كامل.
             </p>
@@ -114,8 +116,8 @@ function HomePage() {
             </div>
             <ul className="mt-11 flex flex-wrap gap-x-7 gap-y-3">
               {TRUST_POINTS.map(({ icon: Icon, label }) => (
-                <li key={label} className="flex items-center gap-2 text-sm text-primary-100/80">
-                  <Icon size={16} className="text-accent-400" /> {label}
+                <li key={label} className="flex items-center gap-2 text-sm text-heroink-100/80">
+                  <Icon size={16} className="text-royal-400" /> {label}
                 </li>
               ))}
             </ul>
@@ -143,7 +145,7 @@ function HomePage() {
                     )}
                   </span>
                   <span className="text-xs font-semibold text-white">{p.name_ar}</span>
-                  <ArrowLeft size={13} className="text-accent-400" />
+                  <ArrowLeft size={13} className="text-royal-400" />
                 </Link>
               ))}
             </div>
@@ -153,7 +155,7 @@ function HomePage() {
 
       {/* ── Client logo marquee ───────────────────────────── */}
       {clients.length > 0 && (
-        <section className="border-b border-slate-100 bg-white py-10">
+        <section className="border-b border-slate-100 bg-card py-10">
           <Container>
             <p className="mb-7 text-center text-sm font-medium text-slate-400">
               مؤسسات رائدة تدير أعمالها بأنظمة ألفا بيتا
@@ -176,15 +178,15 @@ function HomePage() {
       <Section tone="muted" className="py-12 sm:py-14">
         <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">
           <div className="text-center">
-            <p className="text-3xl font-bold text-accent-600 sm:text-4xl"><CountUp end={10} prefix="+" /></p>
+            <p className="text-3xl font-bold text-royal-500 sm:text-4xl"><CountUp end={10} prefix="+" /></p>
             <p className="mt-1 text-sm text-slate-500">سنوات خبرة</p>
           </div>
           <div className="text-center">
-            <p className="text-3xl font-bold text-accent-600 sm:text-4xl"><CountUp end={50} prefix="+" /></p>
+            <p className="text-3xl font-bold text-royal-500 sm:text-4xl"><CountUp end={50} prefix="+" /></p>
             <p className="mt-1 text-sm text-slate-500">مؤسسة تثق بنا</p>
           </div>
           <div className="text-center">
-            <p className="text-3xl font-bold text-accent-600 sm:text-4xl"><CountUp end={products.length || 6} suffix="+" /></p>
+            <p className="text-3xl font-bold text-royal-500 sm:text-4xl"><CountUp end={products.length || 6} suffix="+" /></p>
             <p className="mt-1 text-sm text-slate-500">أنظمة متكاملة</p>
           </div>
           <StatTile value="24/7" label="دعم فني متواصل" />
@@ -222,7 +224,7 @@ function HomePage() {
                   {p.short_description_ar && (
                     <p className="mt-4 flex-1 text-sm leading-relaxed text-slate-500">{p.short_description_ar}</p>
                   )}
-                  <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-accent-600 transition-transform group-hover:-translate-x-1">
+                  <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-royal-500 transition-transform group-hover:-translate-x-1">
                     عرض التفاصيل <ArrowLeft size={15} />
                   </span>
                 </Card>
@@ -246,7 +248,7 @@ function HomePage() {
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {services.map((s) => (
               <Card key={s.id} className="p-6">
-                <CheckCircle2 size={22} className="text-accent-500" />
+                <CheckCircle2 size={22} className="text-royal-500" />
                 <h3 className="mt-3 font-bold text-primary-900">{s.name_ar}</h3>
                 {s.description_ar && (
                   <p className="mt-2 text-sm leading-relaxed text-slate-500">{s.description_ar}</p>
@@ -283,7 +285,7 @@ function HomePage() {
             ))}
           </Reveal>
           <div className="mt-8 text-center">
-            <Link to="/testimonials" className="text-sm font-semibold text-accent-600 hover:text-accent-700">
+            <Link to="/testimonials" className="text-sm font-semibold text-royal-500 hover:text-royal-600">
               جميع آراء العملاء ←
             </Link>
           </div>
@@ -311,7 +313,7 @@ function HomePage() {
       <section className="bg-cta py-16 text-white sm:py-20">
         <Container className="text-center">
           <h2 className="text-3xl font-bold sm:text-4xl">جاهز لتحويل مؤسستك رقمياً؟</h2>
-          <p className="mx-auto mt-3 max-w-xl text-primary-100/80">
+          <p className="mx-auto mt-3 max-w-xl text-heroink-100/80">
             تحدث مع فريقنا اليوم واحصل على عرض توضيحي مباشر لأي نظام، أو عرض سعر مخصص لاحتياجك.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">

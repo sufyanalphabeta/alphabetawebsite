@@ -7,7 +7,7 @@ import { Button, Card, Container, cx, PageHero } from "~/components/ui";
 import type { Page, SiteSetting } from "~/lib/types";
 
 const FIELD =
-  "w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-[0.95rem] text-slate-700 placeholder:text-slate-400 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-100";
+  "w-full rounded-lg border border-slate-200 bg-card px-4 py-3 text-[0.95rem] text-slate-700 placeholder:text-slate-400 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-100";
 
 export const Route = createFileRoute("/contact")({
   loader: async () => {
@@ -101,7 +101,7 @@ function ContactPage() {
           ) : (
             <form
               onSubmit={handleSubmit}
-              className="space-y-4 rounded-2xl border border-slate-200 bg-white p-7 shadow-card"
+              className="space-y-4 rounded-2xl border border-slate-200 bg-card p-7 shadow-card"
             >
               <div className="grid gap-4 sm:grid-cols-2">
                 <input name="name" placeholder="الاسم *" required className={FIELD} />

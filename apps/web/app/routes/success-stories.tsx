@@ -70,7 +70,7 @@ function SuccessStoriesPage() {
                   )}
                   <div className="min-w-[220px] flex-1">
                     <h2 className="text-lg font-bold">{story.title_ar}</h2>
-                    <p className="mt-0.5 text-xs text-primary-100/60">
+                    <p className="mt-0.5 text-xs text-heroink-100/60">
                       {[story.client?.name_ar, story.software_product?.name_ar].filter(Boolean).join(" • ")}
                     </p>
                   </div>
@@ -94,7 +94,7 @@ function SuccessStoriesPage() {
                     <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
                       {[...story.metrics!].sort((a, b) => a.sort_order - b.sort_order).map((m) => (
                         <div key={m.id} className="rounded-xl bg-surface p-5 text-center">
-                          <p className="text-2xl font-bold text-accent-600">{m.value}</p>
+                          <p className="text-2xl font-bold text-royal-500">{m.value}</p>
                           <p className="mt-1 text-xs text-slate-500">{m.label_ar}</p>
                         </div>
                       ))}

@@ -1,0 +1,169 @@
+version: "3.9"
+
+# ── Networks ──────────────────────────────────────────────────────────────────
+# internal: db ↔ cms only (db never touches the proxy network)
+# proxy:    nginx ↔ cms ↔ web only
+networks:
+  internal:
+    driver: bridge
+    internal: true
+  proxy:
+    driver: bridge
+
+# ── Volumes ───────────────────────────────────────────────────────────────────
+volumes:
+  postgres_data:
+  strapi_uploads:
+  certbot_conf:
+  certbot_www:
+
+# ── Services ──────────────────────────────────────────────────────────────────
+services:
+
+  # ── PostgreSQL ──────────────────────────────────────────────────────────────
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB:       ${DATABASE_NAME}
+      POSTGRES_USER:     ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USERNAME} -d ${DATABASE_NAME}"]
+      interval: 10s
+      timeout:  5s
+      retries:  5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ── Strapi CMS ──────────────────────────────────────────────────────────────
+  cms:
+    build:
+      context: .
+      dockerfile: apps/cms/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      HOST:                0.0.0.0
+      PORT:                1337
+      NODE_ENV:            production
+      DATABASE_HOST:       db
+      DATABASE_PORT:       5432
+      DATABASE_NAME:       ${DATABASE_NAME}
+      DATABASE_USERNAME:   ${DATABASE_USERNAME}
+      DATABASE_PASSWORD:   ${DATABASE_PASSWORD}
+      DATABASE_SSL:        "false"
+      APP_KEYS:            ${APP_KEYS}
+      API_TOKEN_SALT:      ${API_TOKEN_SALT}
+      ADMIN_JWT_SECRET:    ${ADMIN_JWT_SECRET}
+      JWT_SECRET:          ${JWT_SECRET}
+      TRANSFER_TOKEN_SALT: ${TRANSFER_TOKEN_SALT}
+      PUBLIC_URL:          https://cms.alphabeta.com.ly
+      CORS_ORIGINS:        https://alphabeta.com.ly,https://www.alphabeta.com.ly
+      SMTP_HOST:           ${SMTP_HOST:-smtp.brevo.com}
+      SMTP_PORT:           ${SMTP_PORT:-587}
+      SMTP_USER:           ${SMTP_USER}
+      SMTP_PASS:           ${SMTP_PASS}
+      EMAIL_FROM:          ${EMAIL_FROM:-noreply@alphabeta.ly}
+      EMAIL_REPLY_TO:      ${EMAIL_REPLY_TO:-info@alphabeta.ly}
+    volumes:
+      - strapi_uploads:/app/apps/cms/public/uploads
+    # NO ports exposed to host — accessed only through nginx reverse proxy
+    networks:
+      - internal
+      - proxy
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:1337/_health || exit 1"]
+      interval: 30s
+      timeout:  10s
+      retries:  3
+      start_period: 90s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"
+
+  # ── React SPA (served by nginx) ─────────────────────────────────────────────
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        VITE_STRAPI_URL:  https://cms.alphabeta.com.ly
+        VITE_CDN_URL:     https://cms.alphabeta.com.ly
+        VITE_PUBLIC_URL:  https://alphabeta.com.ly
+    restart: unless-stopped
+    depends_on:
+      cms:
+        condition: service_healthy
+    # NO ports exposed to host — accessed only through nginx reverse proxy
+    networks:
+      - proxy
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/ || exit 1"]
+      interval: 30s
+      timeout:  5s
+      retries:  3
+      start_period: 10s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ── Nginx Reverse Proxy (public entry point) ─────────────────────────────────
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - certbot_conf:/etc/letsencrypt:ro
+      - certbot_www:/var/www/certbot:ro
+    depends_on:
+      - web
+      - cms
+    networks:
+      - proxy
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost/health || exit 1"]
+      interval: 30s
+      timeout:  5s
+      retries:  3
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "7"
+
+  # ── Certbot (SSL renewal — run manually or via cron) ─────────────────────────
+  # Initial issuance:   docker compose -f docker-compose.prod.yml run --rm certbot
+  # Renewal:            docker compose -f docker-compose.prod.yml run --rm certbot renew
+  certbot:
+    image: certbot/certbot:latest
+    profiles: [certbot]
+    volumes:
+      - certbot_conf:/etc/letsencrypt
+      - certbot_www:/var/www/certbot
+    command: >
+      certonly --webroot
+      --webroot-path /var/www/certbot
+      --email ${CERTBOT_EMAIL}
+      --agree-tos
+      --no-eff-email
+      --force-renewal
+      -d alphabeta.com.ly
+      -d www.alphabeta.com.ly
+      -d cms.alphabeta.com.ly

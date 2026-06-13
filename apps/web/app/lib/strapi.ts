@@ -1,8 +1,9 @@
 import type { StrapiListResponse, StrapiSingleResponse } from "./types";
 
-const BASE_URL  = import.meta.env.VITE_STRAPI_URL   ?? "http://localhost:1337";
-const API_TOKEN = import.meta.env.VITE_STRAPI_API_TOKEN ?? "";
+const BASE_URL = import.meta.env.VITE_STRAPI_URL ?? "http://localhost:1337";
 
+// All content is served via Strapi public permissions — no API token needed in the browser.
+// See apps/cms/src/bootstrap/permissions.ts for the full public-read permission list.
 async function fetchStrapi<T>(
   endpoint: string,
   params?: Record<string, string>,
@@ -14,9 +15,7 @@ async function fetchStrapi<T>(
     }
   }
 
-  const res = await fetch(url.toString(), {
-    headers: API_TOKEN ? { Authorization: `Bearer ${API_TOKEN}` } : {},
-  });
+  const res = await fetch(url.toString());
 
   if (!res.ok) {
     throw new Error(`Strapi ${res.status}: ${url.pathname}`);
@@ -46,10 +45,7 @@ export async function createEntry<T>(
   const url = new URL(`/api/${endpoint}`, BASE_URL);
   const res = await fetch(url.toString(), {
     method:  "POST",
-    headers: {
-      "Content-Type": "application/json",
-      ...(API_TOKEN ? { Authorization: `Bearer ${API_TOKEN}` } : {}),
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ data }),
   });
   if (!res.ok) {

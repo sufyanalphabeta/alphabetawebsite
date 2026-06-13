@@ -5,10 +5,13 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 
 WORKDIR /app
 
-COPY pnpm-workspace.yaml pnpm-lock.yaml package.json ./
+COPY pnpm-workspace.yaml pnpm-lock.yaml package.json .npmrc ./
 COPY apps/web/package.json ./apps/web/
 
-RUN pnpm install --frozen-lockfile --filter @alphabeta/web...
+RUN --mount=type=cache,id=pnpm-store,target=/tmp/pnpm-store \
+    pnpm install --frozen-lockfile --trust-lockfile \
+      --store-dir=/tmp/pnpm-store \
+      --filter @alphabeta/web...
 
 COPY apps/web ./apps/web/
 

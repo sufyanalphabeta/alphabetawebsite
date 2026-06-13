@@ -1,0 +1,101 @@
+version: "3.9"
+# ══════════════════════════════════════════════════════════════════════════════
+# LOCAL VALIDATION COMPOSE — mirrors production architecture with localhost URLs
+# Used ONLY for pre-deployment testing. Delete after validation.
+#
+# Usage:
+#   docker compose -f docker-compose.validate.yml up -d
+#   docker compose -f docker-compose.validate.yml down -v   # cleanup
+# ══════════════════════════════════════════════════════════════════════════════
+
+networks:
+  internal:
+    driver: bridge
+    internal: true
+  proxy:
+    driver: bridge
+
+volumes:
+  postgres_validate_data:
+  strapi_validate_uploads:
+
+services:
+
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB:       alphabeta_validate
+      POSTGRES_USER:     alphabeta_user
+      POSTGRES_PASSWORD: ValidatePass2026!
+    volumes:
+      - postgres_validate_data:/var/lib/postgresql/data
+    networks: [internal]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U alphabeta_user -d alphabeta_validate"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  cms:
+    build:
+      context: .
+      dockerfile: apps/cms/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      HOST:                0.0.0.0
+      PORT:                1337
+      NODE_ENV:            production
+      DATABASE_HOST:       db
+      DATABASE_PORT:       5432
+      DATABASE_NAME:       alphabeta_validate
+      DATABASE_USERNAME:   alphabeta_user
+      DATABASE_PASSWORD:   ValidatePass2026!
+      DATABASE_SSL:        "false"
+      APP_KEYS:            dGVzdGtleTE=,dGVzdGtleTI=,dGVzdGtleTM=,dGVzdGtleTS=
+      API_TOKEN_SALT:      dGVzdFNhbHQzMmNoYXJzSGVyZTEyMzQx
+      ADMIN_JWT_SECRET:    dGVzdEFkbWluU2VjcmV0MzJjaGFycwo=
+      JWT_SECRET:          dGVzdEp3dFNlY3JldDMyY2hhcnNIZXI=
+      TRANSFER_TOKEN_SALT: dGVzdFRyYW5zZmVyU2FsdDMyY2hhcg==
+      PUBLIC_URL:          http://localhost:1337
+      CORS_ORIGINS:        http://localhost:3000
+      SMTP_HOST:           smtp.brevo.com
+      SMTP_PORT:           "587"
+      SMTP_USER:           ""
+      SMTP_PASS:           ""
+    volumes:
+      - strapi_validate_uploads:/app/apps/cms/public/uploads
+    ports:
+      - "1337:1337"
+    networks: [internal, proxy]
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://127.0.0.1:1337/_health || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 8
+      start_period: 90s
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        VITE_STRAPI_URL:  http://localhost:1337
+        VITE_CDN_URL:     http://localhost:1337
+        VITE_PUBLIC_URL:  http://localhost:3000
+    restart: unless-stopped
+    depends_on:
+      cms:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    networks: [proxy]
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://127.0.0.1:3000/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s

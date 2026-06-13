@@ -18,8 +18,11 @@ set -euo pipefail
 
 COMPOSE="docker compose -f docker-compose.prod.yml --env-file .env.production"
 DOMAINS=("alphabeta.com.ly" "www.alphabeta.com.ly" "cms.alphabeta.com.ly")
-CERT_DIR="/var/lib/docker/volumes/alphabeta-corporate_certbot_conf/_data"
 STAGING="${STAGING:-0}"  # set STAGING=1 for Let's Encrypt staging (testing)
+
+# Derive the certbot_conf volume path dynamically (project name = directory name)
+PROJECT_NAME=$(basename "$(pwd)" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g')
+CERT_DIR="/var/lib/docker/volumes/${PROJECT_NAME}_certbot_conf/_data"
 
 RED='\033[0;31m'; GREEN='\033[0;32m'; YELLOW='\033[1;33m'; NC='\033[0m'
 info()    { echo -e "${GREEN}[init-ssl]${NC} $*"; }

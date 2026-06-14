@@ -17,7 +17,7 @@ export const Route = createFileRoute("/testimonials")({
       });
       return { testimonials: res.data };
     } catch {
-      return { testimonials: [] };
+      return { testimonials: [] as Testimonial[] };
     }
   },
   component: TestimonialsPage,

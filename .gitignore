@@ -11,7 +11,7 @@ dist/
 .strapi/
 build/
 apps/cms/public/uploads/
-routeTree.gen.ts
+# routeTree.gen.ts is committed — required for tsc to run before vite during Docker builds
 .claude/
 apps/web/.tanstack/
 app.config.timestamp_*.js

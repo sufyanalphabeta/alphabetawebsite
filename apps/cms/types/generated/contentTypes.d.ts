@@ -440,6 +440,49 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiClientClient extends Struct.CollectionTypeSchema {
+  collectionName: 'clients';
+  info: {
+    description: 'Companies and organizations using AlphaBeta systems';
+    displayName: 'Client';
+    pluralName: 'clients';
+    singularName: 'client';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    country_ar: Schema.Attribute.String;
+    country_en: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description_ar: Schema.Attribute.Text;
+    description_en: Schema.Attribute.Text;
+    industry: Schema.Attribute.Relation<'manyToOne', 'api::industry.industry'>;
+    is_featured: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::client.client'
+    > &
+      Schema.Attribute.Private;
+    logo: Schema.Attribute.Media<'images'>;
+    name_ar: Schema.Attribute.String & Schema.Attribute.Required;
+    name_en: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'name_en'> & Schema.Attribute.Required;
+    software_products: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::software-product.software-product'
+    >;
+    sort_order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiCompanyProfileCompanyProfile
   extends Struct.SingleTypeSchema {
   collectionName: 'company_profiles';
@@ -523,6 +566,166 @@ export interface ApiContactSubmissionContactSubmission
     utm_campaign: Schema.Attribute.String;
     utm_medium: Schema.Attribute.String;
     utm_source: Schema.Attribute.String;
+  };
+}
+
+export interface ApiDownloadCategoryDownloadCategory
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'download_categories';
+  info: {
+    description: 'Categories for the downloads center';
+    displayName: 'Download Category';
+    pluralName: 'download-categories';
+    singularName: 'download-category';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    items: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::download-item.download-item'
+    >;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::download-category.download-category'
+    > &
+      Schema.Attribute.Private;
+    name_ar: Schema.Attribute.String & Schema.Attribute.Required;
+    name_en: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'name_en'> & Schema.Attribute.Required;
+    sort_order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiDownloadItemDownloadItem
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'download_items';
+  info: {
+    description: 'Downloadable files (PDF, DOCX, PPTX, ZIP, images) with metadata';
+    displayName: 'Download Item';
+    pluralName: 'download-items';
+    singularName: 'download-item';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    category: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::download-category.download-category'
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description_ar: Schema.Attribute.Text;
+    description_en: Schema.Attribute.Text;
+    file: Schema.Attribute.Media<'files' | 'images'>;
+    language: Schema.Attribute.Enumeration<['ar', 'en', 'both']> &
+      Schema.Attribute.DefaultTo<'both'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::download-item.download-item'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    release_date: Schema.Attribute.Date;
+    slug: Schema.Attribute.UID<'title_en'> & Schema.Attribute.Required;
+    software_product: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::software-product.software-product'
+    >;
+    sort_order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    title_ar: Schema.Attribute.String & Schema.Attribute.Required;
+    title_en: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    version: Schema.Attribute.String;
+  };
+}
+
+export interface ApiFaqCategoryFaqCategory extends Struct.CollectionTypeSchema {
+  collectionName: 'faq_categories';
+  info: {
+    description: 'Categories for the global FAQ center';
+    displayName: 'FAQ Category';
+    pluralName: 'faq-categories';
+    singularName: 'faq-category';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    faqs: Schema.Attribute.Relation<'oneToMany', 'api::faq-item.faq-item'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::faq-category.faq-category'
+    > &
+      Schema.Attribute.Private;
+    name_ar: Schema.Attribute.String & Schema.Attribute.Required;
+    name_en: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'name_en'> & Schema.Attribute.Required;
+    sort_order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiFaqItemFaqItem extends Struct.CollectionTypeSchema {
+  collectionName: 'faq_items';
+  info: {
+    description: 'Global FAQ entries, optionally linked to a product';
+    displayName: 'FAQ Item';
+    pluralName: 'faq-items';
+    singularName: 'faq-item';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    answer_ar: Schema.Attribute.Text;
+    answer_en: Schema.Attribute.Text;
+    category: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::faq-category.faq-category'
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    is_featured: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::faq-item.faq-item'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    question_ar: Schema.Attribute.String & Schema.Attribute.Required;
+    question_en: Schema.Attribute.String;
+    software_product: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::software-product.software-product'
+    >;
+    sort_order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
   };
 }
 
@@ -804,6 +1007,80 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiPartnerTypePartnerType extends Struct.CollectionTypeSchema {
+  collectionName: 'partner_types';
+  info: {
+    description: 'Partnership categories (technology, strategic, hosting, integration)';
+    displayName: 'Partner Type';
+    pluralName: 'partner-types';
+    singularName: 'partner-type';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::partner-type.partner-type'
+    > &
+      Schema.Attribute.Private;
+    name_ar: Schema.Attribute.String & Schema.Attribute.Required;
+    name_en: Schema.Attribute.String;
+    partners: Schema.Attribute.Relation<'oneToMany', 'api::partner.partner'>;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'name_en'> & Schema.Attribute.Required;
+    sort_order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiPartnerPartner extends Struct.CollectionTypeSchema {
+  collectionName: 'partners';
+  info: {
+    description: 'Technology and business partners';
+    displayName: 'Partner';
+    pluralName: 'partners';
+    singularName: 'partner';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description_ar: Schema.Attribute.Text;
+    description_en: Schema.Attribute.Text;
+    is_featured: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::partner.partner'
+    > &
+      Schema.Attribute.Private;
+    logo: Schema.Attribute.Media<'images'>;
+    name_ar: Schema.Attribute.String & Schema.Attribute.Required;
+    name_en: Schema.Attribute.String;
+    partner_type: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::partner-type.partner-type'
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'name_en'> & Schema.Attribute.Required;
+    sort_order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    website: Schema.Attribute.String;
+  };
+}
+
 export interface ApiProductCategoryProductCategory
   extends Struct.CollectionTypeSchema {
   collectionName: 'product_categories';
@@ -844,6 +1121,43 @@ export interface ApiProductCategoryProductCategory
   };
 }
 
+export interface ApiProductFaqProductFaq extends Struct.CollectionTypeSchema {
+  collectionName: 'product_faqs';
+  info: {
+    description: 'Frequently asked questions per software product';
+    displayName: 'Product FAQ';
+    pluralName: 'product-faqs';
+    singularName: 'product-faq';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    answer_ar: Schema.Attribute.Text;
+    answer_en: Schema.Attribute.Text;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::product-faq.product-faq'
+    > &
+      Schema.Attribute.Private;
+    product: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::software-product.software-product'
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    question_ar: Schema.Attribute.String & Schema.Attribute.Required;
+    question_en: Schema.Attribute.String;
+    sort_order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiProductFeatureProductFeature
   extends Struct.CollectionTypeSchema {
   collectionName: 'product_features';
@@ -862,6 +1176,10 @@ export interface ApiProductFeatureProductFeature
       Schema.Attribute.Private;
     description_ar: Schema.Attribute.Text;
     description_en: Schema.Attribute.Text;
+    feature_type: Schema.Attribute.Enumeration<
+      ['feature', 'capability', 'advantage']
+    > &
+      Schema.Attribute.DefaultTo<'feature'>;
     icon_name: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -1064,9 +1382,15 @@ export interface ApiSoftwareProductSoftwareProduct
       'manyToOne',
       'api::product-category.product-category'
     >;
+    clients: Schema.Attribute.Relation<'manyToMany', 'api::client.client'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    downloads: Schema.Attribute.Component<'shared.download-item', true>;
+    faqs: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::product-faq.product-faq'
+    >;
     features: Schema.Attribute.Relation<
       'oneToMany',
       'api::product-feature.product-feature'
@@ -1093,13 +1417,245 @@ export interface ApiSoftwareProductSoftwareProduct
     name_ar: Schema.Attribute.String & Schema.Attribute.Required;
     name_en: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
+    related_products: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::software-product.software-product'
+    >;
     screenshots: Schema.Attribute.Media<'images', true>;
+    seo: Schema.Attribute.Component<'shared.seo-meta', false>;
     short_description_ar: Schema.Attribute.Text;
     short_description_en: Schema.Attribute.Text;
     slug: Schema.Attribute.UID<'name_en'> & Schema.Attribute.Required;
     sort_order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    success_stories: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::success-story.success-story'
+    >;
     tagline_ar: Schema.Attribute.String;
     tagline_en: Schema.Attribute.String;
+    target_audiences: Schema.Attribute.JSON;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    videos: Schema.Attribute.Component<'shared.video-item', true>;
+  };
+}
+
+export interface ApiSuccessMetricSuccessMetric
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'success_metrics';
+  info: {
+    description: 'Measurable results within a success story';
+    displayName: 'Success Metric';
+    pluralName: 'success-metrics';
+    singularName: 'success-metric';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    label_ar: Schema.Attribute.String & Schema.Attribute.Required;
+    label_en: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::success-metric.success-metric'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    sort_order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    story: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::success-story.success-story'
+    >;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    value: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface ApiSuccessStorySuccessStory
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'success_stories';
+  info: {
+    description: 'Client success stories and case studies';
+    displayName: 'Success Story';
+    pluralName: 'success-stories';
+    singularName: 'success-story';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    challenge_ar: Schema.Attribute.Text;
+    challenge_en: Schema.Attribute.Text;
+    client: Schema.Attribute.Relation<'manyToOne', 'api::client.client'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    gallery: Schema.Attribute.Media<'images', true>;
+    is_featured: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::success-story.success-story'
+    > &
+      Schema.Attribute.Private;
+    metrics: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::success-metric.success-metric'
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    results_ar: Schema.Attribute.Text;
+    results_en: Schema.Attribute.Text;
+    slug: Schema.Attribute.UID<'title_en'> & Schema.Attribute.Required;
+    software_product: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::software-product.software-product'
+    >;
+    solution_ar: Schema.Attribute.Text;
+    solution_en: Schema.Attribute.Text;
+    sort_order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    title_ar: Schema.Attribute.String & Schema.Attribute.Required;
+    title_en: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiSupportArticleSupportArticle
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'support_articles';
+  info: {
+    description: 'Support center articles, guides, and documentation';
+    displayName: 'Support Article';
+    pluralName: 'support-articles';
+    singularName: 'support-article';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    body_ar: Schema.Attribute.Blocks;
+    body_en: Schema.Attribute.Blocks;
+    category: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::support-category.support-category'
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    excerpt_ar: Schema.Attribute.Text;
+    excerpt_en: Schema.Attribute.Text;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::support-article.support-article'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'title_en'> & Schema.Attribute.Required;
+    software_product: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::software-product.software-product'
+    >;
+    sort_order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    title_ar: Schema.Attribute.String & Schema.Attribute.Required;
+    title_en: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiSupportCategorySupportCategory
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'support_categories';
+  info: {
+    description: 'Support center sections (installation guides, manuals, troubleshooting\u2026)';
+    displayName: 'Support Category';
+    pluralName: 'support-categories';
+    singularName: 'support-category';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    articles: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::support-article.support-article'
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description_ar: Schema.Attribute.Text;
+    description_en: Schema.Attribute.Text;
+    icon_name: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::support-category.support-category'
+    > &
+      Schema.Attribute.Private;
+    name_ar: Schema.Attribute.String & Schema.Attribute.Required;
+    name_en: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'name_en'> & Schema.Attribute.Required;
+    sort_order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiTestimonialTestimonial extends Struct.CollectionTypeSchema {
+  collectionName: 'testimonials';
+  info: {
+    description: 'Customer testimonials';
+    displayName: 'Testimonial';
+    pluralName: 'testimonials';
+    singularName: 'testimonial';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    client: Schema.Attribute.Relation<'manyToOne', 'api::client.client'>;
+    company_ar: Schema.Attribute.String;
+    company_en: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    customer_name_ar: Schema.Attribute.String & Schema.Attribute.Required;
+    customer_name_en: Schema.Attribute.String;
+    image: Schema.Attribute.Media<'images'>;
+    is_featured: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::testimonial.testimonial'
+    > &
+      Schema.Attribute.Private;
+    position_ar: Schema.Attribute.String;
+    position_en: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    rating: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 5;
+          min: 1;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<5>;
+    sort_order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    text_ar: Schema.Attribute.Text & Schema.Attribute.Required;
+    text_en: Schema.Attribute.Text;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1617,21 +2173,34 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::client.client': ApiClientClient;
       'api::company-profile.company-profile': ApiCompanyProfileCompanyProfile;
       'api::contact-submission.contact-submission': ApiContactSubmissionContactSubmission;
+      'api::download-category.download-category': ApiDownloadCategoryDownloadCategory;
+      'api::download-item.download-item': ApiDownloadItemDownloadItem;
+      'api::faq-category.faq-category': ApiFaqCategoryFaqCategory;
+      'api::faq-item.faq-item': ApiFaqItemFaqItem;
       'api::industry.industry': ApiIndustryIndustry;
       'api::navigation-footer.navigation-footer': ApiNavigationFooterNavigationFooter;
       'api::navigation-header.navigation-header': ApiNavigationHeaderNavigationHeader;
       'api::newsletter-subscriber.newsletter-subscriber': ApiNewsletterSubscriberNewsletterSubscriber;
       'api::office.office': ApiOfficeOffice;
       'api::page.page': ApiPagePage;
+      'api::partner-type.partner-type': ApiPartnerTypePartnerType;
+      'api::partner.partner': ApiPartnerPartner;
       'api::product-category.product-category': ApiProductCategoryProductCategory;
+      'api::product-faq.product-faq': ApiProductFaqProductFaq;
       'api::product-feature.product-feature': ApiProductFeatureProductFeature;
       'api::product-module.product-module': ApiProductModuleProductModule;
       'api::seo-default.seo-default': ApiSeoDefaultSeoDefault;
       'api::service.service': ApiServiceService;
       'api::site-setting.site-setting': ApiSiteSettingSiteSetting;
       'api::software-product.software-product': ApiSoftwareProductSoftwareProduct;
+      'api::success-metric.success-metric': ApiSuccessMetricSuccessMetric;
+      'api::success-story.success-story': ApiSuccessStorySuccessStory;
+      'api::support-article.support-article': ApiSupportArticleSupportArticle;
+      'api::support-category.support-category': ApiSupportCategorySupportCategory;
+      'api::testimonial.testimonial': ApiTestimonialTestimonial;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

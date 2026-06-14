@@ -114,6 +114,25 @@ export interface SectionsTextBlock extends Struct.ComponentSchema {
   };
 }
 
+export interface SharedDownloadItem extends Struct.ComponentSchema {
+  collectionName: 'components_shared_download_items';
+  info: {
+    displayName: 'Download Item';
+    icon: 'download';
+  };
+  attributes: {
+    external_url: Schema.Attribute.String;
+    file: Schema.Attribute.Media<'files' | 'images'>;
+    kind: Schema.Attribute.Enumeration<
+      ['brochure', 'datasheet', 'presentation', 'user_guide', 'other']
+    > &
+      Schema.Attribute.DefaultTo<'brochure'>;
+    sort_order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    title_ar: Schema.Attribute.String & Schema.Attribute.Required;
+    title_en: Schema.Attribute.String;
+  };
+}
+
 export interface SharedFeatureItem extends Struct.ComponentSchema {
   collectionName: 'components_shared_feature_items';
   info: {
@@ -203,6 +222,10 @@ export interface SharedSeoMeta extends Struct.ComponentSchema {
     og_image: Schema.Attribute.Media<'images'>;
     og_title_ar: Schema.Attribute.String;
     og_title_en: Schema.Attribute.String;
+    twitter_card: Schema.Attribute.Enumeration<
+      ['summary', 'summary_large_image']
+    > &
+      Schema.Attribute.DefaultTo<'summary_large_image'>;
   };
 }
 
@@ -280,6 +303,24 @@ export interface SharedTestimonialItem extends Struct.ComponentSchema {
   };
 }
 
+export interface SharedVideoItem extends Struct.ComponentSchema {
+  collectionName: 'components_shared_video_items';
+  info: {
+    displayName: 'Video Item';
+    icon: 'play';
+  };
+  attributes: {
+    provider: Schema.Attribute.Enumeration<['youtube', 'vimeo', 'internal']> &
+      Schema.Attribute.DefaultTo<'youtube'>;
+    sort_order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    thumbnail: Schema.Attribute.Media<'images'>;
+    title_ar: Schema.Attribute.String;
+    title_en: Schema.Attribute.String;
+    url: Schema.Attribute.String;
+    video_file: Schema.Attribute.Media<'videos'>;
+  };
+}
+
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
@@ -290,6 +331,7 @@ declare module '@strapi/strapi' {
       'sections.stats-block': SectionsStatsBlock;
       'sections.testimonials-block': SectionsTestimonialsBlock;
       'sections.text-block': SectionsTextBlock;
+      'shared.download-item': SharedDownloadItem;
       'shared.feature-item': SharedFeatureItem;
       'shared.footer-column': SharedFooterColumn;
       'shared.hero-block': SharedHeroBlock;
@@ -299,6 +341,7 @@ declare module '@strapi/strapi' {
       'shared.social-link': SharedSocialLink;
       'shared.stat-item': SharedStatItem;
       'shared.testimonial-item': SharedTestimonialItem;
+      'shared.video-item': SharedVideoItem;
     }
   }
 }

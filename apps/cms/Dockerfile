@@ -39,13 +39,10 @@ RUN --mount=type=cache,id=pnpm-store,target=/tmp/pnpm-store \
 
 COPY --from=builder /app/apps/cms/dist   ./apps/cms/dist
 COPY --from=builder /app/apps/cms/public ./apps/cms/public
+COPY apps/cms/start.js    ./apps/cms/start.js
+COPY apps/cms/favicon.png ./apps/cms/favicon.png
 
 WORKDIR /app/apps/cms
-
-# Without tsconfig.json, strapi start treats this as a non-TS project and sets
-# distDir=appDir (process.cwd). It then looks for config in ./config, not ./dist/config.
-# Symlinking dist/config → config makes the compiled configs visible at the expected path.
-RUN ln -s dist/config config
 
 ENV HOST=0.0.0.0
 ENV PORT=1337

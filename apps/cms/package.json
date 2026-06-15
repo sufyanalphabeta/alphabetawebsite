@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "strapi develop",
-    "start": "strapi start",
+    "start": "node start.js",
     "build": "strapi build",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src --ext .ts"

@@ -27,7 +27,7 @@ export default ({ env }: { env: (k: string, d?: string) => string }) => ({
   },
   "users-permissions": {
     config: {
-      jwtSecret: env("JWT_SECRET"),
+      jwtSecret: env("JWT_SECRET", ""),
       jwt:       { expiresIn: "7d" },
     },
   },

@@ -38,9 +38,9 @@ RUN --mount=type=cache,id=pnpm-store,target=/tmp/pnpm-store \
       --filter @alphabeta/cms... --prod
 
 COPY --from=builder /app/apps/cms/dist   ./apps/cms/dist
-COPY --from=builder /app/apps/cms/public ./apps/cms/public
 COPY apps/cms/start.js    ./apps/cms/start.js
 COPY apps/cms/favicon.png ./apps/cms/favicon.png
+RUN mkdir -p ./apps/cms/public/uploads
 
 WORKDIR /app/apps/cms
 

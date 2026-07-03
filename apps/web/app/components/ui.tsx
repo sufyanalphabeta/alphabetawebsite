@@ -55,7 +55,11 @@ export function SectionHeading({
   return (
     <header className={cx("mb-12 max-w-3xl", align === "center" ? "mx-auto text-center" : "text-start")}>
       {eyebrow && (
-        <p className={cx("mb-2.5 text-sm font-bold uppercase tracking-[0.18em]", dark ? "text-royal-400" : "text-royal-500")}>
+        <p className={cx(
+          "mb-3 inline-flex items-center gap-2 text-sm font-semibold tracking-wide",
+          dark ? "text-royal-400" : "text-royal-500"
+        )}>
+          <span className={cx("inline-block h-1 w-5 rounded-full", dark ? "bg-royal-400" : "bg-royal-500")} />
           {eyebrow}
         </p>
       )}
@@ -313,13 +317,18 @@ export function PageHero({
   children?: ReactNode;
 }) {
   return (
-    <section className="bg-mesh relative overflow-hidden py-14 text-white sm:py-16">
+    <section className="bg-mesh relative overflow-hidden py-18 text-white sm:py-24">
       <div className="bg-grid-dark pointer-events-none absolute inset-0" />
-      <BrandWatermark className="-end-20 -bottom-32 h-80 w-80 opacity-[0.06]" />
+      <BrandWatermark className="-end-16 -bottom-28 h-96 w-96 opacity-[0.07]" />
       <Container className="relative animate-fade-up">
-        {titleEn && <p className="mb-2.5 text-sm font-bold uppercase tracking-[0.18em] text-royal-400">{titleEn}</p>}
-        <h1 className="text-3xl font-extrabold tracking-tight sm:text-[2.75rem] sm:leading-[1.15]">{title}</h1>
-        {subtitle && <p className="mt-4 max-w-2xl text-lg text-heroink-100/80">{subtitle}</p>}
+        {titleEn && (
+          <p className="mb-3 inline-flex items-center gap-2 text-sm font-semibold tracking-wide text-royal-400">
+            <span className="inline-block h-0.5 w-5 rounded-full bg-royal-400" />
+            {titleEn}
+          </p>
+        )}
+        <h1 className="text-3xl font-extrabold tracking-tight sm:text-5xl sm:leading-[1.12]">{title}</h1>
+        {subtitle && <p className="mt-4 max-w-2xl text-lg leading-relaxed text-heroink-100/80">{subtitle}</p>}
         {children}
       </Container>
     </section>
@@ -329,7 +338,16 @@ export function PageHero({
 /* ── Misc ───────────────────────────────────────────────────── */
 
 export function EmptyState({ message }: { message: string }) {
-  return <p className="py-16 text-center text-slate-400">{message}</p>;
+  return (
+    <div className="flex flex-col items-center gap-4 py-20 text-center">
+      <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-50 text-primary-300">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-7 w-7" aria-hidden="true">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+        </svg>
+      </span>
+      <p className="text-base text-slate-400">{message}</p>
+    </div>
+  );
 }
 
 export function Stars({ rating }: { rating: number }) {

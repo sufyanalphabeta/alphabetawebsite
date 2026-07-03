@@ -218,15 +218,16 @@
     background: linear-gradient(135deg, #08213f 0%, #0f3460 55%, #1a4377 100%);
   }
   .bg-cta {
-    background: linear-gradient(120deg, #0f3460 0%, #08213f 100%);
+    background: linear-gradient(135deg, #040e1f 0%, #0c2652 50%, #0f3460 100%);
   }
 
   /* Premium mesh hero: navy gradient + radial glows */
   .bg-mesh {
     background:
-      radial-gradient(800px 420px at 85% -10%, rgb(56 189 248 / 0.18), transparent 60%),
-      radial-gradient(700px 380px at 8% 110%, rgb(37 99 235 / 0.16), transparent 60%),
-      linear-gradient(135deg, #051528 0%, #08213f 45%, #0f3460 100%);
+      radial-gradient(900px 500px at 90% -5%,  rgb(56 189 248 / 0.22), transparent 55%),
+      radial-gradient(700px 400px at 5%  105%, rgb(37 99 235 / 0.20), transparent 55%),
+      radial-gradient(500px 300px at 50% 50%,  rgb(15 52 96  / 0.35), transparent 70%),
+      linear-gradient(145deg, #040e1f 0%, #071a38 35%, #0f3460 75%, #1a4377 100%);
   }
 
   /* Faint blueprint grid overlay (use on dark surfaces) */
@@ -239,9 +240,9 @@
 
   /* Glassmorphism panel (dark surfaces) */
   .glass {
-    background: rgb(255 255 255 / 0.07);
-    backdrop-filter: blur(14px);
-    border: 1px solid rgb(255 255 255 / 0.14);
+    background: rgb(255 255 255 / 0.08);
+    backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid rgb(255 255 255 / 0.18);
   }
 
   /* Edge-fade mask for marquees */

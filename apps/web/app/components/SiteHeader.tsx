@@ -174,13 +174,13 @@ export function SiteHeader() {
           {NAV.map((entry) =>
             isGroup(entry) ? (
               <details key={entry.label} className="border-b border-slate-100">
-                <summary className="flex cursor-pointer items-center justify-between py-3 font-medium text-slate-700">
+                <summary className="flex cursor-pointer items-center justify-between py-3.5 text-base font-semibold text-slate-700">
                   {entry.label}
-                  <ChevronDown size={16} className="text-slate-400" />
+                  <ChevronDown size={16} className="text-slate-400 shrink-0 transition-transform [[open]_&]:rotate-180" />
                 </summary>
-                <div className="pb-2 ps-3">
+                <div className="pb-3 ps-3">
                   {entry.items.map((item) => (
-                    <Link key={item.to + item.label} to={item.to} className="block py-2 text-sm text-slate-500">
+                    <Link key={item.to + item.label} to={item.to} className="block py-2.5 text-sm font-medium text-slate-500 hover:text-primary-700">
                       {item.label}
                     </Link>
                   ))}
@@ -190,13 +190,13 @@ export function SiteHeader() {
               <Link
                 key={entry.to}
                 to={entry.to}
-                className="block border-b border-slate-100 py-3 font-medium text-slate-700"
+                className="block border-b border-slate-100 py-3.5 text-base font-semibold text-slate-700 hover:text-primary-700"
               >
                 {entry.label}
               </Link>
             ),
           )}
-          <Link to="/contact" className="block border-b border-slate-100 py-3 font-medium text-slate-700">
+          <Link to="/contact" className="block border-b border-slate-100 py-3.5 text-base font-semibold text-slate-700 hover:text-primary-700">
             تواصل معنا
           </Link>
           <LinkButton to="/request-demo" variant="accent" size="md" className="mt-4 w-full">

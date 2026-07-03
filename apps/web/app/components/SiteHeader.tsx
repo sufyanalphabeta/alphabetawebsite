@@ -149,7 +149,7 @@ export function SiteHeader() {
             تواصل معنا
           </Link>
           <ThemeToggle />
-          <LinkButton to="/request-demo" variant="accent" size="sm">
+          <LinkButton to="/request-demo" variant="primary" size="sm">
             اطلب عرضاً توضيحياً
           </LinkButton>
         </div>
@@ -199,7 +199,7 @@ export function SiteHeader() {
           <Link to="/contact" className="block border-b border-slate-100 py-3.5 text-base font-semibold text-slate-700 hover:text-primary-700">
             تواصل معنا
           </Link>
-          <LinkButton to="/request-demo" variant="accent" size="md" className="mt-4 w-full">
+          <LinkButton to="/request-demo" variant="primary" size="md" className="mt-4 w-full">
             اطلب عرضاً توضيحياً
           </LinkButton>
         </nav>

@@ -17,6 +17,8 @@ export async function bootstrapSeed(strapi: Core.Strapi) {
     await seedSprint5SupportDownloads(strapi);
     await seedTargetAudiences(strapi);
     await seedPhase6RealContent(strapi);
+    await cleanupPlaceholderProducts(strapi);
+    await seedGeneralFaqItems(strapi);
     strapi.log.info("[bootstrap:seed] ✓ Seed ready");
   } catch (err) {
     strapi.log.warn(`[bootstrap:seed] ⚠ ${String(err)}`);
@@ -72,10 +74,10 @@ async function seedProductCategories(strapi: Core.Strapi) {
   const count = await q.count({});
   if (count > 0) return;
   const categories = [
-    { name_ar: "إدارة الموارد البشرية", name_en: "Human Resources", slug: "hr", sort_order: 1 },
-    { name_ar: "المحاسبة والمالية",      name_en: "Accounting & Finance", slug: "accounting", sort_order: 2 },
-    { name_ar: "إدارة العلاقات",         name_en: "CRM", slug: "crm", sort_order: 3 },
-    { name_ar: "التجارة الإلكترونية",    name_en: "E-Commerce", slug: "ecommerce", sort_order: 4 },
+    { name_ar: "إدارة الموارد البشرية", name_en: "Human Resources",     slug: "hr",          sort_order: 1, publishedAt: new Date().toISOString() },
+    { name_ar: "المحاسبة والمالية",      name_en: "Accounting & Finance", slug: "accounting",   sort_order: 2, publishedAt: new Date().toISOString() },
+    { name_ar: "إدارة العلاقات",         name_en: "CRM",                  slug: "crm",          sort_order: 3, publishedAt: new Date().toISOString() },
+    { name_ar: "التجارة الإلكترونية",    name_en: "E-Commerce",           slug: "ecommerce",    sort_order: 4, publishedAt: new Date().toISOString() },
   ];
   for (const cat of categories) {
     await q.create({ data: cat });
@@ -964,4 +966,170 @@ async function seedTargetAudiences(strapi: Core.Strapi) {
       await q.update({ where: { id: product.id }, data: { target_audiences: list } });
     }
   }
+}
+
+// ────────────────────────────── Cleanup ──────────────────────────────
+
+/**
+ * Remove the three Sprint-1 placeholder products once the real Sprint-3
+ * products exist.  Idempotent: safe to run on every boot.
+ */
+async function cleanupPlaceholderProducts(strapi: Core.Strapi) {
+  const q = strapi.db.query("api::software-product.software-product");
+
+  // Only clean up when real products are in place
+  const realExists = await q.findOne({ where: { slug: "insurance-management-system" } });
+  if (!realExists) return;
+
+  const PLACEHOLDER_SLUGS = [
+    "hr-management-system",
+    "accounting-finance-system",
+    "ecommerce-platform",
+  ];
+
+  for (const slug of PLACEHOLDER_SLUGS) {
+    const rec = await q.findOne({ where: { slug } }) as { id: number } | null;
+    if (rec) {
+      await q.delete({ where: { id: rec.id } });
+      strapi.log.info(`[bootstrap:seed] Removed placeholder product: ${slug}`);
+    }
+  }
+}
+
+// ────────────────────────────── General FAQ items ──────────────────────
+
+/**
+ * Seed general FAQ items that appear on the /faq page
+ * (not tied to a specific product).  Idempotent.
+ */
+async function seedGeneralFaqItems(strapi: Core.Strapi) {
+  const faqItemQ = strapi.db.query("api::faq-item.faq-item");
+  const faqCatQ  = strapi.db.query("api::faq-category.faq-category");
+
+  const sentinel = await faqItemQ.findOne({
+    where: { question_ar: "ما هي قطاعات الأعمال التي تخدمها ألفا بيتا؟" },
+  });
+  if (sentinel) return;
+
+  const now = () => new Date().toISOString();
+
+  // ── FAQ Categories ──
+  const categories = [
+    { name_ar: "عن الشركة",          name_en: "About AlphaBeta",       slug: "about",         sort_order: 1 },
+    { name_ar: "المنتجات والأنظمة",   name_en: "Products & Systems",    slug: "products",      sort_order: 2 },
+    { name_ar: "التنفيذ والدعم",      name_en: "Implementation & Support", slug: "support",    sort_order: 3 },
+    { name_ar: "الأسعار والترخيص",    name_en: "Pricing & Licensing",   slug: "pricing",       sort_order: 4 },
+  ];
+  for (const c of categories) {
+    const existing = await faqCatQ.findOne({ where: { slug: c.slug } });
+    if (!existing) await faqCatQ.create({ data: c });
+  }
+
+  const catId = async (slug: string): Promise<number | null> => {
+    const c = await faqCatQ.findOne({ where: { slug } }) as { id: number } | null;
+    return c?.id ?? null;
+  };
+
+  // ── FAQ Items ──
+  const items = [
+    // About
+    {
+      question_ar: "ما هي قطاعات الأعمال التي تخدمها ألفا بيتا؟",
+      question_en: "Which business sectors does AlphaBeta serve?",
+      answer_ar: "نخدم قطاعات متعددة تشمل: التأمين، الرعاية الصحية، تجارة التجزئة والجملة، المطاعم، البناء والمقاولات، الموارد البشرية، والقطاع الحكومي — مع أنظمة مُصممة خصيصاً لكل قطاع.",
+      answer_en: "We serve insurance, healthcare, retail, wholesale, restaurants, construction, HR, and government — with systems purpose-built for each sector.",
+      cat: "about", sort: 1,
+    },
+    {
+      question_ar: "هل ألفا بيتا شركة ليبية؟",
+      question_en: "Is AlphaBeta a Libyan company?",
+      answer_ar: "نعم، ألفا بيتا شركة ليبية متخصصة في تطوير الأنظمة البرمجية المؤسسية، ومقرها طرابلس، ليبيا. نفتخر بأننا نبني حلولاً مُصممة للسوق الليبي بفريق محلي متمكن.",
+      answer_en: "Yes, AlphaBeta is a Libyan company specializing in enterprise software, headquartered in Tripoli. We build solutions designed for the Libyan market with a highly skilled local team.",
+      cat: "about", sort: 2,
+    },
+    {
+      question_ar: "كم عدد العملاء الذين تخدمونهم حالياً؟",
+      question_en: "How many clients do you currently serve?",
+      answer_ar: "نخدم أكثر من 50 مؤسسة في ليبيا عبر مختلف قطاعات الأعمال، كما يستخدم نظام الركيزة للتجارة أكثر من 15,000 مستخدم نشط.",
+      answer_en: "We serve over 50 organizations across Libya in various sectors, and the Rakiza ERP system has over 15,000 active users.",
+      cat: "about", sort: 3,
+    },
+    // Products
+    {
+      question_ar: "ما الفرق بين نظام الركيزة ونظام تخطيط موارد المؤسسات (ERP)؟",
+      question_en: "What is the difference between Rakiza and the ERP System?",
+      answer_ar: "نظام الركيزة مُصمم للتجارة والمخازن ونقاط البيع وهو الأكثر انتشاراً في ليبيا. أما نظام ERP فهو حل مؤسسي أشمل يتضمن الحسابات والموارد البشرية والمشتريات وسير العمل. كل نظام يستهدف حجماً وطبيعة مختلفة من الأنشطة.",
+      answer_en: "Rakiza is designed for retail, warehouses, and POS and is the most widely used in Libya. The ERP is a more comprehensive enterprise solution including accounting, HR, procurement, and workflows. Each targets a different business size and type.",
+      cat: "products", sort: 1,
+    },
+    {
+      question_ar: "هل يمكن تشغيل أنظمتكم بدون إنترنت مستمر؟",
+      question_en: "Can your systems run without a continuous internet connection?",
+      answer_ar: "نعم، معظم أنظمتنا تعمل محلياً داخل منشأتك دون الحاجة لاتصال دائم. بعض الميزات المتقدمة (مثل التحديثات اللحظية بين الفروع) تتطلب اتصالاً عند الحاجة.",
+      answer_en: "Yes, most of our systems work locally within your premises without a constant connection. Some advanced features (like real-time inter-branch updates) require connectivity when needed.",
+      cat: "products", sort: 2,
+    },
+    {
+      question_ar: "هل الأنظمة متوافقة مع اللغة العربية بالكامل؟",
+      question_en: "Are the systems fully compatible with Arabic?",
+      answer_ar: "نعم، جميع أنظمتنا مُصممة عربية أولاً: واجهات كاملة بالعربية، دعم كامل لاتجاه الكتابة من اليمين لليسار، تقارير بالعربية، ودعم للتواريخ الهجرية.",
+      answer_en: "Yes, all systems are Arabic-first: full Arabic interfaces, complete RTL support, Arabic reports, and Hijri date support.",
+      cat: "products", sort: 3,
+    },
+    // Support
+    {
+      question_ar: "كيف يتم تقديم الدعم الفني؟",
+      question_en: "How is technical support provided?",
+      answer_ar: "نقدم الدعم الفني عبر قنوات متعددة: هاتف، بريد إلكتروني، ودعم عن بُعد على مدار الساعة. يشمل ذلك دعماً باللغة العربية من فريق متخصص يعرف بيئة عملك.",
+      answer_en: "We provide support via multiple channels: phone, email, and remote support around the clock, all in Arabic from a specialized team that knows your work environment.",
+      cat: "support", sort: 1,
+    },
+    {
+      question_ar: "هل يشمل التنفيذ تدريب الموظفين؟",
+      question_en: "Does implementation include staff training?",
+      answer_ar: "نعم، يشمل كل مشروع برنامج تدريبياً مُصمماً لكل دور وظيفي. كما نوفر مواد تدريبية وتوثيقاً بالعربية يمكن الرجوع إليه في أي وقت.",
+      answer_en: "Yes, every project includes a training program tailored to each role, along with Arabic documentation for ongoing reference.",
+      cat: "support", sort: 2,
+    },
+    {
+      question_ar: "ماذا يحدث بعد انتهاء مدة الضمان؟",
+      question_en: "What happens after the warranty period ends?",
+      answer_ar: "بعد انتهاء فترة الضمان، يمكنك الاستمرار مع خطة صيانة سنوية تشمل التحديثات والدعم الفني والإصلاحات. التفاصيل تُحدد ضمن العقد.",
+      answer_en: "After the warranty period, you can continue with an annual maintenance plan covering updates, technical support, and fixes. Details are specified in the contract.",
+      cat: "support", sort: 3,
+    },
+    // Pricing
+    {
+      question_ar: "هل يمكنني طلب عرض سعر قبل الالتزام؟",
+      question_en: "Can I request a price quote before committing?",
+      answer_ar: "بالتأكيد، يمكنك طلب عرض سعر مجاني وغير ملزم عبر صفحة \"اطلب عرض سعر\" أو بالتواصل المباشر مع فريق المبيعات.",
+      answer_en: "Absolutely. You can request a free, non-binding quote through the 'Request a Quote' page or by contacting our sales team directly.",
+      cat: "pricing", sort: 1,
+    },
+    {
+      question_ar: "هل هناك رسوم تجديد سنوية؟",
+      question_en: "Are there annual renewal fees?",
+      answer_ar: "تعتمد على نوع الترخيص المختار. بعض الأنظمة تُباع برسوم لمرة واحدة مع خيار صيانة سنوية اختيارية، وبعضها بنموذج اشتراك. سيوضح فريقنا الخيارات بالتفصيل.",
+      answer_en: "It depends on the selected license type. Some systems are sold with a one-time fee and optional annual maintenance, others use a subscription model. Our team will explain all options in detail.",
+      cat: "pricing", sort: 2,
+    },
+  ];
+
+  const productQ = strapi.db.query("api::software-product.software-product");
+  for (const item of items) {
+    const cat = await catId(item.cat);
+    await faqItemQ.create({
+      data: {
+        question_ar: item.question_ar,
+        question_en: item.question_en,
+        answer_ar:   item.answer_ar,
+        answer_en:   item.answer_en,
+        sort_order:  item.sort,
+        category:    cat,
+        software_product: null,
+        publishedAt: now(),
+      },
+    });
+  }
+  strapi.log.info(`[bootstrap:seed] Created ${items.length} general FAQ items`);
 }

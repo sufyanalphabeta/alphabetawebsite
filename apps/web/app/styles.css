@@ -170,21 +170,50 @@
 
 /* ── Static brand tokens (identical in both themes) ─────────── */
 @theme {
-  /* Royal blue — the logo secondary, replaces decorative red */
+  /* Royal blue — the logo secondary */
   --color-royal-400: #38bdf8;
   --color-royal-500: #2563eb;
   --color-royal-600: #1d4ed8;
 
-  /* Fixed navy values for surfaces that stay dark in both themes */
+  /* Fixed navy values for permanently-dark surfaces */
   --color-navy-700: #0f3460;
   --color-navy-900: #08213f;
   --color-navy-950: #051528;
 
-  /* Static light ink for text on permanently-dark surfaces (heroes, footer) */
+  /* Static light ink for dark surfaces */
   --color-heroink-100: #d9e4f2;
   --color-heroink-200: #b3c8e4;
   --color-heroink-300: #84a4d0;
 
+  /* ── DESIGN SYSTEM v2: Violet / Indigo palette (Divi-inspired) ── */
+  --color-violet-50:  #f5f3ff;
+  --color-violet-100: #ede9fe;
+  --color-violet-200: #ddd6fe;
+  --color-violet-300: #c4b5fd;
+  --color-violet-400: #a78bfa;
+  --color-violet-500: #8b5cf6;
+  --color-violet-600: #7c3aed;
+  --color-violet-700: #6d28d9;
+  --color-violet-800: #5b21b6;
+  --color-violet-900: #4c1d95;
+
+  --color-indigo-50:  #eef2ff;
+  --color-indigo-100: #e0e7ff;
+  --color-indigo-200: #c7d2fe;
+  --color-indigo-300: #a5b4fc;
+  --color-indigo-400: #818cf8;
+  --color-indigo-500: #6366f1;
+  --color-indigo-600: #4f46e5;
+  --color-indigo-700: #4338ca;
+  --color-indigo-800: #3730a3;
+  --color-indigo-900: #312e81;
+
+  --color-sky-100: #e0f2fe;
+  --color-sky-200: #bae6fd;
+  --color-sky-300: #7dd3fc;
+  --color-sky-500: #0ea5e9;
+
+  /* Typography */
   --font-sans: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, system-ui, sans-serif;
 }
 
@@ -230,6 +259,26 @@
       linear-gradient(145deg, #040e1f 0%, #071a38 35%, #0f3460 75%, #1a4377 100%);
   }
 
+  /* ── DESIGN SYSTEM v2 ── */
+
+  /* Deep space gradient with violet-blue overtones (Divi-inspired) */
+  .bg-hero-v2 {
+    background:
+      radial-gradient(ellipse 70% 55% at 15% 40%, rgb(99 102 241 / 0.30), transparent 55%),
+      radial-gradient(ellipse 60% 50% at 88% 65%, rgb(124 58 237 / 0.25), transparent 55%),
+      radial-gradient(ellipse 45% 55% at 52% 12%, rgb(37 99 235 / 0.22), transparent 60%),
+      radial-gradient(ellipse 50% 40% at 50% 85%, rgb(79 70 229 / 0.18), transparent 55%),
+      linear-gradient(155deg, #040415 0%, #07073a 28%, #0d1050 55%, #09063a 78%, #030316 100%);
+  }
+
+  /* Dark brand gradient section (for Why-Us / feature sections) */
+  .bg-brand-dark {
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 30%, rgb(99 102 241 / 0.20), transparent 55%),
+      radial-gradient(ellipse 50% 45% at 80% 70%, rgb(124 58 237 / 0.18), transparent 55%),
+      linear-gradient(135deg, #0f0c29 0%, #1a1560 50%, #0f0c29 100%);
+  }
+
   /* Faint blueprint grid overlay (use on dark surfaces) */
   .bg-grid-dark {
     background-image:
@@ -243,6 +292,88 @@
     background: rgb(255 255 255 / 0.08);
     backdrop-filter: blur(16px) saturate(180%);
     border: 1px solid rgb(255 255 255 / 0.18);
+  }
+
+  /* Premium glassmorphism (stronger, Divi quality) */
+  .glass-premium {
+    background: rgb(255 255 255 / 0.07);
+    backdrop-filter: blur(28px) saturate(220%) brightness(1.05);
+    border: 1px solid rgb(255 255 255 / 0.14);
+    box-shadow:
+      0 8px 40px rgb(0 0 0 / 0.40),
+      0 2px 8px  rgb(0 0 0 / 0.25),
+      inset 0 1px 0 rgb(255 255 255 / 0.10);
+  }
+
+  /* Gradient text — blue to violet */
+  .text-gradient-brand {
+    background: linear-gradient(95deg, #60a5fa 0%, #818cf8 45%, #c4b5fd 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Gradient icon circle */
+  .icon-gradient {
+    background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+  }
+
+  .icon-gradient-soft {
+    background: linear-gradient(135deg, rgb(37 99 235 / 0.12) 0%, rgb(124 58 237 / 0.12) 100%);
+    border: 1px solid rgb(99 102 241 / 0.20);
+  }
+
+  /* Gradient CTA button fill */
+  .bg-gradient-cta {
+    background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+  }
+  .bg-gradient-cta:hover {
+    background: linear-gradient(135deg, #1d4ed8 0%, #6d28d9 100%);
+    box-shadow: 0 8px 30px rgb(99 102 241 / 0.50);
+  }
+
+  /* Glow shadows */
+  .shadow-glow-brand  { box-shadow: 0 0 60px rgb(99 102 241 / 0.45), 0 0 120px rgb(99 102 241 / 0.20); }
+  .shadow-glow-violet { box-shadow: 0 0 60px rgb(124 58 237 / 0.45), 0 0 120px rgb(124 58 237 / 0.20); }
+  .shadow-glow-blue   { box-shadow: 0 0 60px rgb(37 99 235 / 0.45), 0 0 120px rgb(37 99 235 / 0.20); }
+
+  /* Premium card with top gradient accent line */
+  .card-v2 {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+    background: var(--th-card);
+    border: 1px solid rgb(226 232 240 / 0.8);
+    box-shadow: 0 1px 3px rgb(15 52 96 / 0.06), 0 4px 16px rgb(15 52 96 / 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .card-v2:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 20px rgb(99 102 241 / 0.12), 0 12px 40px rgb(99 102 241 / 0.08);
+  }
+  .card-v2::before {
+    content: '';
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #2563eb, #7c3aed);
+  }
+
+  /* Card on dark bg (glass variant) */
+  .card-glass-dark {
+    background: rgb(255 255 255 / 0.06);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgb(255 255 255 / 0.10);
+    border-radius: 1rem;
+    box-shadow: 0 4px 24px rgb(0 0 0 / 0.30);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  }
+  .card-glass-dark:hover {
+    background: rgb(255 255 255 / 0.10);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 40px rgb(99 102 241 / 0.25), 0 4px 16px rgb(0 0 0 / 0.30);
   }
 
   /* Edge-fade mask for marquees */
@@ -270,6 +401,11 @@
 @keyframes ab-ping {
   75%, 100% { transform: scale(2.2); opacity: 0; }
 }
+@keyframes ab-orb-drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%      { transform: translate(30px, -20px) scale(1.05); }
+  66%      { transform: translate(-20px, 15px) scale(0.97); }
+}
 
 @layer utilities {
   .animate-fade-up   { animation: ab-fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
@@ -277,12 +413,14 @@
   .animate-float     { animation: ab-float 7s ease-in-out infinite; }
   .animate-pulse-dot { animation: ab-pulse-dot 2.4s ease-in-out infinite; }
   .animate-ping      { animation: ab-ping 1.2s cubic-bezier(0, 0, 0.2, 1) infinite; }
+  .animate-orb-drift { animation: ab-orb-drift 12s ease-in-out infinite; }
 
   /* Text truncation */
   .line-clamp-2 { overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
   .line-clamp-3 { overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
 
   @media (prefers-reduced-motion: reduce) {
-    .animate-fade-up, .animate-marquee, .animate-float, .animate-pulse-dot, .animate-ping { animation: none; }
+    .animate-fade-up, .animate-marquee, .animate-float,
+    .animate-pulse-dot, .animate-ping, .animate-orb-drift { animation: none; }
   }
 }

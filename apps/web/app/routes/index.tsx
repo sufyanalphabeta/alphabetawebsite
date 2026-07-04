@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+﻿import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowLeft,
   Building2,
@@ -11,6 +11,7 @@ import {
   MonitorCheck,
   ShieldCheck,
   ShoppingCart,
+  Sparkles,
   Users,
   Zap,
 } from "lucide-react";
@@ -83,41 +84,86 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-/* ── Static content (not from CMS) ──────────────────────────── */
+/* â”€â”€ Static content (not from CMS) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 const SECTORS = [
-  { icon: ShieldCheck,  label: "التأمين" },
-  { icon: HeartPulse,   label: "الرعاية الصحية" },
+  { icon: ShieldCheck,  label: "Ø§Ù„ØªØ£Ù…ÙŠÙ†" },
+  { icon: HeartPulse,   label: "Ø§Ù„Ø±Ø¹Ø§ÙŠØ© Ø§Ù„ØµØ­ÙŠØ©" },
   { icon: Building2,    label: "ERP" },
-  { icon: ShoppingCart, label: "نقاط البيع" },
-  { icon: Users,        label: "الموارد البشرية" },
-  { icon: Landmark,     label: "القطاع الحكومي" },
+  { icon: ShoppingCart, label: "Ù†Ù‚Ø§Ø· Ø§Ù„Ø¨ÙŠØ¹" },
+  { icon: Users,        label: "Ø§Ù„Ù…ÙˆØ§Ø±Ø¯ Ø§Ù„Ø¨Ø´Ø±ÙŠØ©" },
+  { icon: Landmark,     label: "Ø§Ù„Ù‚Ø·Ø§Ø¹ Ø§Ù„Ø­ÙƒÙˆÙ…ÙŠ" },
 ] as const;
 
 const WHY_US = [
   {
     icon: Globe,
-    title: "عربية أولاً",
-    desc:  "واجهات عربية أصيلة مع دعم كامل لمتطلبات السوق الليبي والمعايير المحلية.",
+    title: "Ø¹Ø±Ø¨ÙŠØ© Ø£ÙˆÙ„Ø§Ù‹",
+    desc:  "ÙˆØ§Ø¬Ù‡Ø§Øª Ø¹Ø±Ø¨ÙŠØ© Ø£ØµÙŠÙ„Ø© Ù…Ø¹ Ø¯Ø¹Ù… ÙƒØ§Ù…Ù„ Ù„Ù…ØªØ·Ù„Ø¨Ø§Øª Ø§Ù„Ø³ÙˆÙ‚ Ø§Ù„Ù„ÙŠØ¨ÙŠ ÙˆØ§Ù„Ù…Ø¹Ø§ÙŠÙŠØ± Ø§Ù„Ù…Ø­Ù„ÙŠØ©.",
+    gradient: "from-indigo-500 to-violet-600",
   },
   {
     icon: ShieldCheck,
-    title: "أمان مؤسسي",
-    desc:  "بنية تقنية بمعايير دولية تضمن حماية البيانات وإتاحة النظام على مدار الساعة.",
+    title: "Ø£Ù…Ø§Ù† Ù…Ø¤Ø³Ø³ÙŠ",
+    desc:  "Ø¨Ù†ÙŠØ© ØªÙ‚Ù†ÙŠØ© Ø¨Ù…Ø¹Ø§ÙŠÙŠØ± Ø¯ÙˆÙ„ÙŠØ© ØªØ¶Ù…Ù† Ø­Ù…Ø§ÙŠØ© Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª ÙˆØ¥ØªØ§Ø­Ø© Ø§Ù„Ù†Ø¸Ø§Ù… Ø¹Ù„Ù‰ Ù…Ø¯Ø§Ø± Ø§Ù„Ø³Ø§Ø¹Ø©.",
+    gradient: "from-royal-500 to-indigo-600",
   },
   {
     icon: Headset,
-    title: "دعم لا يتوقف",
-    desc:  "فريق دعم محلي يعرف بيئتك ويستجيب لك بالعربية — 24 ساعة، 7 أيام في الأسبوع.",
+    title: "Ø¯Ø¹Ù… Ù„Ø§ ÙŠØªÙˆÙ‚Ù",
+    desc:  "ÙØ±ÙŠÙ‚ Ø¯Ø¹Ù… Ù…Ø­Ù„ÙŠ ÙŠØ¹Ø±Ù Ø¨ÙŠØ¦ØªÙƒ ÙˆÙŠØ³ØªØ¬ÙŠØ¨ Ù„Ùƒ Ø¨Ø§Ù„Ø¹Ø±Ø¨ÙŠØ© â€” 24 Ø³Ø§Ø¹Ø©ØŒ 7 Ø£ÙŠØ§Ù… ÙÙŠ Ø§Ù„Ø£Ø³Ø¨ÙˆØ¹.",
+    gradient: "from-violet-600 to-indigo-700",
   },
 ] as const;
 
+/* â”€â”€ Wave SVG divider (hero â†’ content) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+function WaveDivider({ fill = "bg-background" }: { fill?: string }) {
+  return (
+    <div className="pointer-events-none absolute bottom-0 inset-x-0 overflow-hidden leading-[0]">
+      <svg
+        viewBox="0 0 1440 56"
+        xmlns="http://www.w3.org/2000/svg"
+        preserveAspectRatio="none"
+        className={cx("w-full h-14", fill)}
+        aria-hidden="true"
+      >
+        <path d="M0,28 C240,56 480,0 720,28 C960,56 1200,0 1440,28 L1440,56 L0,56 Z" />
+      </svg>
+    </div>
+  );
+}
 
+/* â”€â”€ Gradient stat card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+function GradientStatCard({
+  icon: Icon,
+  value,
+  label,
+  delay = 0,
+}: {
+  icon: React.ElementType;
+  value: React.ReactNode;
+  label: string;
+  delay?: number;
+}) {
+  return (
+    <Reveal delay={delay}>
+      <div className="group flex flex-col items-center gap-3 rounded-2xl bg-card p-6 text-center shadow-[0_4px_24px_rgb(99_102_241/0.08)] ring-1 ring-indigo-100/80 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_40px_rgb(99_102_241/0.15)]">
+        <div className="flex h-12 w-12 items-center justify-center rounded-xl icon-gradient text-white shadow-glow-brand">
+          <Icon size={22} />
+        </div>
+        <p className="text-3xl font-extrabold tracking-tight text-slate-800 sm:text-4xl">{value}</p>
+        <p className="text-sm text-slate-500">{label}</p>
+      </div>
+    </Reveal>
+  );
+}
+
+/* â”€â”€ Component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function HomePage() {
   const { setting, products, clients, testimonials, partners, services } = Route.useLoaderData();
 
   useSeo({
-    title:       `${setting?.site_name_ar ?? "ألفا بيتا"} | أنظمة برمجية للمؤسسات`,
-    description: setting?.tagline_ar ?? "شركة ليبية متخصصة في تطوير الأنظمة البرمجية للمؤسسات",
+    title:       `${setting?.site_name_ar ?? "Ø£Ù„ÙØ§ Ø¨ÙŠØªØ§"} | Ø£Ù†Ø¸Ù…Ø© Ø¨Ø±Ù…Ø¬ÙŠØ© Ù„Ù„Ù…Ø¤Ø³Ø³Ø§Øª`,
+    description: setting?.tagline_ar ?? "Ø´Ø±ÙƒØ© Ù„ÙŠØ¨ÙŠØ© Ù…ØªØ®ØµØµØ© ÙÙŠ ØªØ·ÙˆÙŠØ± Ø§Ù„Ø£Ù†Ø¸Ù…Ø© Ø§Ù„Ø¨Ø±Ù…Ø¬ÙŠØ© Ù„Ù„Ù…Ø¤Ø³Ø³Ø§Øª",
   });
 
   const featured     = products.filter((p) => p.is_featured).slice(0, 3);
@@ -126,46 +172,52 @@ function HomePage() {
   return (
     <main>
 
-      {/* ══════════════════════════════════════════════════════
-          HERO
-      ══════════════════════════════════════════════════════ */}
-      <section className="bg-mesh relative overflow-hidden text-white">
-        <div className="bg-grid-dark pointer-events-none absolute inset-0" />
-        <BrandWatermark className="-start-20 -bottom-36 h-[26rem] w-[26rem] opacity-[0.04]" />
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+          HERO â€” Deep space gradient with violet overtones
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+      <section className="bg-hero-v2 relative overflow-hidden pb-14 pt-16 text-white sm:pb-20 sm:pt-24 lg:pt-28">
+        {/* Grid overlay */}
+        <div className="bg-grid-dark pointer-events-none absolute inset-0 opacity-60" />
 
-        <Container className="relative py-16 sm:py-24 lg:py-28">
-          <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-20">
+        {/* Animated background orbs */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div className="orb animate-orb-drift absolute -start-32 top-1/4 h-96 w-96 rounded-full bg-indigo-600/20 blur-3xl" />
+          <div className="orb animate-orb-drift absolute -end-32 top-1/3 h-80 w-80 rounded-full bg-violet-600/20 blur-3xl" style={{ animationDelay: "-4s" }} />
+          <div className="orb absolute start-1/2 -top-20 h-72 w-72 -translate-x-1/2 rounded-full bg-royal-600/15 blur-3xl" />
+        </div>
 
-            {/* ── Text column ── */}
+        <BrandWatermark className="-start-16 -bottom-32 h-[24rem] w-[24rem] opacity-[0.04]" />
+
+        <Container className="relative">
+          <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+
+            {/* â”€â”€ Text column â”€â”€ */}
             <div className="animate-fade-up">
-              {/* Live indicator badge */}
-              <div className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-sm backdrop-blur-sm">
+              {/* Live badge */}
+              <div className="mb-7 inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-white/8 px-4 py-1.5 text-sm backdrop-blur-sm">
                 <span className="relative flex h-2.5 w-2.5 shrink-0">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
                   <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400" />
                 </span>
-                {setting?.site_name_ar ?? "ألفا بيتا"} — الشريك التقني للمؤسسات الليبية
+                <span className="text-white/85">{setting?.site_name_ar ?? "Ø£Ù„ÙØ§ Ø¨ÙŠØªØ§"} â€” Ø§Ù„Ø´Ø±ÙŠÙƒ Ø§Ù„ØªÙ‚Ù†ÙŠ Ù„Ù„Ù…Ø¤Ø³Ø³Ø§Øª Ø§Ù„Ù„ÙŠØ¨ÙŠØ©</span>
               </div>
 
-              {/* H1 */}
+              {/* H1 with gradient accent */}
               <h1 className="text-[2.8rem] font-extrabold leading-[1.15] tracking-tight sm:text-[3.75rem] sm:leading-[1.08]">
                 {setting?.tagline_ar ? (
                   setting.tagline_ar
                 ) : (
                   <>
-                    نصنع البرمجيات،
+                    Ù†ØµÙ†Ø¹ Ø§Ù„Ø¨Ø±Ù…Ø¬ÙŠØ§ØªØŒ
                     <br />
-                    <span className="bg-gradient-to-l from-royal-400 to-sky-300 bg-clip-text text-transparent">
-                      نبني المستقبل
-                    </span>
+                    <span className="text-gradient-brand">Ù†Ø¨Ù†ÙŠ Ø§Ù„Ù…Ø³ØªÙ‚Ø¨Ù„</span>
                   </>
                 )}
               </h1>
 
               {/* Subtitle */}
-              <p className="mt-5 max-w-lg text-[1.05rem] leading-[1.75] text-heroink-100/80">
-                أنظمة مؤسسية متكاملة للتأمين والرعاية الصحية وتخطيط موارد المؤسسات —
-                مصممة للسوق الليبي بمعايير عالمية ودعم عربي كامل.
+              <p className="mt-5 max-w-lg text-[1.05rem] leading-[1.75] text-white/70">
+                Ø£Ù†Ø¸Ù…Ø© Ù…Ø¤Ø³Ø³ÙŠØ© Ù…ØªÙƒØ§Ù…Ù„Ø© Ù„Ù„ØªØ£Ù…ÙŠÙ† ÙˆØ§Ù„Ø±Ø¹Ø§ÙŠØ© Ø§Ù„ØµØ­ÙŠØ© ÙˆØªØ®Ø·ÙŠØ· Ù…ÙˆØ§Ø±Ø¯ Ø§Ù„Ù…Ø¤Ø³Ø³Ø§Øª â€” Ù…ØµÙ…Ù…Ø© Ù„Ù„Ø³ÙˆÙ‚ Ø§Ù„Ù„ÙŠØ¨ÙŠ Ø¨Ù…Ø¹Ø§ÙŠÙŠØ± Ø¹Ø§Ù„Ù…ÙŠØ© ÙˆØ¯Ø¹Ù… Ø¹Ø±Ø¨ÙŠ ÙƒØ§Ù…Ù„.
               </p>
 
               {/* Sector chips */}
@@ -173,9 +225,9 @@ function HomePage() {
                 {SECTORS.map(({ icon: Icon, label }) => (
                   <span
                     key={label}
-                    className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-medium ring-1 ring-white/15"
+                    className="sector-chip inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/8 px-3 py-1 text-xs font-medium text-white/80 backdrop-blur-sm"
                   >
-                    <Icon size={11} className="text-royal-400" />
+                    <Icon size={11} className="text-indigo-300" />
                     {label}
                   </span>
                 ))}
@@ -183,37 +235,43 @@ function HomePage() {
 
               {/* CTAs */}
               <div className="mt-8 flex flex-wrap gap-3">
-                <LinkButton to="/request-demo" variant="accent" size="lg" className="shadow-lg shadow-accent-500/25">
-                  اطلب عرضاً توضيحياً
+                <LinkButton
+                  to="/request-demo"
+                  variant="gradient"
+                  size="lg"
+                  className="rounded-xl px-8 shadow-[0_8px_30px_rgb(99_102_241/0.45)]"
+                >
+                  <Sparkles size={17} />
+                  Ø§Ø·Ù„Ø¨ Ø¹Ø±Ø¶Ø§Ù‹ ØªÙˆØ¶ÙŠØ­ÙŠØ§Ù‹
                 </LinkButton>
-                <LinkButton to="/software" variant="ghostDark" size="lg">
-                  استعرض الأنظمة
+                <LinkButton to="/software" variant="ghostDark" size="lg" className="rounded-xl border-white/20">
+                  Ø§Ø³ØªØ¹Ø±Ø¶ Ø§Ù„Ø£Ù†Ø¸Ù…Ø©
                 </LinkButton>
               </div>
 
-              {/* Mini stats bar */}
-              <div className="mt-10 grid grid-cols-3 gap-4 border-t border-white/10 pt-8">
+              {/* Mini stats */}
+              <div className="mt-10 grid grid-cols-3 gap-6 border-t border-white/10 pt-8">
                 {[
-                  { val: "+10",  lbl: "سنوات خبرة" },
-                  { val: "+50",  lbl: "مؤسسة تثق بنا" },
-                  { val: "24/7", lbl: "دعم فني" },
+                  { val: "+10",  lbl: "Ø³Ù†ÙˆØ§Øª Ø®Ø¨Ø±Ø©" },
+                  { val: "+50",  lbl: "Ù…Ø¤Ø³Ø³Ø© ØªØ«Ù‚ Ø¨Ù†Ø§" },
+                  { val: "24/7", lbl: "Ø¯Ø¹Ù… ÙÙ†ÙŠ" },
                 ].map(({ val, lbl }) => (
                   <div key={lbl}>
-                    <p className="text-2xl font-extrabold text-white">{val}</p>
-                    <p className="mt-0.5 text-xs text-heroink-200/65">{lbl}</p>
+                    <p className="text-gradient-brand text-2xl font-extrabold">{val}</p>
+                    <p className="mt-0.5 text-xs text-white/55">{lbl}</p>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* ── Dashboard mockup column ── */}
+            {/* â”€â”€ Dashboard mockup â”€â”€ */}
             <div
               className="animate-fade-up relative hidden sm:block"
               style={{ animationDelay: "180ms" }}
             >
-              {/* Soft glow behind mockup */}
-              <div className="pointer-events-none absolute -inset-6 rounded-[3rem] bg-royal-600/20 blur-3xl" />
-              <div className="glass relative rounded-3xl p-3 shadow-2xl ring-1 ring-white/20">
+              {/* Glow behind mockup */}
+              <div className="pointer-events-none absolute -inset-8 rounded-[3rem] bg-indigo-600/25 blur-3xl" />
+              <div className="glass-premium relative rounded-3xl p-3 shadow-glow-brand">
                 <DashboardMockup />
               </div>
               {/* Floating product chips */}
@@ -222,30 +280,30 @@ function HomePage() {
                   key={p.id}
                   to="/software/$slug"
                   params={{ slug: p.slug }}
-                  style={{ bottom: `${i * 60 + 16}px` }}
-                  className="glass absolute -start-6 flex items-center gap-3 rounded-xl px-4 py-2.5 transition-all hover:bg-white/15"
+                  style={{ bottom: `${i * 62 + 20}px` }}
+                  className="glass-premium absolute -start-6 flex items-center gap-3 rounded-xl px-4 py-2.5 transition-all duration-200 hover:bg-white/15"
                 >
                   <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white/15">
                     {p.logo ? (
                       <img src={mediaUrl(p.logo.url) ?? ""} alt="" className="h-full w-full object-cover" />
                     ) : (
-                      <MonitorCheck size={15} className="text-white" />
+                      <MonitorCheck size={15} className="text-indigo-300" />
                     )}
                   </span>
                   <span className="text-xs font-semibold text-white">{p.name_ar}</span>
-                  <ArrowLeft size={13} className="text-royal-400" />
+                  <ArrowLeft size={13} className="text-indigo-300" />
                 </Link>
               ))}
             </div>
           </div>
         </Container>
 
-        {/* Client logo marquee — inside hero bottom bar */}
+        {/* Client logo strip inside hero bottom */}
         {clients.length > 0 && (
-          <div className="border-t border-white/10 bg-black/15 py-5">
+          <div className="mt-10 border-t border-white/8 bg-black/15 py-5">
             <Container>
-              <p className="mb-3.5 text-center text-xs text-heroink-300/55">
-                مؤسسات رائدة تدير أعمالها بأنظمة ألفا بيتا
+              <p className="mb-3 text-center text-xs text-white/40">
+                Ù…Ø¤Ø³Ø³Ø§Øª Ø±Ø§Ø¦Ø¯Ø© ØªØ¯ÙŠØ± Ø£Ø¹Ù…Ø§Ù„Ù‡Ø§ Ø¨Ø£Ù†Ø¸Ù…Ø© Ø£Ù„ÙØ§ Ø¨ÙŠØªØ§
               </p>
               <Marquee>
                 {clients.map((c) => (
@@ -253,91 +311,67 @@ function HomePage() {
                     key={c.id}
                     to="/clients"
                     title={c.name_ar}
-                    className="flex shrink-0 items-center gap-2 opacity-55 transition-opacity hover:opacity-90"
+                    className="flex shrink-0 items-center gap-2 opacity-50 transition-opacity hover:opacity-80"
                   >
                     {c.logo && (
-                      <img
-                        src={mediaUrl(c.logo.url) ?? ""}
-                        alt={c.name_ar}
-                        className="h-7 w-7 rounded-md object-cover"
-                      />
+                      <img src={mediaUrl(c.logo.url) ?? ""} alt={c.name_ar} className="h-7 w-7 rounded-md object-cover" />
                     )}
-                    <span className="whitespace-nowrap text-sm font-medium text-heroink-200">
-                      {c.name_ar}
-                    </span>
+                    <span className="whitespace-nowrap text-sm font-medium text-white/80">{c.name_ar}</span>
                   </Link>
                 ))}
               </Marquee>
             </Container>
           </div>
         )}
+
+        {/* Wave divider at bottom of hero */}
+        <WaveDivider />
       </section>
 
-      {/* ══════════════════════════════════════════════════════
-          STATS — light cards (not dark band)
-      ══════════════════════════════════════════════════════ */}
-      <section className="bg-surface py-14 sm:py-16">
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+          STATS â€” Gradient icon cards on light background
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+      <section className="bg-indigo-50/40 py-16 sm:py-20">
         <Container>
           <div className="grid grid-cols-2 gap-5 lg:grid-cols-4">
-            {[
-              { icon: Clock,        node: <CountUp end={10} prefix="+" />, label: "سنوات خبرة متراكمة" },
-              { icon: Building2,    node: <CountUp end={50} prefix="+" />, label: "مؤسسة تثق بأنظمتنا" },
-              { icon: MonitorCheck, node: <CountUp end={products.length || 8} suffix="+" />, label: "نظام مؤسسي متكامل" },
-              { icon: Headset,      node: <>24/7</>,                                           label: "دعم فني لا يتوقف" },
-            ].map(({ icon: StatIcon, node, label }, i) => (
-              <Reveal key={label} delay={i * 70}>
-                <div className="flex flex-col items-center gap-3 rounded-2xl bg-card p-6 text-center shadow-card">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary-50 text-primary-600">
-                    <StatIcon size={21} />
-                  </span>
-                  <p className="text-3xl font-extrabold tracking-tight text-primary-900 sm:text-4xl">
-                    {node}
-                  </p>
-                  <p className="text-sm text-slate-500">{label}</p>
-                </div>
-              </Reveal>
-            ))}
+            <GradientStatCard icon={Clock}        value={<CountUp end={10} prefix="+" />}  label="Ø³Ù†ÙˆØ§Øª Ø®Ø¨Ø±Ø© Ù…ØªØ±Ø§ÙƒÙ…Ø©" delay={0}   />
+            <GradientStatCard icon={Building2}    value={<CountUp end={50} prefix="+" />}  label="Ù…Ø¤Ø³Ø³Ø© ØªØ«Ù‚ Ø¨Ø£Ù†Ø¸Ù…ØªÙ†Ø§" delay={70}  />
+            <GradientStatCard icon={MonitorCheck} value={<CountUp end={products.length || 8} suffix="+" />} label="Ù†Ø¸Ø§Ù… Ù…Ø¤Ø³Ø³ÙŠ Ù…ØªÙƒØ§Ù…Ù„" delay={140} />
+            <GradientStatCard icon={Headset}      value={<>24/7</>}                        label="Ø¯Ø¹Ù… ÙÙ†ÙŠ Ù„Ø§ ÙŠØªÙˆÙ‚Ù"    delay={210} />
           </div>
         </Container>
       </section>
 
-      {/* ══════════════════════════════════════════════════════
-          PRODUCTS
-      ══════════════════════════════════════════════════════ */}
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+          PRODUCTS â€” Premium gradient-accent cards
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       <Section>
         <SectionHeading
-          eyebrow="منظومة البرمجيات"
-          title="أنظمة تدير مؤسستك من طرف إلى طرف"
-          description="حلول قابلة للتخصيص تغطي التأمين والرعاية الصحية والمالية والموارد البشرية"
+          eyebrow="Ù…Ù†Ø¸ÙˆÙ…Ø© Ø§Ù„Ø¨Ø±Ù…Ø¬ÙŠØ§Øª"
+          title="Ø£Ù†Ø¸Ù…Ø© ØªØ¯ÙŠØ± Ù…Ø¤Ø³Ø³ØªÙƒ Ù…Ù† Ø·Ø±Ù Ø¥Ù„Ù‰ Ø·Ø±Ù"
+          description="Ø­Ù„ÙˆÙ„ Ù‚Ø§Ø¨Ù„Ø© Ù„Ù„ØªØ®ØµÙŠØµ ØªØºØ·ÙŠ Ø§Ù„ØªØ£Ù…ÙŠÙ† ÙˆØ§Ù„Ø±Ø¹Ø§ÙŠØ© Ø§Ù„ØµØ­ÙŠØ© ÙˆØ§Ù„Ù…Ø§Ù„ÙŠØ© ÙˆØ§Ù„Ù…ÙˆØ§Ø±Ø¯ Ø§Ù„Ø¨Ø´Ø±ÙŠØ©"
         />
         {products.length === 0 ? (
-          <EmptyState message="لا توجد أنظمة منشورة حالياً" />
+          <EmptyState message="Ù„Ø§ ØªÙˆØ¬Ø¯ Ø£Ù†Ø¸Ù…Ø© Ù…Ù†Ø´ÙˆØ±Ø© Ø­Ø§Ù„ÙŠØ§Ù‹" />
         ) : (
           <Reveal className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {products.slice(0, 6).map((p) => (
+            {products.slice(0, 6).map((p, idx) => (
               <Link key={p.id} to="/software/$slug" params={{ slug: p.slug }} className="group">
-                <Card className={cx(
-                  "relative flex h-full flex-col overflow-hidden p-6",
-                  p.is_featured && "ring-1 ring-accent-200/60",
-                )}>
-                  {/* Featured top accent line */}
-                  {p.is_featured && (
-                    <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-accent-400 via-accent-500 to-accent-400" />
-                  )}
+                <div className="card-v2 flex h-full flex-col p-6">
                   <div className="flex items-start gap-4">
-                    <span className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-primary-50 ring-1 ring-primary-100">
+                    <span className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl icon-gradient-soft">
                       {p.logo ? (
                         <img src={mediaUrl(p.logo.url) ?? ""} alt="" className="h-full w-full object-cover" />
                       ) : (
-                        <MonitorCheck size={22} className="text-primary-600" />
+                        <MonitorCheck size={22} className="text-indigo-500" />
                       )}
                     </span>
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center gap-2">
-                        <h3 className="font-bold text-primary-900">{p.name_ar}</h3>
+                        <h3 className="font-bold text-slate-800">{p.name_ar}</h3>
                         {p.is_featured && (
-                          <span className="shrink-0 rounded-full bg-accent-50 px-2 py-0.5 text-[0.65rem] font-semibold text-accent-600">
-                            مميز
+                          <span className="shrink-0 rounded-full bg-gradient-cta px-2.5 py-0.5 text-[0.65rem] font-semibold text-white">
+                            Ù…Ù…ÙŠØ²
                           </span>
                         )}
                       </div>
@@ -352,66 +386,82 @@ function HomePage() {
                     </p>
                   )}
                   <div className="mt-5 border-t border-slate-100 pt-4">
-                    <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary-700 transition-all duration-150 group-hover:gap-2.5">
-                      عرض التفاصيل <ArrowLeft size={14} />
+                    <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-indigo-600 transition-all duration-150 group-hover:gap-3">
+                      Ø¹Ø±Ø¶ Ø§Ù„ØªÙØ§ØµÙŠÙ„ <ArrowLeft size={14} />
                     </span>
                   </div>
-                </Card>
+                </div>
               </Link>
             ))}
           </Reveal>
         )}
         <div className="mt-10 text-center">
-          <LinkButton to="/software" variant="outline" size="md">جميع الأنظمة</LinkButton>
+          <LinkButton to="/software" variant="outline" size="md" className="border-indigo-200 text-indigo-700 hover:border-indigo-400 hover:bg-indigo-50">
+            Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø£Ù†Ø¸Ù…Ø©
+          </LinkButton>
         </div>
       </Section>
 
-      {/* ══════════════════════════════════════════════════════
-          WHY ALPHABETA — always shown, static content
-      ══════════════════════════════════════════════════════ */}
-      <Section tone="muted">
-        <SectionHeading
-          eyebrow="لماذا ألفا بيتا"
-          title="بنينا ثقتنا بالنتائج لا بالوعود"
-          description="منذ أكثر من عقد، نشارك المؤسسات الليبية في رحلة التحول الرقمي بكل خطوة"
-        />
-        <div className="grid gap-6 sm:grid-cols-3">
-          {WHY_US.map(({ icon: Icon, title, desc }, i) => (
-            <Reveal key={title} delay={i * 100}>
-              <div className="flex flex-col gap-5 rounded-2xl bg-card p-8 shadow-card">
-                <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-700 text-white">
-                  <Icon size={22} />
-                </span>
-                <div>
-                  <h3 className="text-lg font-bold text-primary-900">{title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-500">{desc}</p>
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+          WHY ALPHABETA â€” Dark gradient section (Divi-style)
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+      <section className="bg-brand-dark relative overflow-hidden py-20 text-white sm:py-24">
+        <div className="bg-grid-dark pointer-events-none absolute inset-0 opacity-50" />
+        <BrandWatermark className="-end-20 -bottom-32 h-96 w-96 opacity-[0.05]" />
+        <Container className="relative">
+          <div className="mb-14 text-center">
+            <p className="mb-3 inline-flex items-center gap-2 text-sm font-semibold text-indigo-300">
+              <span className="inline-block h-px w-8 rounded-full bg-indigo-400" />
+              Ù„Ù…Ø§Ø°Ø§ Ø£Ù„ÙØ§ Ø¨ÙŠØªØ§
+              <span className="inline-block h-px w-8 rounded-full bg-indigo-400" />
+            </p>
+            <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
+              Ø¨Ù†ÙŠÙ†Ø§ Ø«Ù‚ØªÙ†Ø§{" "}
+              <span className="text-gradient-brand">Ø¨Ø§Ù„Ù†ØªØ§Ø¦Ø¬ Ù„Ø§ Ø¨Ø§Ù„ÙˆØ¹ÙˆØ¯</span>
+            </h2>
+            <p className="mx-auto mt-3 max-w-xl text-base text-white/65">
+              Ù…Ù†Ø° Ø£ÙƒØ«Ø± Ù…Ù† Ø¹Ù‚Ø¯ØŒ Ù†Ø´Ø§Ø±Ùƒ Ø§Ù„Ù…Ø¤Ø³Ø³Ø§Øª Ø§Ù„Ù„ÙŠØ¨ÙŠØ© ÙÙŠ Ø±Ø­Ù„Ø© Ø§Ù„ØªØ­ÙˆÙ„ Ø§Ù„Ø±Ù‚Ù…ÙŠ Ø¨ÙƒÙ„ Ø®Ø·ÙˆØ©
+            </p>
+          </div>
+          <div className="grid gap-6 sm:grid-cols-3">
+            {WHY_US.map(({ icon: Icon, title, desc, gradient }, i) => (
+              <Reveal key={title} delay={i * 100}>
+                <div className="card-glass-dark flex flex-col gap-5 p-8">
+                  <div className={cx("flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br text-white", gradient)}>
+                    <Icon size={22} />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-white">{title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-white/65">{desc}</p>
+                  </div>
                 </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </Section>
+              </Reveal>
+            ))}
+          </div>
+        </Container>
+      </section>
 
-      {/* ══════════════════════════════════════════════════════
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
           SERVICES (conditional)
-      ══════════════════════════════════════════════════════ */}
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       {services.length > 0 && (
         <Section>
           <SectionHeading
-            eyebrow="خدماتنا"
-            title="أكثر من مجرد برمجيات"
-            description="نرافقك من التخطيط حتى التشغيل — تطوير مخصص، تحول رقمي، تدريب، ودعم مستمر"
+            eyebrow="Ø®Ø¯Ù…Ø§ØªÙ†Ø§"
+            title="Ø£ÙƒØ«Ø± Ù…Ù† Ù…Ø¬Ø±Ø¯ Ø¨Ø±Ù…Ø¬ÙŠØ§Øª"
+            description="Ù†Ø±Ø§ÙÙ‚Ùƒ Ù…Ù† Ø§Ù„ØªØ®Ø·ÙŠØ· Ø­ØªÙ‰ Ø§Ù„ØªØ´ØºÙŠÙ„ â€” ØªØ·ÙˆÙŠØ± Ù…Ø®ØµØµØŒ ØªØ­ÙˆÙ„ Ø±Ù‚Ù…ÙŠØŒ ØªØ¯Ø±ÙŠØ¨ØŒ ÙˆØ¯Ø¹Ù… Ù…Ø³ØªÙ…Ø±"
           />
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {services.map((s, i) => (
               <Reveal key={s.id} delay={i * 60}>
-                <div className="group flex flex-col gap-3 rounded-2xl border border-slate-200/80 bg-card p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-primary-200 hover:shadow-card-hover">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-50 text-primary-600 transition-colors duration-200 group-hover:bg-primary-700 group-hover:text-white">
+                <div className="group relative overflow-hidden rounded-2xl border border-indigo-100/60 bg-card p-6 transition-all duration-200 hover:-translate-y-1 hover:border-indigo-200 hover:shadow-[0_8px_32px_rgb(99_102_241/0.12)]">
+                  <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-indigo-500 to-violet-600" />
+                  <span className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600 transition-all duration-200 group-hover:icon-gradient group-hover:text-white">
                     <Zap size={18} />
                   </span>
-                  <h3 className="font-bold text-primary-900">{s.name_ar}</h3>
+                  <h3 className="font-bold text-slate-800">{s.name_ar}</h3>
                   {s.description_ar && (
-                    <p className="text-sm leading-relaxed text-slate-500">{s.description_ar}</p>
+                    <p className="mt-2 text-sm leading-relaxed text-slate-500">{s.description_ar}</p>
                   )}
                 </div>
               </Reveal>
@@ -420,12 +470,12 @@ function HomePage() {
         </Section>
       )}
 
-      {/* ══════════════════════════════════════════════════════
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
           TESTIMONIALS (conditional)
-      ══════════════════════════════════════════════════════ */}
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       {testimonials.length > 0 && (
         <Section tone="muted">
-          <SectionHeading eyebrow="آراء العملاء" title="ماذا يقول من يعمل بأنظمتنا يومياً؟" />
+          <SectionHeading eyebrow="Ø¢Ø±Ø§Ø¡ Ø§Ù„Ø¹Ù…Ù„Ø§Ø¡" title="Ù…Ø§Ø°Ø§ ÙŠÙ‚ÙˆÙ„ Ù…Ù† ÙŠØ¹Ù…Ù„ Ø¨Ø£Ù†Ø¸Ù…ØªÙ†Ø§ ÙŠÙˆÙ…ÙŠØ§Ù‹ØŸ" />
           <Reveal className="grid gap-6 md:grid-cols-3">
             {testimonials.map((t) => (
               <Card key={t.id} className="flex flex-col p-6">
@@ -435,16 +485,12 @@ function HomePage() {
                 </blockquote>
                 <footer className="mt-5 flex items-center gap-3 border-t border-slate-100 pt-4">
                   {t.image && (
-                    <img
-                      src={mediaUrl(t.image.url) ?? ""}
-                      alt=""
-                      className="h-10 w-10 rounded-full object-cover"
-                    />
+                    <img src={mediaUrl(t.image.url) ?? ""} alt="" className="h-10 w-10 rounded-full object-cover" />
                   )}
                   <div>
-                    <p className="text-sm font-bold text-primary-900">{t.customer_name_ar}</p>
+                    <p className="text-sm font-bold text-slate-800">{t.customer_name_ar}</p>
                     <p className="text-xs text-slate-400">
-                      {[t.position_ar, t.company_ar].filter(Boolean).join(" — ")}
+                      {[t.position_ar, t.company_ar].filter(Boolean).join(" â€” ")}
                     </p>
                   </div>
                 </footer>
@@ -452,37 +498,31 @@ function HomePage() {
             ))}
           </Reveal>
           <div className="mt-8 text-center">
-            <Link to="/testimonials" className="text-sm font-semibold text-primary-700 hover:text-primary-800">
-              جميع آراء العملاء ←
+            <Link to="/testimonials" className="text-sm font-semibold text-indigo-600 hover:text-indigo-700">
+              Ø¬Ù…ÙŠØ¹ Ø¢Ø±Ø§Ø¡ Ø§Ù„Ø¹Ù…Ù„Ø§Ø¡ â†
             </Link>
           </div>
         </Section>
       )}
 
-      {/* ══════════════════════════════════════════════════════
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
           PARTNERS (conditional)
-      ══════════════════════════════════════════════════════ */}
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       {partners.length > 0 && (
-        <section className="border-y border-slate-100 bg-card py-12">
+        <section className="border-y border-indigo-100/50 bg-card py-12">
           <Container>
-            <p className="mb-6 text-center text-sm font-medium text-slate-400">شركاؤنا في النجاح</p>
+            <p className="mb-6 text-center text-sm font-medium text-slate-400">Ø´Ø±ÙƒØ§Ø¤Ù†Ø§ ÙÙŠ Ø§Ù„Ù†Ø¬Ø§Ø­</p>
             <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-5">
               {partners.map((p) => (
                 <Link
                   key={p.id}
                   to="/partners"
-                  className="flex items-center gap-2.5 opacity-60 transition-opacity hover:opacity-100"
+                  className="flex items-center gap-2.5 opacity-55 grayscale transition-all hover:opacity-100 hover:grayscale-0"
                 >
                   {p.logo && (
-                    <img
-                      src={mediaUrl(p.logo.url) ?? ""}
-                      alt={p.name_ar}
-                      className="h-8 w-8 rounded-md object-cover"
-                    />
+                    <img src={mediaUrl(p.logo.url) ?? ""} alt={p.name_ar} className="h-8 w-8 rounded-md object-cover" />
                   )}
-                  <span className="text-sm font-semibold text-slate-600" dir="ltr">
-                    {p.name_en ?? p.name_ar}
-                  </span>
+                  <span className="text-sm font-semibold text-slate-600" dir="ltr">{p.name_en ?? p.name_ar}</span>
                 </Link>
               ))}
             </div>
@@ -490,39 +530,45 @@ function HomePage() {
         </section>
       )}
 
-      {/* ══════════════════════════════════════════════════════
-          FINAL CTA — 2 buttons + trust signal
-      ══════════════════════════════════════════════════════ */}
-      <section className="bg-mesh relative overflow-hidden py-20 text-white sm:py-24">
-        <div className="bg-grid-dark pointer-events-none absolute inset-0 opacity-60" />
-        <BrandWatermark className="-end-16 -bottom-24 h-80 w-80 opacity-[0.06]" />
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+          FINAL CTA â€” Gradient hero style
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+      <section className="bg-hero-v2 relative overflow-hidden py-20 text-white sm:py-24">
+        <div className="bg-grid-dark pointer-events-none absolute inset-0 opacity-50" />
+        <div className="pointer-events-none absolute inset-0">
+          <div className="orb absolute start-1/4 top-1/2 h-64 w-64 -translate-y-1/2 rounded-full bg-indigo-600/20 blur-3xl" />
+          <div className="orb absolute end-1/4 top-1/2 h-64 w-64 -translate-y-1/2 rounded-full bg-violet-600/20 blur-3xl" />
+        </div>
+        <BrandWatermark className="-end-16 -bottom-24 h-80 w-80 opacity-[0.05]" />
         <Container className="relative text-center">
-          <p className="mb-3 inline-flex items-center gap-2 text-sm font-semibold text-royal-400">
-            <span className="inline-block h-px w-8 rounded-full bg-royal-400" />
-            ابدأ رحلتك الرقمية اليوم
-            <span className="inline-block h-px w-8 rounded-full bg-royal-400" />
+          <p className="mb-3 inline-flex items-center gap-2 text-sm font-semibold text-indigo-300">
+            <span className="inline-block h-px w-8 rounded-full bg-indigo-400" />
+            Ø§Ø¨Ø¯Ø£ Ø±Ø­Ù„ØªÙƒ Ø§Ù„Ø±Ù‚Ù…ÙŠØ© Ø§Ù„ÙŠÙˆÙ…
+            <span className="inline-block h-px w-8 rounded-full bg-indigo-400" />
           </p>
           <h2 className="mx-auto mt-2 max-w-2xl text-3xl font-extrabold tracking-tight sm:text-[2.75rem]">
-            جاهز لتحويل مؤسستك رقمياً؟
+            Ø¬Ø§Ù‡Ø² Ù„ØªØ­ÙˆÙŠÙ„ Ù…Ø¤Ø³Ø³ØªÙƒ{" "}
+            <span className="text-gradient-brand">Ø±Ù‚Ù…ÙŠØ§Ù‹ØŸ</span>
           </h2>
-          <p className="mx-auto mt-4 max-w-lg text-[1.05rem] leading-relaxed text-heroink-100/75">
-            تحدث مع فريقنا واحصل على عرض توضيحي مباشر لأي نظام، أو عرض سعر مخصص لاحتياجك.
+          <p className="mx-auto mt-4 max-w-lg text-[1.05rem] leading-relaxed text-white/65">
+            ØªØ­Ø¯Ø« Ù…Ø¹ ÙØ±ÙŠÙ‚Ù†Ø§ ÙˆØ§Ø­ØµÙ„ Ø¹Ù„Ù‰ Ø¹Ø±Ø¶ ØªÙˆØ¶ÙŠØ­ÙŠ Ù…Ø¨Ø§Ø´Ø± Ù„Ø£ÙŠ Ù†Ø¸Ø§Ù…ØŒ Ø£Ùˆ Ø¹Ø±Ø¶ Ø³Ø¹Ø± Ù…Ø®ØµØµ Ù„Ø§Ø­ØªÙŠØ§Ø¬Ùƒ.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <LinkButton
               to="/request-demo"
-              variant="accent"
+              variant="gradient"
               size="lg"
-              className="px-10 shadow-lg shadow-accent-500/30"
+              className="rounded-xl px-10 shadow-[0_8px_30px_rgb(99_102_241/0.50)]"
             >
-              اطلب عرضاً توضيحياً
+              <Sparkles size={17} />
+              Ø§Ø·Ù„Ø¨ Ø¹Ø±Ø¶Ø§Ù‹ ØªÙˆØ¶ÙŠØ­ÙŠØ§Ù‹
             </LinkButton>
-            <LinkButton to="/contact" variant="white" size="lg">
-              تواصل مع المبيعات
+            <LinkButton to="/contact" variant="white" size="lg" className="rounded-xl">
+              ØªÙˆØ§ØµÙ„ Ù…Ø¹ Ø§Ù„Ù…Ø¨ÙŠØ¹Ø§Øª
             </LinkButton>
           </div>
-          <p className="mt-5 text-sm text-heroink-300/55">
-            يرد عليك فريقنا خلال 24 ساعة · بدون أي التزام مسبق
+          <p className="mt-5 text-sm text-white/40">
+            ÙŠØ±Ø¯ Ø¹Ù„ÙŠÙƒ ÙØ±ÙŠÙ‚Ù†Ø§ Ø®Ù„Ø§Ù„ 24 Ø³Ø§Ø¹Ø© Â· Ø¨Ø¯ÙˆÙ† Ø£ÙŠ Ø§Ù„ØªØ²Ø§Ù… Ù…Ø³Ø¨Ù‚
           </p>
         </Container>
       </section>

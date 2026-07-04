@@ -75,7 +75,7 @@ export function SectionHeading({
 
 /* ── Buttons ────────────────────────────────────────────────── */
 
-export type ButtonVariant = "accent" | "primary" | "outline" | "ghostDark" | "white";
+export type ButtonVariant = "accent" | "primary" | "outline" | "ghostDark" | "white" | "gradient";
 export type ButtonSize = "sm" | "md" | "lg";
 
 const BTN_BASE =
@@ -87,6 +87,7 @@ const BTN_VARIANT: Record<ButtonVariant, string> = {
   outline:   "border border-primary-200 text-primary-700 hover:border-primary-400 hover:bg-primary-50 bg-card",
   ghostDark: "border border-white/30 text-white hover:bg-white/10",
   white:     "bg-card text-primary-800 hover:bg-primary-50 shadow-sm",
+  gradient:  "bg-gradient-cta text-white shadow-lg transition-all duration-200",
 };
 
 const BTN_SIZE: Record<ButtonSize, string> = {

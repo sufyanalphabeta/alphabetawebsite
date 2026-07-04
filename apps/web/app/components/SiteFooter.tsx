@@ -36,24 +36,27 @@ const COLUMNS: Array<{ title: string; links: Array<{ label: string; to: string }
 
 export function SiteFooter() {
   return (
-    <footer className="bg-navy-950 text-heroink-100">
+    <footer className="bg-[#0a0a2e] text-heroink-100">
+      {/* Top accent line */}
+      <div className="h-0.5 bg-gradient-to-r from-indigo-600 via-violet-600 to-indigo-600" />
+
       <div className="mx-auto grid w-full max-w-7xl gap-10 px-5 py-14 sm:px-8 md:grid-cols-2 lg:grid-cols-5">
         {/* Brand + contact */}
         <div className="lg:col-span-2">
           <LogoWordmark dark />
-          <p className="mt-4 max-w-sm text-sm leading-relaxed text-heroink-200/80">
+          <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/60">
             شركة ليبية متخصصة في تطوير الأنظمة البرمجية للمؤسسات — نصنع البرمجيات، نبني المستقبل.
           </p>
-          <ul className="mt-6 space-y-2.5 text-sm text-heroink-200/90">
+          <ul className="mt-6 space-y-2.5 text-sm text-white/55">
             <li className="flex items-center gap-2.5">
-              <MapPin size={15} className="text-royal-400" /> طرابلس، ليبيا
+              <MapPin size={15} className="text-indigo-400" /> طرابلس، ليبيا
             </li>
             <li className="flex items-center gap-2.5">
-              <Phone size={15} className="text-royal-400" />
+              <Phone size={15} className="text-indigo-400" />
               <span dir="ltr">+218 91 000 0000</span>
             </li>
             <li className="flex items-center gap-2.5">
-              <Mail size={15} className="text-royal-400" /> info@alphabeta.ly
+              <Mail size={15} className="text-indigo-400" /> info@alphabeta.ly
             </li>
           </ul>
         </div>
@@ -64,7 +67,7 @@ export function SiteFooter() {
             <ul className="space-y-2.5">
               {col.links.map((l) => (
                 <li key={l.to + l.label}>
-                  <Link to={l.to} className="text-sm text-heroink-200/80 transition-colors hover:text-white">
+                  <Link to={l.to} className="text-sm text-white/50 transition-colors hover:text-indigo-300">
                     {l.label}
                   </Link>
                 </li>
@@ -74,12 +77,12 @@ export function SiteFooter() {
         ))}
       </div>
 
-      <div className="border-t border-white/10">
-        <div className="mx-auto flex w-full max-w-7xl flex-wrap items-center justify-between gap-3 px-5 py-5 text-xs text-heroink-300/70 sm:px-8">
+      <div className="border-t border-white/8">
+        <div className="mx-auto flex w-full max-w-7xl flex-wrap items-center justify-between gap-3 px-5 py-5 text-xs text-white/35 sm:px-8">
           <p>© {new Date().getFullYear()} ألفا بيتا — جميع الحقوق محفوظة</p>
           <p className="flex gap-4">
-            <Link to="/contact" className="hover:text-white">تواصل معنا</Link>
-            <Link to="/request-quote" className="hover:text-white">اطلب عرض سعر</Link>
+            <Link to="/contact" className="transition-colors hover:text-indigo-300">تواصل معنا</Link>
+            <Link to="/request-quote" className="transition-colors hover:text-indigo-300">اطلب عرض سعر</Link>
           </p>
         </div>
       </div>

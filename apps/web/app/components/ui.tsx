@@ -13,12 +13,13 @@ export function Container({ className, children }: { className?: string; childre
   return <div className={cx("mx-auto w-full max-w-7xl px-5 sm:px-8", className)}>{children}</div>;
 }
 
-export type SectionTone = "white" | "muted" | "dark";
+export type SectionTone = "white" | "muted" | "dark" | "brand";
 
 const SECTION_TONE: Record<SectionTone, string> = {
   white: "bg-card",
-  muted: "bg-surface",
-  dark:  "bg-hero text-white",
+  muted: "bg-indigo-50/30",           /* subtle indigo tint — replaces plain gray */
+  dark:  "bg-brand-dark text-white",  /* deep violet-indigo gradient */
+  brand: "bg-hero-v2 text-white",     /* full deep space gradient */
 };
 
 export function Section({
@@ -57,15 +58,15 @@ export function SectionHeading({
       {eyebrow && (
         <p className={cx(
           "mb-3 inline-flex items-center gap-2 text-sm font-semibold tracking-wide",
-          dark ? "text-royal-400" : "text-royal-500"
+          dark ? "text-indigo-300" : "text-indigo-600"
         )}>
-          <span className={cx("inline-block h-1 w-5 rounded-full", dark ? "bg-royal-400" : "bg-royal-500")} />
+          <span className={cx("inline-block h-1 w-5 rounded-full", dark ? "bg-indigo-300" : "bg-indigo-500")} />
           {eyebrow}
         </p>
       )}
-      <h2 className={cx("text-3xl font-extrabold tracking-tight sm:text-4xl", dark ? "text-white" : "text-primary-900")}>{title}</h2>
+      <h2 className={cx("text-3xl font-extrabold tracking-tight sm:text-4xl", dark ? "text-white" : "text-slate-900")}>{title}</h2>
       {description && (
-        <p className={cx("mt-3 text-base leading-relaxed", dark ? "text-heroink-100/80" : "text-slate-500")}>
+        <p className={cx("mt-3 text-base leading-relaxed", dark ? "text-white/70" : "text-slate-500")}>
           {description}
         </p>
       )}
@@ -145,11 +146,16 @@ export function Badge({
   );
 }
 
-export const CARD =
-  "rounded-2xl border border-slate-200/80 bg-card shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card-hover";
+/* The default card now uses card-v2 — gradient top accent + indigo hover glow */
+export const CARD = "card-v2";
 
 export function Card({ className, children }: { className?: string; children: ReactNode }) {
   return <div className={cx(CARD, className)}>{children}</div>;
+}
+
+/** Glass card for use on dark bg-brand-dark sections. */
+export function CardDark({ className, children }: { className?: string; children: ReactNode }) {
+  return <div className={cx("card-glass-dark p-6", className)}>{children}</div>;
 }
 
 /* ── Motion primitives (IntersectionObserver, no deps) ──────── */
@@ -318,18 +324,25 @@ export function PageHero({
   children?: ReactNode;
 }) {
   return (
-    <section className="bg-mesh relative overflow-hidden py-18 text-white sm:py-24">
-      <div className="bg-grid-dark pointer-events-none absolute inset-0" />
-      <BrandWatermark className="-end-16 -bottom-28 h-96 w-96 opacity-[0.07]" />
+    <section className="bg-hero-v2 relative overflow-hidden py-20 text-white sm:py-28">
+      <div className="bg-grid-dark pointer-events-none absolute inset-0 opacity-60" />
+      {/* Decorative orbs */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute -start-20 top-1/3 h-64 w-64 rounded-full bg-indigo-600/15 blur-3xl" />
+        <div className="absolute -end-16 bottom-0 h-56 w-56 rounded-full bg-violet-600/12 blur-3xl" />
+      </div>
+      <BrandWatermark className="-end-16 -bottom-28 h-96 w-96 opacity-[0.06]" />
       <Container className="relative animate-fade-up">
         {titleEn && (
-          <p className="mb-3 inline-flex items-center gap-2 text-sm font-semibold tracking-wide text-royal-400">
-            <span className="inline-block h-0.5 w-5 rounded-full bg-royal-400" />
+          <p className="mb-3 inline-flex items-center gap-2 text-sm font-semibold tracking-wide text-indigo-300">
+            <span className="inline-block h-0.5 w-5 rounded-full bg-indigo-400" />
             {titleEn}
           </p>
         )}
         <h1 className="text-3xl font-extrabold tracking-tight sm:text-5xl sm:leading-[1.12]">{title}</h1>
-        {subtitle && <p className="mt-4 max-w-2xl text-lg leading-relaxed text-heroink-100/80">{subtitle}</p>}
+        {subtitle && (
+          <p className="mt-4 max-w-2xl text-lg leading-relaxed text-white/75">{subtitle}</p>
+        )}
         {children}
       </Container>
     </section>
@@ -341,7 +354,7 @@ export function PageHero({
 export function EmptyState({ message }: { message: string }) {
   return (
     <div className="flex flex-col items-center gap-4 py-20 text-center">
-      <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-50 text-primary-300">
+      <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-50 text-indigo-400">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-7 w-7" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
         </svg>

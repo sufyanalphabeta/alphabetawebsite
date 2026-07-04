@@ -214,7 +214,7 @@
   --color-sky-500: #0ea5e9;
 
   /* Typography */
-  --font-sans: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, system-ui, sans-serif;
+  --font-sans: "IBM Plex Sans Arabic", "Segoe UI", "Arial Unicode MS", "Tahoma", "Times New Roman", system-ui, sans-serif;
 }
 
 @layer base {
